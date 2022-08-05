@@ -1,0 +1,270 @@
+# You can add, remove and modify Custom Armor Sets here.
+# The symbol & can be used for color codes.
+# A few armor sets have already been created as an example.
+# The name of each Armor Set must be UNIQUE.
+
+# This is the name of the armor set.
+Example:
+
+  # This is the tier of the armor. The five tiers are leather, chainmail, iron, gold and diamond.
+  tier: leather
+
+  # Set this to true to give all pieces of the Armor Set a glint even when not enchanted.
+  glint: true
+
+  # These are the abilities given by the Armor Set when all 4 pieces of the armor set are worn.
+  # Due to this being an example, all possible abilities have been given. Keep in mind you may
+  # give as many abilities as you want and don't have to give all of them.
+  # You can have multiple entries for the same ability. So to give two permissions, you can use
+  # Permission: xxx and Permission: yyy in two separate lines.
+  abilities:
+
+    # This is the type of ability. The abilities used here are:
+    #   Scale: Increases the wearers size when the full set is equipped.
+    #   Effect: Gives the player the effect when the full set is worn.
+    #   Permission: Gives the player the permission as long as the full set is worn.
+
+    # Doubles the players size.
+    Scale: 2 
+    # Gives the player the Speed and Jump Boost Effects at level 2
+    Effect:
+      - speed: 2
+      - jump_boost: 2
+    # Gives the player the permission "armorsets.fly". This is not a real permission.
+    Permission: armorsets.fly
+
+  # Set this field to set a custom RGB color to the pieces of the Armor Set.
+  # This only applies if the tier of the Armor Set is leather.
+  color:
+    r: 0
+    g: 255
+    b: 255
+
+  # Set a custom value to the strength of each armor piece of the set here.
+  # This way, you can make leather armor as strong as diamond :D
+  # You can google the default strength value of each piece of every tier
+  # In this example, I'm setting the strength to the strength of diamond armor.
+  # WARNING: The sum of these cannot exceed 20!
+  strength:
+    helmet: 3
+    chestplate: 8
+    leggings: 6
+    boots: 3
+
+  # Specify durability points for each item here.
+  # You can google the default durability of each piece of every tier.
+  # The durability points set here are equal to diamond armor.
+  # You can set this value as high or low as you want.
+  durability:
+    helmet: 364
+    chestplate: 529
+    leggings: 496
+    boots: 430
+
+  # This is the name of each armor piece in the set.
+  name:
+    helmet: "&l&bExample Helmet"
+    chestplate: "&l&bExample Chestplate"
+    leggings: "&l&bExample Leggings"
+    boots: "&l&bExample Boots"
+
+  # This is the lore/description of each piece of the Armor Set.
+  # {FULLSETBONUS} is replaced by the description of the bonus wearing the entire set gives.
+  lore:
+    helmet:
+      - "&7Example Helmet is an epic helmet"
+      - " "
+      - "{FULLSETBONUS}"
+    chestplate:
+      - "&7Example Chestplate is an epic chestplate"
+      - " "
+      - "{FULLSETBONUS}"
+    leggings:
+      - "&7Example Leggings are epic leggings"
+      - " "
+      - "{FULLSETBONUS}"
+    boots:
+      - "&7Example Boots are epic boots"
+      - " "
+      - "{FULLSETBONUS}"
+
+  # This is what replaces {FULLSETBONUS} in the lore of the armor piece
+  setbonuslore:
+    - "&6&lFULL SET BONUS: "
+    - "&r&e+2x Increase in size"
+    - "&e+Level 2 Speed and Jump Boost Effects"
+    - "&e+Permission to Fly"
+
+  # These commands are run when the player wears the FULL armor set.
+  # The name of the player replaces {PLAYER}
+  equipped-commands:
+    - "say hello {PLAYER}"
+    - "say very epic {PLAYER}"
+
+  # These commands are run when the player removes any piece of the armor set
+  # while wearing a FULL armor set. The name of the player replaces {PLAYER}.
+  unequipped-commands:
+    - "say goodbye {PLAYER}"
+    - "say very epicn't {PLAYER}"
+
+Tank:
+
+  tier: leather
+
+  glint: true
+
+  abilities:
+
+    # The abilities used here are:
+    #   DamageNegation: Reduces the damage taken by the player when the full set is worn.
+    #   SwordNegation: Reduces the damage taken by the player when hit with a sword when full set is worn.
+    #   AxeNegation: Reduces the damage taken by the player when hit with an axe when full set is worn.
+    #   BowNegation: Reduces the damage taken by the player when hit with a bow when full set is worn.
+    #   KnockbackNegation: Reduces the players knockback as long as the full set is worn.
+
+    # Makes the player take 20% less knockback. If set to 1, normal knockback is taken.
+    KnockbackNegation: 0.8
+    # Makes player take 10% less damage overall. Set to 1 to take no damage. Set negative to for damage amplification.
+    DamageNegation: 0.1
+    # Makes player take 20% less damage from swords. Set to 1 to take no damage. Set negative to for damage amplification.
+    SwordNegation: 0.2
+    # Makes player take 15% less damage from axes. Set to 1 to take no damage. Set negative to for damage amplification.
+    AxeNegation: 0.15
+    # Makes player take 50% less damage from bows. Set to 1 to take no damage. Set negative to for damage amplification.
+    BowNegation: 0.5
+
+  color:
+    r: 255
+    g: 0
+    b: 255
+
+  strength:
+    helmet: 3
+    chestplate: 8
+    leggings: 6
+    boots: 3
+
+  durability:
+    helmet: 720
+    chestplate: 1040
+    leggings: 1000
+    boots: 860
+
+  name:
+    helmet: "&l&6Tank Helmet"
+    chestplate: "&l&6Tank Chestplate"
+    leggings: "&l&6Tank Leggings"
+    boots: "&l&6Tank Boots"
+
+  lore:
+    helmet:
+      - "&7Tank Helmet is an epic helmet"
+      - " "
+      - "{FULLSETBONUS}"
+    chestplate:
+      - "&7Tank Chestplate is an epic chestplate"
+      - " "
+      - "{FULLSETBONUS}"
+    leggings:
+      - "&7Tank Leggings are epic leggings"
+      - " "
+      - "{FULLSETBONUS}"
+    boots:
+      - "&7Tank Boots are epic boots"
+      - " "
+      - "{FULLSETBONUS}"
+
+  setbonuslore:
+    - "&1&lFULL SET BONUS: "
+    - "&r&b+20% Resistance to knockback"
+    - "&b+10% Damage negation from all causes"
+    - "&b+20% Damage negation against Swords"
+    - "&b+15% Damage negation against Axes"
+    - "&b+50% Damage negation against Bows"
+
+Assassin:
+
+  tier: leather
+
+  glint: true
+
+  abilities:
+
+    # The abilities used here are:
+    #   DamageAmplification: Increasing the damage dealt by the player when the full set is worn.
+    #   SwordNegation: Reduces the damage taken by the player when hit with a sword when full set is worn.
+    #   AxeNegation: Reduces the damage taken by the player when hit with an axe when full set is worn.
+    #   BowNegation: Reduces the damage taken by the player when hit with a bow when full set is worn.
+    #   Cape: Gives the player the cape specified when the Armor Set is worn.
+    # Makes player deal 10% more damage overall. Set negative to deal less damage.
+    DamageAmplification: 0.1
+    # Makes player deal 20% more damage using swords. Set negative to deal less damage.
+    SwordAmplification: 0.2
+    # Makes player deal 15% more damage using axes. Set negative to deal less damage.
+    AxeAmplification: 0.15
+    # Makes player deal 50% more damage using bows. Set negative to deal less damage.
+    BowAmplification: 0.5
+    # Gives the player a Fire Cape. The cape image must be in the folder of the plugin in plugin_data
+    Cape: FireCape.png
+
+  color:
+    r: 255
+    g: 255
+    b: 0
+
+  strength:
+    helmet: 2
+    chestplate: 6
+    leggings: 4
+    boots: 2
+
+  durability:
+    helmet: 200
+    chestplate: 400
+    leggings: 300
+    boots: 200
+
+  name:
+    helmet: "&l&cAssassin Helmet"
+    chestplate: "&l&cAssassin Chestplate"
+    leggings: "&l&cAssassin Leggings"
+    boots: "&l&cAssassin Boots"
+
+  lore:
+    helmet:
+      - "&7Assassin Helmet is an epic helmet"
+      - " "
+      - "{FULLSETBONUS}"
+    chestplate:
+      - "&7Assassin Chestplate is an epic chestplate"
+      - " "
+      - "{FULLSETBONUS}"
+    leggings:
+      - "&7Assassin Leggings are epic leggings"
+      - " "
+      - "{FULLSETBONUS}"
+    boots:
+      - "&7Assassin Boots are epic boots"
+      - " "
+      - "{FULLSETBONUS}"
+
+  setbonuslore:
+    - "&2&lFULL SET BONUS: "
+    - "&r&a+10% Damage dealt overall"
+    - "&a+20% Outgoing damage dealt using Swords"
+    - "&a+15% Outgoing damage dealt using Axes"
+    - "&a+50% Outgoing damage dealt using Bows"
+
+  # These messages are sent to the player wears the FULL armor set.
+  # The name of the player replaces {PLAYER}
+  equipped-messages:
+    - "hello {PLAYER}"
+    - "very epic {PLAYER}"
+
+  # These messages are sent to the player when the player removes any piece of the armor set
+  # while wearing a FULL armor set. The name of the player replaces {PLAYER}.
+  unequipped-messages:
+    - "goodbye {PLAYER}"
+    - "very epicn't {PLAYER}"
+
+

@@ -6,4 +6,5 @@ parameters:
     paths:
         - plugins/BlankFix/src/SolicitDev/BlankFix
         - plugins/VPNProtect/src/SolicitDev/VPNProtect
+        - plugins/BurgerCustomArmor/src/Heisenburger69/BurgerCustomArmor
         - libraries/libVPN/src/SolicitDev/libVPN
