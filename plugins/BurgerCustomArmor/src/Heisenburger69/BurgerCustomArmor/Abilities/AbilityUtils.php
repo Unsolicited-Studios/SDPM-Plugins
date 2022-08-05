@@ -3,6 +3,7 @@
 namespace Heisenburger69\BurgerCustomArmor\Abilities;
 
 use pocketmine\Server;
+use pocketmine\entity\effect\Effect;
 use Heisenburger69\BurgerCustomArmor\Main;
 use pocketmine\entity\effect\EffectInstance;
 use pocketmine\entity\effect\StringToEffectParser;
@@ -76,8 +77,11 @@ class AbilityUtils
         }
         foreach ($value as $effect) {
             foreach ($effect as $effectName => $level) {
-                $effectInstance = new EffectInstance(StringToEffectParser::getInstance()->parse($effectName), 999999, $level - 1, Main::$instance->getConfig()->get("show-effect-particles"));
-                $abilities[] = new EffectAbility($effectInstance);
+                $effectType = StringToEffectParser::getInstance()->parse($effectName);
+                if ($effectType instanceof Effect) {
+                    $effectInstance = new EffectInstance($effectType, 999999, $level - 1, Main::$instance->getConfig()->get("show-effect-particles"));
+                    $abilities[] = new EffectAbility($effectInstance);
+                }
             }
         }
         return $abilities;

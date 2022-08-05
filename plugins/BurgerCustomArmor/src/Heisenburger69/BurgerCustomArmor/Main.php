@@ -190,10 +190,7 @@ class Main extends PluginBase
             foreach ($recipeData["materials"] as $materialSymbol => $materialData) {
                 $requiredItems[$materialSymbol] = ItemFactory::getInstance()->get((int)$materialData["id"], (int)$materialData["meta"], (int)$materialData["count"]);
             }
-            if (is_array($recipeData["shape"])) {
-                $this->getServer()->getCraftingManager()->registerShapedRecipe(new ShapedRecipe($recipeData["shape"], $requiredItems, [$item]));
-            }
+            $this->getServer()->getCraftingManager()->registerShapedRecipe(new ShapedRecipe($recipeData["shape"], $requiredItems, [$item]));
         }
-        //$this->getServer()->getCraftingManager()->buildCraftingDataCache();
     }
 }

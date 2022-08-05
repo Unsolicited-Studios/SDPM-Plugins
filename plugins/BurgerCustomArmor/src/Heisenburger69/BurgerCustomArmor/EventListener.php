@@ -7,7 +7,6 @@ use pocketmine\nbt\tag\Tag;
 use pocketmine\item\ItemIds;
 use pocketmine\player\Player;
 use pocketmine\event\Listener;
-use AGTHARN\MagicSync\MagicSync;
 use pocketmine\scheduler\ClosureTask;
 use pocketmine\inventory\ArmorInventory;
 use pocketmine\event\player\PlayerJoinEvent;
@@ -28,18 +27,9 @@ use Heisenburger69\BurgerCustomArmor\Abilities\Reactive\Offensive\OffensiveAbili
 
 class EventListener implements Listener
 {
-    /**
-     * @var Main
-     */
-    private $plugin;
-
-    /**
-     * EventListener constructor.
-     * @param Main $plugin
-     */
-    public function __construct(Main $plugin)
-    {
-        $this->plugin = $plugin;
+    public function __construct(
+        private Main $plugin
+    ) {
     }
 
     /**
