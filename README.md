@@ -6,11 +6,11 @@ PocketMine-MP plugins and libraries managed by Solicit Development. Use of these
 ## Plugins
 | Plugin      | Description |
 | ----------- | ----------- |
-| [VPNProtect](https://github.com/Solicit-Development/PMMP-Plugins/tree/main/plugins/VPNProtect) | Most advanced Anti-VPN plugin for PocketMine-MP |
-| [PlayerTrade](https://github.com/Solicit-Development/PMMP-Plugins/tree/main/plugins/PlayerTrade) | Modern trade system for PocketMine-MP | 
-| [BlankFix](https://github.com/Solicit-Development/PMMP-Plugins/tree/main/plugins/BlankFix) | Workaround for an issue involving players being in limbo when Yaw and Pitch is incorrect | 
+| [VPNProtect](https://github.com/Solicit-Development/SDMP-Plugins/tree/main/plugins/VPNProtect) | Most advanced Anti-VPN plugin for PocketMine-MP |
+| [PlayerTrade](https://github.com/Solicit-Development/SDMP-Plugins/tree/main/plugins/PlayerTrade) | Modern trade system for PocketMine-MP | 
+| [BlankFix](https://github.com/Solicit-Development/SDMP-Plugins/tree/main/plugins/BlankFix) | Workaround for an issue involving players being in limbo when Yaw and Pitch is incorrect | 
 
 ## Libraries
 | Library     | Description |
 | ----------- | ----------- |
-| [libVPN](https://github.com/Solicit-Development/PMMP-Plugins/tree/main/libraries/libVPN) | Library built for identifying VPNs through publicly available APIs |
+| [libVPN](https://github.com/Solicit-Development/SDMP-Plugins/tree/main/libraries/libVPN) | Library built for identifying VPNs through publicly available APIs |
