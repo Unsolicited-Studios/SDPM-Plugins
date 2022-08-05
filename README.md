@@ -1,5 +1,5 @@
 # PMMP-Plugins
-[![Hits](https://hits.sh/github.com/Solicit-Development/PMMP-Plugins.svg?view=today-total&style=flat-square)](https://hits.sh/github.com/Solicit-Development/PMMP-Plugins/)
+[![Hits](https://hits.sh/github.com/Solicit-Development/SDPM-Plugins.svg?view=today-total&style=flat-square)](https://hits.sh/github.com/Solicit-Development/SDPM-Plugins/)
 
 PocketMine-MP resources managed by Solicit Development. Use of all these resources should follow the license included with the resource, otherwise [Apache License 2.0](https://github.com/Solicit-Development/PMMP-Plugins/blob/main/LICENSE).
 
