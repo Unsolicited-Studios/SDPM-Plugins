@@ -1,0 +1,12 @@
+#          █▀ █▀█ █░░ █ █▀▀ █ ▀█▀
+#          ▄█ █▄█ █▄▄ █ █▄▄ █ ░█░
+# 
+# █▀▄ █▀▀ █░█ █▀▀ █░░ █▀█ █▀█ █▀▄▀█ █▀▀ █▄░█ ▀█▀
+# █▄▀ ██▄ ▀▄▀ ██▄ █▄▄ █▄█ █▀▀ █░▀░█ ██▄ █░▀█ ░█░
+#    https://github.com/Solicit-Development
+
+name: BlankFix
+main: SolicitDev\BlankFix\Main
+author: AGTHARN
+version: 1.0.0
+api: 4.0.0

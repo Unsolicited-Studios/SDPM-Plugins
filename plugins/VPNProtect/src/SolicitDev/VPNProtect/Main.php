@@ -1,0 +1,75 @@
+<?php
+
+/**
+ *          █▀ █▀█ █░░ █ █▀▀ █ ▀█▀
+ *          ▄█ █▄█ █▄▄ █ █▄▄ █ ░█░
+ * 
+ * █▀▄ █▀▀ █░█ █▀▀ █░░ █▀█ █▀█ █▀▄▀█ █▀▀ █▄░█ ▀█▀
+ * █▄▀ ██▄ ▀▄▀ ██▄ █▄▄ █▄█ █▀▀ █░▀░█ ██▄ █░▀█ ░█░
+ *    https://github.com/Solicit-Development
+ * 
+ *    Copyright 2022 Solicit-Development
+ *    Licensed under the Apache License, Version 2.0 (the 'License');
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ * 
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an 'AS IS' BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ * 
+ */
+
+declare(strict_types=1);
+
+namespace SolicitDev\VPNProtect;
+
+use pocketmine\plugin\PluginBase;
+use SolicitDev\VPNProtect\EventListener;
+
+class Main extends PluginBase
+{
+    private static Main $instance;
+
+    public static function getInstance(): Main
+    {
+        return self::$instance;
+    }
+
+    public function onEnable(): void
+    {
+        self::$instance = $this;
+
+        $this->saveDefaultConfig();
+        if (!$this->runChecks()) {
+            return;
+        }
+
+        $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
+    }
+
+    public function getEnabledAPIs(): array
+    {
+        $enabled = [];
+        foreach ($this->getConfig()->get('checks', []) as $api => $data) {
+            if ($data['enabled']) {
+                $enabled[] = $api;
+            }
+        }
+        return $enabled;
+    }
+
+    private function runChecks(): bool
+    {
+        $minimumAPIs = $this->getConfig()->get('minimum-checks', 2) + 2;
+        if (count($this->getEnabledAPIs()) <= $minimumAPIs) {
+            $this->getLogger()->warning('Not enough APIs enabled to run checks! Please enable more than ' . $minimumAPIs . ' APIs.');
+            $this->getServer()->getPluginManager()->disablePlugin($this);
+            return false;
+        }
+        return true;
+    }
+}

@@ -1,0 +1,3 @@
+[submodule ".github/SDPM-Tools"]
+	path = .github/SDPM-Tools
+	url = https://github.com/Solicit-Development/SDPM-Tools

@@ -1,0 +1,19 @@
+#          █▀ █▀█ █░░ █ █▀▀ █ ▀█▀
+#          ▄█ █▄█ █▄▄ █ █▄▄ █ ░█░
+# 
+# █▀▄ █▀▀ █░█ █▀▀ █░░ █▀█ █▀█ █▀▄▀█ █▀▀ █▄░█ ▀█▀
+# █▄▀ ██▄ ▀▄▀ ██▄ █▄▄ █▄█ █▀▀ █░▀░█ ██▄ █░▀█ ░█░
+#    https://github.com/Solicit-Development
+
+name: VPNProtect
+main: SolicitDev\VPNProtect\Main
+author: AGTHARN
+version: 2.1.0
+api: 4.0.0
+
+permissions:
+  vpnprotect.bypass:
+    description: VPN Checks would not be run on players with this permission
+    default: false
+
+virions: ["libVPN"]

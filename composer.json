@@ -1,0 +1,10 @@
+{
+  "name": "solicit-development/sdpm-plugins",
+  "type": "library",
+  "description": "",
+  "require-dev": {
+    "pocketmine/pocketmine-mp": "dev-stable",
+    "phpstan/phpstan": "^1.8.2",
+    "dzolnowski/invmenu": "4.0.x-dev"
+  }
+}
