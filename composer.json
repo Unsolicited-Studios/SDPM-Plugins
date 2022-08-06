@@ -6,5 +6,12 @@
     "pocketmine/pocketmine-mp": "dev-stable",
     "phpstan/phpstan": "^1.8.2",
     "dzolnowski/invmenu": "4.0.x-dev"
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "CortexPE\\Commando\\": ".github/SDPM-Resources/libraries/Commando/src/CortexPE/Commando",
+      "jojoe77777\\FormAPI\\": ".github/SDPM-Resources/libraries/FormAPI/src/jojoe77777/FormAPI",
+      "muqsit\\invmenu\\": ".github/SDPM-Resources/libraries/InvMenu/src/muqsit/invmenu"
+    }
   }
 }

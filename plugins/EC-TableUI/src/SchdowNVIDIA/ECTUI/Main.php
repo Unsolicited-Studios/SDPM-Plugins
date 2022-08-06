@@ -131,7 +131,8 @@ class Main extends PluginBase
             ArmorInventory::SLOT_HEAD => ItemFlags::HEAD,
             ArmorInventory::SLOT_CHEST => ItemFlags::TORSO,
             ArmorInventory::SLOT_LEGS => ItemFlags::LEGS,
-            ArmorInventory::SLOT_FEET => ItemFlags::FEET
+            ArmorInventory::SLOT_FEET => ItemFlags::FEET,
+            default => ItemFlags::ALL
         };
     }
 
@@ -237,6 +238,8 @@ class Main extends PluginBase
                         $level = 1;
                     }
                     break;
+                default:
+                    return;
             }
             $toEnchant->addEnchantment(new EnchantmentInstance($enchant, (int) $level));
             
