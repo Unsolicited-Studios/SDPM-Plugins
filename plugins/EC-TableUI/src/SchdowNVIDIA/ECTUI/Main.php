@@ -173,6 +173,12 @@ class Main extends PluginBase
             if ($data === null) {
                 return;
             }
+
+            if ($toEnchant->getId() !== $player->getInventory()->getItemInHand()->getId()) {
+                $player->sendMessage("§8(§b!§8) §7Are you trying to swindle me?");
+                return;
+            }
+
             switch ($data) {
                 case 0:
                     if ($player->getXpManager()->getXpLevel() < $enchants[0]["xp"]) {
@@ -187,20 +193,11 @@ class Main extends PluginBase
                         return;
                     }
 
-                    $player->getWorld()->addSound($player->getPosition(), new AnvilUseSound());
                     $player->getXpManager()->setXpLevel($player->getXpManager()->getXpLevel() - $enchants[0]["xp"]);
                     $level = $enchants[0]["level"];
                     if ($level <= 0) {
                         $level = 1;
                     }
-
-                    if ($toEnchant->getId() !== $player->getInventory()->getItemInHand()->getId()) {
-                        $player->sendMessage("§8(§b!§8) §7Are you trying to swindle me?");
-                        return;
-                    }
-
-                    $toEnchant->addEnchantment(new EnchantmentInstance($enchant, (int) $level));
-                    $player->getInventory()->setItemInHand($toEnchant);
                     break;
                 case 1:
                     if ($player->getXpManager()->getXpLevel() < $enchants[1]["xp"]) {
@@ -215,20 +212,11 @@ class Main extends PluginBase
                         return;
                     }
 
-                    $player->getWorld()->addSound($player->getPosition(), new AnvilUseSound());
                     $player->getXpManager()->setXpLevel($player->getXpManager()->getXpLevel() - $enchants[1]["xp"]);
                     $level = $enchants[1]["level"];
                     if ($level <= 0) {
                         $level = 1;
                     }
-
-                    if ($toEnchant->getId() !== $player->getInventory()->getItemInHand()->getId()) {
-                        $player->sendMessage("§8(§b!§8) §7Are you trying to swindle me?");
-                        return;
-                    }
-
-                    $toEnchant->addEnchantment(new EnchantmentInstance($enchant, (int) $level));
-                    $player->getInventory()->setItemInHand($toEnchant);
                     break;
                 case 2:
                     if ($player->getXpManager()->getXpLevel() < $enchants[2]["xp"]) {
@@ -243,22 +231,17 @@ class Main extends PluginBase
                         return;
                     }
 
-                    $player->getWorld()->addSound($player->getPosition(), new AnvilUseSound());
                     $player->getXpManager()->setXpLevel($player->getXpManager()->getXpLevel() - $enchants[2]["xp"]);
                     $level = $enchants[2]["level"];
                     if ($level <= 0) {
                         $level = 1;
                     }
-
-                    if ($toEnchant->getId() !== $player->getInventory()->getItemInHand()->getId()) {
-                        $player->sendMessage("§8(§b!§8) §7Are you trying to swindle me?");
-                        return;
-                    }
-
-                    $toEnchant->addEnchantment(new EnchantmentInstance($enchant, (int) $level));
-                    $player->getInventory()->setItemInHand($toEnchant);
                     break;
             }
+            $toEnchant->addEnchantment(new EnchantmentInstance($enchant, (int) $level));
+            
+            $player->getWorld()->addSound($player->getPosition(), new AnvilUseSound());
+            $player->getInventory()->setItemInHand($toEnchant);
         });
 
         $form->setTitle("§d§l«§r §bENCHANTMENT TABLE §d§l»§r§8 " . $toEnchant->getName());
