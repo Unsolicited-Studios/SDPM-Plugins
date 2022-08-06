@@ -1,0 +1,18 @@
+#          █▀ █▀█ █░░ █ █▀▀ █ ▀█▀
+#          ▄█ █▄█ █▄▄ █ █▄▄ █ ░█░
+# 
+# █▀▄ █▀▀ █░█ █▀▀ █░░ █▀█ █▀█ █▀▄▀█ █▀▀ █▄░█ ▀█▀
+# █▄▀ ██▄ ▀▄▀ ██▄ █▄▄ █▄█ █▀▀ █░▀░█ ██▄ █░▀█ ░█░
+#    https://github.com/Solicit-Development
+
+name: RotateWrench
+main: SolicitDev\RotateWrench\RotateWrench
+author: AGTHARN
+version: 1.0.0
+api: 4.0.0
+
+permissions:
+  rotatewrench.cmd.rotate:
+    default: true
+
+virions: ["Commando"]

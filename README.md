@@ -8,6 +8,7 @@ PocketMine-MP plugins and libraries managed by Solicit Development. Use of these
 | Plugin      | Description |
 | ----------- | ----------- |
 | [VPNProtect](https://github.com/Solicit-Development/SDPM-Plugins/tree/main/plugins/VPNProtect) | Most advanced Anti-VPN plugin |
+| [RotateWrench](https://github.com/Solicit-Development/SDPM-Plugins/tree/main/plugins/RotateWrench) | Rotate blocks like Chests, Pumpkins and Bells |
 | [BlankFix](https://github.com/Solicit-Development/SDPM-Plugins/tree/main/plugins/BlankFix) | Workaround for an issue involving players being in limbo when Yaw and Pitch is incorrect | 
 
 ### ➡️ Revived Projects
