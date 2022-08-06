@@ -33,6 +33,7 @@ final class PlayerTrade extends PluginBase
 			InvMenuHandler::register($this);
 		}
 
+		$this->getServer()->getPluginManager()->registerEvents(new EventListener(), $this);
 		$this->getScheduler()->scheduleRepeatingTask(new TradeRequestTask(), 20);
 		$this->getServer()->getCommandMap()->register("playertrade", new TradeCommand());
 		$this->saveDefaultConfig();
