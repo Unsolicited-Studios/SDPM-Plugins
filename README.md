@@ -1,7 +1,7 @@
 # SDPM-Plugins
 [![Hits](https://hits.sh/github.com/Solicit-Development/SDPM-Plugins.svg?view=today-total&style=flat-square)](https://hits.sh/github.com/Solicit-Development/SDPM-Plugins/)
 
-PocketMine-MP plugins and libraries managed by Solicit Development. Use of these resources should follow the license included with the resource, otherwise should follow the repository's - [Apache License 2.0](https://github.com/Solicit-Development/PMMP-Plugins/blob/main/LICENSE).
+PocketMine-MP plugins and libraries managed by Solicit Development. Use of these resources should follow the license included with the resource, otherwise should follow the repository's - [Apache License 2.0](https://github.com/Solicit-Development/SDPM-Plugins/blob/main/LICENSE).
 
 ## Plugins
 | Plugin      | Description |
