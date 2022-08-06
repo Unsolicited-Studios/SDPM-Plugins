@@ -13,6 +13,8 @@ api: 4.0.0
 
 permissions:
   rotatewrench.cmd.rotate:
-    default: true
+    default: op
+  rotatewrench.cmd.wrench:
+    default: op
 
 virions: ["Commando"]

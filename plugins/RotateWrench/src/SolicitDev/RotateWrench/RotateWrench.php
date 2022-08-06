@@ -29,10 +29,14 @@ namespace SolicitDev\RotateWrench;
 
 use pocketmine\Server;
 use pocketmine\block\Block;
+use pocketmine\item\Shovel;
+use pocketmine\player\Player;
+use pocketmine\item\VanillaItems;
 use pocketmine\plugin\PluginBase;
 use pocketmine\world\format\Chunk;
 use pocketmine\block\utils\HorizontalFacingTrait;
 use SolicitDev\RotateWrench\command\RotateCommand;
+use SolicitDev\RotateWrench\command\WrenchCommand;
 
 class RotateWrench extends PluginBase
 {
@@ -47,10 +51,13 @@ class RotateWrench extends PluginBase
     {
         self::$instance = $this;
 
-        $this->getServer()->getCommandMap()->register('rotatewrench', new RotateCommand($this, 'rotate', 'Rotate the block you are looking at to your opposite facing'));
+        $this->getServer()->getCommandMap()->register('rotatewrench', new RotateCommand($this, 'rotate', 'Rotate the block you are looking at'));
+        $this->getServer()->getCommandMap()->register('rotatewrench', new WrenchCommand($this, 'wrench', 'Receive a wrench that can rotate the block you are looking at'));
+    
+        $this->getServer()->getPluginManager()->registerEvents(new EventListener(), $this);
     }
 
-    public static function rotateBlock(Block $block, int $face): bool
+    public static function rotateBlock(Player $player, Block $block, int $face): bool
     {
         if (method_exists($block, 'setFacing')) {
             /** @var HorizontalFacingTrait $block */
@@ -64,8 +71,20 @@ class RotateWrench extends PluginBase
 
             $block->writeStateToWorld();
             Server::getInstance()->broadcastPackets($position->getWorld()->getChunkPlayers($chunkX, $chunkZ), $position->getWorld()->createBlockUpdatePackets([$position->asVector3()]));
+            
+            $player->sendMessage('Block rotated! Block: ' . $block->getName() . ' (' . $block->getId() . ':' . $block->getMeta() . ')');
             return true;
         }
+        $player->sendMessage('Failed to rotate block! May be possible that this block has no facing trait.');
         return false;
+    }
+
+    public static function getWrench(): Shovel
+    {
+        $item = VanillaItems::IRON_SHOVEL()
+            ->setCustomName('Rotating Wrench');
+
+        $item->getNamedTag()->setString('RotateWrench', 'Wrench');
+        return $item;
     }
 }

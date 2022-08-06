@@ -25,39 +25,34 @@
 
 declare(strict_types=1);
 
-namespace SolicitDev\RotateWrench\command;
+namespace SolicitDev\RotateWrench;
 
-use pocketmine\block\Block;
 use pocketmine\math\Facing;
-use pocketmine\player\Player;
-use CortexPE\Commando\BaseCommand;
-use pocketmine\command\CommandSender;
-use SolicitDev\RotateWrench\RotateWrench;
+use pocketmine\event\Listener;
+use pocketmine\event\block\BlockBreakEvent;
+use pocketmine\event\player\PlayerInteractEvent;
 
-class RotateCommand extends BaseCommand
+class EventListener implements Listener
 {
-    public function prepare(): void
+    /**
+     * @priority MONITOR
+     */
+    public function onPlayerInteract(PlayerInteractEvent $event): void
     {
-        $this->setPermission('rotatewrench.cmd.rotate');
+        $player = $event->getPlayer();
+        if (!$event->isCancelled() && $event->getItem()->getNamedTag()->getString('RotateWrench', '') === 'Wrench') {
+            RotateWrench::rotateBlock($player, $event->getBlock(), Facing::opposite($player->getHorizontalFacing()));
+            $event->cancel();
+        }
     }
 
-    public function onRun(CommandSender $sender, string $aliasUsed, array $args): void
+    /**
+     * @priority HIGHEST
+     */
+    public function onBlockBreak(BlockBreakEvent $event): void
     {
-        if (!$sender instanceof Player) {
-            $sender->sendMessage('You must be in-game to run this command!');
-            return;
+        if ($event->getItem()->getNamedTag()->getString('RotateWrench', '') === 'Wrench') {
+            $event->cancel();
         }
-        if (!$this->testPermissionSilent($sender)) {
-            $sender->sendMessage('You do not have permission to run this command!');
-            return;
-        }
-
-        $block = $sender->getTargetBlock(10);
-        if (!$block instanceof Block) {
-            $sender->sendMessage('No block found! Please make sure that you are looking at a block and that you are not too far from the block.');
-            return;
-        }
-
-        RotateWrench::rotateBlock($sender, $block, Facing::opposite($sender->getHorizontalFacing()));
     }
 }
