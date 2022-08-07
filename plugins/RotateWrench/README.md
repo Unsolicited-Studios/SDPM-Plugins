@@ -1,5 +1,5 @@
 # RotateWrench
-Ever wanted to rotate your chest or sign which leaves you no choice but to break them? Do you also have to go through all the trouble of picking up and placing back items from your chest or typing out the text on signs again? This may just solve all these problems for you!
+Ever wished to rotate your sign or chest such that you don't have to break it? Do you also have to go through the hassle of taking things out of your chest and putting them back or entering the text on the signs again? You could possibly find that this plugin fixes all of your issues! 
 
 ## Commands
 | Command     | Description | Permission  |
