@@ -27,7 +27,6 @@ declare(strict_types=1);
 
 namespace SolicitDev\RotateWrench;
 
-use pocketmine\math\Facing;
 use pocketmine\event\Listener;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\player\PlayerInteractEvent;
@@ -41,7 +40,7 @@ class EventListener implements Listener
     {
         $player = $event->getPlayer();
         if (!$event->isCancelled() && $event->getItem()->getNamedTag()->getString('RotateWrench', '') === 'Wrench') {
-            RotateWrench::rotateBlock($player, $event->getBlock(), Facing::opposite($player->getHorizontalFacing()));
+            RotateWrench::rotateBlockAndAlert($player, $event->getBlock());
             $event->cancel();
         }
     }

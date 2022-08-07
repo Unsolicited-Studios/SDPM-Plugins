@@ -30,11 +30,14 @@ namespace SolicitDev\RotateWrench;
 use pocketmine\Server;
 use pocketmine\block\Block;
 use pocketmine\item\Shovel;
+use pocketmine\math\Facing;
 use pocketmine\player\Player;
 use pocketmine\item\VanillaItems;
 use pocketmine\plugin\PluginBase;
 use pocketmine\world\format\Chunk;
+use pocketmine\block\utils\PillarRotationTrait;
 use pocketmine\block\utils\HorizontalFacingTrait;
+use pocketmine\block\utils\SignLikeRotationTrait;
 use SolicitDev\RotateWrench\command\RotateCommand;
 use SolicitDev\RotateWrench\command\WrenchCommand;
 
@@ -53,30 +56,48 @@ class RotateWrench extends PluginBase
 
         $this->getServer()->getCommandMap()->register('rotatewrench', new RotateCommand($this, 'rotate', 'Rotate the block you are looking at'));
         $this->getServer()->getCommandMap()->register('rotatewrench', new WrenchCommand($this, 'wrench', 'Receive a wrench that can rotate the block you are looking at'));
-    
+
         $this->getServer()->getPluginManager()->registerEvents(new EventListener(), $this);
     }
 
-    public static function rotateBlock(Player $player, Block $block, int $face): bool
+    public static function rotateBlock(Player $player, Block $block): bool
     {
         if (method_exists($block, 'setFacing')) {
             /** @var HorizontalFacingTrait $block */
-            $block->setFacing($face);
+            $block->setFacing(Facing::opposite($player->getHorizontalFacing()));
+            return true;
+        } elseif (method_exists($block, 'setAxis')) {
+            /** @var PillarRotationTrait $block */
+            $block->setAxis(Facing::axis($player->getHorizontalFacing()));
+            return true;
+        } elseif (method_exists($block, 'setRotation')) {
+            /** @var SignLikeRotationTrait $block */
+            $block->setRotation(((int) floor((($player->getLocation()->getYaw() + 180) * 16 / 360) + 0.5)) & 0xf);
+            return true;
+        }
+        return false;
+    }
 
-            /** @var Block $block */
-            $position = $block->getPosition();
-
-            $chunkX = $position->x >> Chunk::COORD_BIT_SIZE;
-            $chunkZ = $position->z >> Chunk::COORD_BIT_SIZE;
-
-            $block->writeStateToWorld();
-            Server::getInstance()->broadcastPackets($position->getWorld()->getChunkPlayers($chunkX, $chunkZ), $position->getWorld()->createBlockUpdatePackets([$position->asVector3()]));
-            
+    public static function rotateBlockAndAlert(Player $player, Block $block): bool
+    {
+        if (self::rotateBlock($player, $block)) {
             $player->sendMessage('Block rotated! Block: ' . $block->getName() . ' (' . $block->getId() . ':' . $block->getMeta() . ')');
             return true;
         }
         $player->sendMessage('Failed to rotate block! May be possible that this block has no facing trait.');
         return false;
+    }
+
+    public static function updateBlockToViewers(): bool
+    {
+        /** @var Block $block */
+        $position = $block->getPosition();
+
+        $chunkX = $position->x >> Chunk::COORD_BIT_SIZE;
+        $chunkZ = $position->z >> Chunk::COORD_BIT_SIZE;
+
+        $block->writeStateToWorld();
+        return Server::getInstance()->broadcastPackets($position->getWorld()->getChunkPlayers($chunkX, $chunkZ), $position->getWorld()->createBlockUpdatePackets([$position->asVector3()]));
     }
 
     public static function getWrench(): Shovel

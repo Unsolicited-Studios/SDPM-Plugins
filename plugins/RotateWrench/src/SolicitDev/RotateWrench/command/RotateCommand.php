@@ -28,7 +28,6 @@ declare(strict_types=1);
 namespace SolicitDev\RotateWrench\command;
 
 use pocketmine\block\Block;
-use pocketmine\math\Facing;
 use pocketmine\player\Player;
 use CortexPE\Commando\BaseCommand;
 use pocketmine\command\CommandSender;
@@ -58,6 +57,6 @@ class RotateCommand extends BaseCommand
             return;
         }
 
-        RotateWrench::rotateBlock($sender, $block, Facing::opposite($sender->getHorizontalFacing()));
+        RotateWrench::rotateBlockAndAlert($sender, $block);
     }
 }
