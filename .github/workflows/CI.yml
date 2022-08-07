@@ -15,10 +15,10 @@ jobs:
           submodules: recursive
 
       - name: Build From Source Code
-        run: php -dphar.readonly=0 ./.github/SDPM-Tools/builder/make-phar.php
+        run: php -dphar.readonly=0 ./.github/SDPM-Resources/tools/builder/make-phar.php
 
       - name: Build & Inject Virions
-        run: php -dphar.readonly=0 ./.github/SDPM-Tools/injector/inject-virion.php
+        run: php -dphar.readonly=0 ./.github/SDPM-Resources/tools/injector/inject-virion.php
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3.1.0
