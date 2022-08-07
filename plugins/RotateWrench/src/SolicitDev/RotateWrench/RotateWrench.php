@@ -29,12 +29,14 @@ namespace SolicitDev\RotateWrench;
 
 use pocketmine\Server;
 use pocketmine\block\Block;
+use pocketmine\block\Chest;
 use pocketmine\item\Shovel;
 use pocketmine\math\Facing;
 use pocketmine\player\Player;
 use pocketmine\item\VanillaItems;
 use pocketmine\plugin\PluginBase;
 use pocketmine\world\format\Chunk;
+use pocketmine\block\tile\Chest as ChestTile;
 use pocketmine\block\utils\PillarRotationTrait;
 use pocketmine\block\utils\HorizontalFacingTrait;
 use pocketmine\block\utils\SignLikeRotationTrait;
@@ -63,6 +65,14 @@ class RotateWrench extends PluginBase
     public static function rotateBlock(Player $player, Block $block): bool
     {
         if (method_exists($block, 'setFacing')) {
+            if ($block instanceof Chest) {
+                $tile = $block->getPosition()->getWorld()->getTile($block->getPosition());
+                if ($tile instanceof ChestTile && $tile->isPaired()) {
+                    $block->setFacing(Facing::opposite($block->getFacing()));
+                    return true;
+                }
+            }
+
             /** @var HorizontalFacingTrait $block */
             $block->setFacing(Facing::opposite($player->getHorizontalFacing()));
             return true;
