@@ -45,6 +45,12 @@ use SolicitDev\RotateWrench\command\WrenchCommand;
 
 class RotateWrench extends PluginBase
 {
+    public const DOUBLE_CHEST = -1;
+
+    public const FACING = 1;
+    public const AXIS = 2;
+    public const ROTATION = 3;
+
     private static RotateWrench $instance;
 
     public static function getInstance(): RotateWrench
@@ -64,28 +70,38 @@ class RotateWrench extends PluginBase
 
     public static function rotateBlock(Player $player, Block $block): bool
     {
+        $type = false;
         if (method_exists($block, 'setFacing')) {
             if ($block instanceof Chest) {
                 $tile = $block->getPosition()->getWorld()->getTile($block->getPosition());
                 if ($tile instanceof ChestTile && $tile->isPaired()) {
-                    $block->setFacing(Facing::opposite($block->getFacing()));
-                    return true;
+                    $type = self::DOUBLE_CHEST;
+                    goto skip;
                 }
             }
-
-            /** @var HorizontalFacingTrait $block */
-            $block->setFacing(Facing::opposite($player->getHorizontalFacing()));
-            return true;
+            $type = self::FACING;
         } elseif (method_exists($block, 'setAxis')) {
-            /** @var PillarRotationTrait $block */
-            $block->setAxis(Facing::axis($player->getHorizontalFacing()));
-            return true;
+            $type = self::AXIS;
         } elseif (method_exists($block, 'setRotation')) {
-            /** @var SignLikeRotationTrait $block */
-            $block->setRotation(((int) floor((($player->getLocation()->getYaw() + 180) * 16 / 360) + 0.5)) & 0xf);
-            return true;
+            $type = self::ROTATION;
         }
-        return false;
+
+        skip:
+
+        // TODO: traits really messes up PHPStan and IDEs, any fixes other than below?
+        $match = match ($type) {
+            /** @var HorizontalFacingTrait $block */
+            self::DOUBLE_CHEST => $block->setFacing(Facing::opposite($block->getFacing())),
+            self::FACING => $block->setFacing(Facing::opposite($player->getHorizontalFacing())),
+            /** @var PillarRotationTrait $block */
+            self::AXIS => $block->setAxis(Facing::axis($player->getHorizontalFacing())),
+            /** @var SignLikeRotationTrait $block */
+            self::ROTATION => $block->setRotation(((int) floor((($player->getLocation()->getYaw() + 180) * 16 / 360) + 0.5)) & 0xf),
+            default => false
+        };
+        self::updateBlockChange($block);
+
+        return !$match ? false : true;
     }
 
     public static function rotateBlockAndAlert(Player $player, Block $block): bool
@@ -98,15 +114,15 @@ class RotateWrench extends PluginBase
         return false;
     }
 
-    public static function updateBlockToViewers(): bool
+    public static function updateBlockChange(Block $block): bool
     {
-        /** @var Block $block */
         $position = $block->getPosition();
 
         $chunkX = $position->x >> Chunk::COORD_BIT_SIZE;
         $chunkZ = $position->z >> Chunk::COORD_BIT_SIZE;
 
         $block->writeStateToWorld();
+        $block->onNearbyBlockChange();
         return Server::getInstance()->broadcastPackets($position->getWorld()->getChunkPlayers($chunkX, $chunkZ), $position->getWorld()->createBlockUpdatePackets([$position->asVector3()]));
     }
 
