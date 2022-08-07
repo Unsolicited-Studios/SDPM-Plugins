@@ -16,5 +16,7 @@ permissions:
     default: op
   rotatewrench.cmd.wrench:
     default: op
+  rotatewrench.use.wrench:
+    default: true
 
 virions: ["Commando"]

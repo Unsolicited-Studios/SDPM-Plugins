@@ -39,7 +39,11 @@ class EventListener implements Listener
     public function onPlayerInteract(PlayerInteractEvent $event): void
     {
         $player = $event->getPlayer();
-        if (!$event->isCancelled() && $event->getItem()->getNamedTag()->getString('RotateWrench', '') === 'Wrench') {
+        if (
+            !$event->isCancelled() &&
+            $event->getItem()->getNamedTag()->getString('RotateWrench', '') === 'Wrench' &&
+            $player->hasPermission('rotatewrench.use.wrench')
+        ) {
             RotateWrench::rotateBlockAndAlert($player, $event->getBlock());
             $event->cancel();
         }

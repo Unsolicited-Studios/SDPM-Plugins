@@ -4,5 +4,12 @@ Ever wanted to rotate your chest or sign which leaves you no choice but to break
 ## Commands
 | Command     | Description | Permission  |
 | ----------- | ----------- | ----------- |
-| /rotate     | Rotate any blocks you are looking at that has a facing | rotatewrench.cmd.rotate *(op)* |
-| /wrench     | Receive a wrench that can rotate the block you are looking at that has a facing | rotatewrench.cmd.wrench *(op)* |
+| /rotate     | Rotate any blocks you are looking at that has a facing | rotatewrench.cmd.rotate |
+| /wrench     | Receive a wrench that can rotate the block you are looking at that has a facing | rotatewrench.cmd.wrench |
+
+## Permissions
+| Permission  | Default     |
+| ----------- | ----------- |
+| rotatewrench.cmd.rotate | op |
+| rotatewrench.cmd.wrench | op |
+| rotatewrench.use.wrench | true |

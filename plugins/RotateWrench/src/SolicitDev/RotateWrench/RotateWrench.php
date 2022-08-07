@@ -54,7 +54,7 @@ class RotateWrench extends PluginBase
     {
         self::$instance = $this;
 
-        $this->getServer()->getCommandMap()->register('rotatewrench', new RotateCommand($this, 'rotate', 'Rotate the block you are looking at'));
+        $this->getServer()->getCommandMap()->register('rotatewrench', new RotateCommand($this, 'rotate', 'Rotate any blocks you are looking at that has a facing'));
         $this->getServer()->getCommandMap()->register('rotatewrench', new WrenchCommand($this, 'wrench', 'Receive a wrench that can rotate the block you are looking at'));
 
         $this->getServer()->getPluginManager()->registerEvents(new EventListener(), $this);
