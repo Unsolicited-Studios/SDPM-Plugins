@@ -34,17 +34,17 @@ use pocketmine\event\player\PlayerInteractEvent;
 class EventListener implements Listener
 {
     /**
-    * @priority MONITOR
+    * @priority HIGHEST
     */
     public function onPlayerInteract(PlayerInteractEvent $event): void
     {
         $player = $event->getPlayer();
-        if (
-            !$event->isCancelled() &&
-            $event->getItem()->getNamedTag()->getString('RotateWrench', '') === 'Wrench' &&
-            $player->hasPermission('rotatewrench.use.wrench')
-        ) {
-            RotateWrench::rotateBlockAndAlert($player, $event->getBlock());
+        if (!$event->isCancelled() && $event->getItem()->getNamedTag()->getString('RotateWrench', '') === 'Wrench') {
+            if ($player->hasPermission('rotatewrench.use.wrench')) {
+                RotateWrench::rotateBlockAndAlert($player, $event->getBlock());
+            } else {
+                $player->sendMessage('You do not have permission to use the wrench!');
+            }
             $event->cancel();
         }
     }
