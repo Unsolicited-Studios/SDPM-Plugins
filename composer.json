@@ -11,7 +11,8 @@
     "psr-4": {
       "CortexPE\\Commando\\": ".github/SDPM-Resources/libraries/Commando/src/CortexPE/Commando",
       "jojoe77777\\FormAPI\\": ".github/SDPM-Resources/libraries/FormAPI/src/jojoe77777/FormAPI",
-      "muqsit\\invmenu\\": ".github/SDPM-Resources/libraries/InvMenu/src/muqsit/invmenu"
+      "muqsit\\invmenu\\": ".github/SDPM-Resources/libraries/InvMenu/src/muqsit/invmenu",
+      "Mcbeany\\libAsync\\": ".github/SDPM-Resources/libraries/libAsync/src/Mcbeany/libAsync"
     }
   }
 }
