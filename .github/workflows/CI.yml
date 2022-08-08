@@ -23,5 +23,5 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3.1.0
         with:
-          name: SDPM_PLUGINS
+          name: SDPM-Plugins_R
           path: built_plugins
