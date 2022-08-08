@@ -1,0 +1,2 @@
+# SDAutoUpdater
+Whenever a new version of an SDPM plugin is released on Releases, all current SDPM plugins on your server are automatically updated to the new version. Other auto updaters, such as those you may find on Poggit, that are not made by Solicit Development are unaffected by this. The only purpose of this is to keep you up-to-date with latest SDPM products. 
