@@ -81,17 +81,22 @@ class SDAutoUpdater extends PluginBase
 
     public function doUpdate(): void
     {
-        $latestVersion = (int) str_replace('r', '', SDUpdateInfo::$latestRelease['tag_name']);
         if (!isset(SDUpdateInfo::$currentVersion) || !isset(SDUpdateInfo::$latestRelease['tag_name'])) {
             $this->getLogger()->error('Failed to initialize release information. Plugin will shut down.');
             $this->getServer()->getPluginManager()->disablePlugin($this);
             return;
         }
 
+        $latestVersion = (int) str_replace('r', '', SDUpdateInfo::$latestRelease['tag_name'] ?? '');
         if (SDUpdateInfo::$currentVersion < $latestVersion) {
             $this->getLogger()->info('New version detected. Running updates...');
 
-            $download = SDUpdateInfo::$latestRelease['assets'][0]['browser_download_url'];
+            $download = SDUpdateInfo::$latestRelease['assets'][0]['browser_download_url'] ?? '';
+            if (!str_starts_with($download, 'https://github.com/Solicit-Development/SDPM-Plugins')) {
+                $this->getLogger()->error('Download URL for the latest release is incorrect. Is GitHub API not working as intended?');
+                return;
+            }
+
             $this->getLogger()->debug('Downloading update from ' . $download);
 
             $logger = $this->getLogger();
@@ -150,7 +155,7 @@ class SDAutoUpdater extends PluginBase
 
                 file_put_contents($releaseFile, $latestVersion);
 
-                $logger->info('Update complete. New version installed: ' . SDUpdateInfo::$latestRelease['name']);
+                $logger->info('Update complete. New version installed: ' . SDUpdateInfo::$latestRelease['name'] ?? 'Unknown');
             });
         }
     }
