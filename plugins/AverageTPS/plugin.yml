@@ -1,0 +1,16 @@
+#          █▀ █▀█ █░░ █ █▀▀ █ ▀█▀
+#          ▄█ █▄█ █▄▄ █ █▄▄ █ ░█░
+# 
+# █▀▄ █▀▀ █░█ █▀▀ █░░ █▀█ █▀█ █▀▄▀█ █▀▀ █▄░█ ▀█▀
+# █▄▀ ██▄ ▀▄▀ ██▄ █▄▄ █▄█ █▀▀ █░▀░█ ██▄ █░▀█ ░█░
+#    https://github.com/Solicit-Development
+
+name: AverageTPS
+main: SolicitDev\AverageTPS\AverageTPS
+author: AGTHARN
+version: 1.0.0
+api: 4.0.0
+
+permissions:
+  averagetps.cmd:
+    default: op

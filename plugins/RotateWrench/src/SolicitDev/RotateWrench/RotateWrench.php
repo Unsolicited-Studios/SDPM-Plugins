@@ -37,9 +37,6 @@ use pocketmine\item\VanillaItems;
 use pocketmine\plugin\PluginBase;
 use pocketmine\world\format\Chunk;
 use pocketmine\block\tile\Chest as ChestTile;
-use pocketmine\block\utils\PillarRotationTrait;
-use pocketmine\block\utils\HorizontalFacingTrait;
-use pocketmine\block\utils\SignLikeRotationTrait;
 use SolicitDev\RotateWrench\command\RotateCommand;
 use SolicitDev\RotateWrench\command\WrenchCommand;
 
@@ -88,14 +85,11 @@ class RotateWrench extends PluginBase
 
         skip:
 
-        // TODO: traits really messes up PHPStan and IDEs, any fixes other than below?
+        // TODO: traits really messes up PHPStan and IDEs, any fixes?
         $match = match ($type) {
-            /** @var HorizontalFacingTrait $block */
             self::DOUBLE_CHEST => $block->setFacing(Facing::opposite($block->getFacing())),
             self::FACING => $block->setFacing(Facing::opposite($player->getHorizontalFacing())),
-            /** @var PillarRotationTrait $block */
             self::AXIS => $block->setAxis(Facing::axis($player->getHorizontalFacing())),
-            /** @var SignLikeRotationTrait $block */
             self::ROTATION => $block->setRotation(((int) floor((($player->getLocation()->getYaw() + 180) * 16 / 360) + 0.5)) & 0xf),
             default => false
         };

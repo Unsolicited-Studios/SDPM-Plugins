@@ -1,0 +1,2 @@
+# AverageTPS
+Check the TPS average for your server. This enables server owners to get a more accurate representation of the average TPS of their server over time. The plugin will not eat up your server's RAM and has very little effect on the server's performance. This is a superior substitute for the command `/status`. 

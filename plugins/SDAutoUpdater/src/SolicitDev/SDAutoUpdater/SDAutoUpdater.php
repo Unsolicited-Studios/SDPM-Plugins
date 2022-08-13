@@ -155,7 +155,7 @@ class SDAutoUpdater extends PluginBase
 
                 file_put_contents($releaseFile, $latestVersion);
 
-                $logger->info('Update complete. New version installed: ' . SDUpdateInfo::$latestRelease['name'] ?? 'Unknown');
+                $logger->info('Update complete. New version installed: ' . SDUpdateInfo::$latestRelease['name']);
             });
         }
     }
