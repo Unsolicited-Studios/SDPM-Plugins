@@ -40,13 +40,14 @@ class Main extends PluginBase implements Listener
 
     public function onEnable(): void
     {
+        $this->saveResource('config.yml');
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
     }
 
     public function onPlayerLogin(PlayerLoginEvent $event): void
     {
         $player = $event->getPlayer();
-        $rotation = $player->saveNBT()->getListTag("Rotation");
+        $rotation = $player->saveNBT()->getListTag('Rotation');
         if (!$rotation instanceof ListTag) {
             return;
         }
@@ -57,7 +58,7 @@ class Main extends PluginBase implements Listener
         $pitch = $tags[1]->getValue();
 
         // NOTE: is_nan() will not work here
-        if ($yaw == "NAN" || $pitch == "NAN") {
+        if ($yaw == 'NAN' || $pitch == 'NAN') {
             $this->toAlert[$player->getUniqueId()->toString()] = [$yaw, $pitch];
             $player->setRotation(0.0, 0.0);
             $player->save();
@@ -68,7 +69,7 @@ class Main extends PluginBase implements Listener
     {
         $player = $event->getPlayer();
         if (isset($this->toAlert[$player->getUniqueId()->toString()])) {
-            $player->sendMessage($player->getName() . "! §cYou've run into a problem where you're stuck in one position! This should be corrected now, but if it hasn't, please rejoin the server. If this does not resolve the issue either, please contact an administrator on our Discord server.");
+            $player->sendMessage(str_replace('{player}', $player->getName(), $this->getConfig()->get('notify-message')));
             unset($this->toAlert[$player->getUniqueId()->toString()]);
         }
     }
