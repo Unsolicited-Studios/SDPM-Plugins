@@ -34,16 +34,18 @@ use SolicitDev\AverageTPS\command\TPSCommand;
 
 class AverageTPS extends PluginBase
 {
-    // TODO: configuration
-    public const TYPES = [
-        'full', '5s', '15s', '30s', '60s', '10m', '30m', '1h', '3h', '6h', '12h'
-    ];
-    
+    public static array $types = [];
+
     public static array $averageTPS = [];
     public static array $lastTPS = [];
 
     public function onEnable(): void
     {
+        $this->saveResource('config.yml');
+        self::$types = $this->getConfig()->get('tps-check-timings', [
+            'full', '5s', '15s', '30s', '60s', '10m', '30m', '1h', '3h', '6h', '12h'
+        ]);
+
         $this->getScheduler()->scheduleRepeatingTask(new TPSTask(), 20);
         $this->getServer()->getCommandMap()->register('tps', new TPSCommand($this, 'tps', 'Check the server\'s average TPS.'));
     }

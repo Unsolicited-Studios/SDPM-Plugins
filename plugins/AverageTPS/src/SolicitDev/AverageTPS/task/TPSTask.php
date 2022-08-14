@@ -35,14 +35,14 @@ class TPSTask extends Task
 {
     public function onRun(): void
     {
-        foreach (AverageTPS::TYPES as $type) {
+        foreach (AverageTPS::$types as $type) {
             AverageTPS::$averageTPS[$type] = [
                 'count' => $count = (AverageTPS::$averageTPS[$type]['count'] ?? 0) + 1,
                 'value' => AverageTPS::addValueToAverage(AverageTPS::$averageTPS[$type]['value'] ?? 20, Server::getInstance()->getTicksPerSecond(), $count)
             ];
 
             if (
-                $type === 'full' ||
+                !preg_match('~[0-9]+~', $type) ||
                 (Server::getInstance()->getTick() / 20) % AverageTPS::convertToSeconds($type) === 1
             ) {
                 $this->updateLastTPS($type);
