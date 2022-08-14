@@ -87,10 +87,10 @@ class RotateWrench extends PluginBase
 
         // TODO: traits really messes up PHPStan and IDEs, any fixes?
         $match = match ($type) {
-            self::DOUBLE_CHEST => $block->setFacing(Facing::opposite($block->getFacing())),
-            self::FACING => $block->setFacing(Facing::opposite($player->getHorizontalFacing())),
-            self::AXIS => $block->setAxis(Facing::axis($player->getHorizontalFacing())),
-            self::ROTATION => $block->setRotation(((int) floor((($player->getLocation()->getYaw() + 180) * 16 / 360) + 0.5)) & 0xf),
+            self::DOUBLE_CHEST => $block->setFacing(Facing::opposite($block->getFacing())), /** @phpstan-ignore-line */
+            self::FACING => $block->setFacing(Facing::opposite($player->getHorizontalFacing())), /** @phpstan-ignore-line */
+            self::AXIS => $block->setAxis(Facing::axis($player->getHorizontalFacing())), /** @phpstan-ignore-line */
+            self::ROTATION => $block->setRotation(((int) floor((($player->getLocation()->getYaw() + 180) * 16 / 360) + 0.5)) & 0xf), /** @phpstan-ignore-line */
             default => false
         };
         self::updateBlockChange($block);

@@ -33,7 +33,7 @@ minimum-checks: 2
 
 # Smart queries will automatically adjust parameters based off minimum checks and latency to reduce the amount of queries.
 # Disable this for full efficiency.
-smart-queries: true
+smart-queries: false
 
 ######################
 
