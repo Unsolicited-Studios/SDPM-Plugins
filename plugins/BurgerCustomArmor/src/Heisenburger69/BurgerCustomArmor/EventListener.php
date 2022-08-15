@@ -7,6 +7,7 @@ use pocketmine\nbt\tag\Tag;
 use pocketmine\item\ItemIds;
 use pocketmine\player\Player;
 use pocketmine\event\Listener;
+use pocketmine\block\VanillaBlocks;
 use pocketmine\scheduler\ClosureTask;
 use pocketmine\inventory\ArmorInventory;
 use pocketmine\event\player\PlayerJoinEvent;
@@ -54,11 +55,46 @@ class EventListener implements Listener
                 continue;
             }
             foreach ($players as $playerName => $using) {
-                if ($playerName !== $event->getPlayer()->getName()) continue;
-                unset(Main::$instance->using[$setName][$playerName]);
+                if ($playerName === $event->getPlayer()->getName()) {
+                    unset(Main::$instance->using[$setName][$playerName]);
+                }
             }
         }
         //TODO: Do I call CustomSetUnequippedEvent here? Seems kinda redundant to do so once the player has quit.
+    }
+
+    /**
+     * @param EntityDamageByEntityEvent $event
+     */
+    public function onOffensiveAbility(EntityDamageByEntityEvent $event): void
+    {
+        $player = $event->getEntity();
+        $damager = $event->getDamager();
+        if (
+            !$player instanceof Player || !$damager instanceof Player ||
+            ($nbt = $damager->getArmorInventory()->getHelmet()->getNamedTag()->getTag("burgercustomarmor")) === null
+        ) {
+            return;
+        }
+
+        $setName = $nbt->getValue();
+        if (!is_string($setName) || !EquipmentUtils::canUseSet($damager, $setName)) {
+            return;
+        }
+
+        $armorSet = $this->plugin->customSets[$setName];
+        if (!$armorSet instanceof CustomArmorSet) {
+            return;
+        }
+
+        foreach ($armorSet->getAbilities() as $ability) {
+            if (
+                Utils::checkProtectionLevel($player->getWorld()) && 
+                $ability instanceof OffensiveAbility && $ability->canActivate($damager)
+            ) {
+                $ability->activate($event);
+            }
+        }
     }
 
     /**
@@ -68,28 +104,28 @@ class EventListener implements Listener
     {
         $player = $event->getEntity();
         $damager = $event->getDamager();
-        if (!$player instanceof Player || !$damager instanceof Player) {
+        if (
+            !$player instanceof Player || !$damager instanceof Player ||
+            ($nbt = $player->getArmorInventory()->getHelmet()->getNamedTag()->getTag("burgercustomarmor")) === null
+        ) {
             return;
         }
-        if (($nbt = $player->getArmorInventory()->getHelmet()->getNamedTag()->getTag("burgercustomarmor")) === null) {
-            return;
-        }
+
         $setName = $nbt->getValue();
-        if (!is_string($setName)) {
+        if (!is_string($setName) || !EquipmentUtils::canUseSet($player, $setName)) {
             return;
         }
-        if (!EquipmentUtils::canUseSet($player, $setName)) {
-            return;
-        }
+
         $armorSet = $this->plugin->customSets[$setName];
         if (!$armorSet instanceof CustomArmorSet) {
             return;
         }
+
         foreach ($armorSet->getAbilities() as $ability) {
-            if (!Utils::checkProtectionLevel($player->getWorld())) {
-                return;
-            }
-            if ($ability instanceof DefensiveAbility && $ability->canActivate($damager)) {
+            if (
+                Utils::checkProtectionLevel($player->getWorld()) &&
+                $ability instanceof DefensiveAbility && $ability->canActivate($damager)
+            ) {
                 $ability->activate($event);
             }
         }
@@ -104,61 +140,27 @@ class EventListener implements Listener
     public function onModifier(EntityDamageEvent $event): void
     {
         $player = $event->getEntity();
-        if (!$player instanceof Player) return;
-        if ($event->isCancelled()) return;
+        if ($event->isCancelled() || !$player instanceof Player) {
+            return;
+        }
+
         $items = $player->getArmorInventory()->getContents();
         $totalP = 0;
         foreach ($items as $item) {
             $itemP = $item->getDefensePoints();
             if (($nbt = $item->getNamedTag()->getTag("burgercustomarmor")) !== null) {
                 $armorSet = $this->plugin->customSets[$nbt->getValue()];
-                if (Utils::isHelmet($item)) {
-                    $itemP = $armorSet->getHelmetDefensePoints();
-                } elseif (Utils::isChestplate($item)) {
-                    $itemP = $armorSet->getChestplateDefensePoints();
-                } elseif (Utils::isLeggings($item)) {
-                    $itemP = $armorSet->getLeggingsDefensePoints();
-                } elseif (Utils::isBoots($item)) {
-                    $itemP = $armorSet->getBootsDefensePoints();
-                }
+                $itemP = match (true) {
+                    Utils::isHelmet($item) => $armorSet->getHelmetDefensePoints(),
+                    Utils::isChestplate($item) => $armorSet->getChestplateDefensePoints(),
+                    Utils::isLeggings($item) => $armorSet->getLeggingsDefensePoints(),
+                    Utils::isBoots($item) => $armorSet->getBootsDefensePoints(),
+                    default => $itemP
+                };
             }
             $totalP += $itemP;
         }
         $event->setModifier(-$event->getBaseDamage() * $totalP * 0.04, EntityDamageEvent::MODIFIER_ARMOR);
-    }
-
-    /**
-     * @param EntityDamageByEntityEvent $event
-     */
-    public function onOffensiveAbility(EntityDamageByEntityEvent $event): void
-    {
-        $player = $event->getEntity();
-        $damager = $event->getDamager();
-        if (!$player instanceof Player || !$damager instanceof Player) {
-            return;
-        }
-        if (($nbt = $damager->getArmorInventory()->getHelmet()->getNamedTag()->getTag("burgercustomarmor")) === null) {
-            return;
-        }
-        $setName = $nbt->getValue();
-        if (!is_string($setName)) {
-            return;
-        }
-        if (!EquipmentUtils::canUseSet($damager, $setName)) {
-            return;
-        }
-        $armorSet = $this->plugin->customSets[$setName];
-        if (!$armorSet instanceof CustomArmorSet) {
-            return;
-        }
-        foreach ($armorSet->getAbilities() as $ability) {
-            if (!Utils::checkProtectionLevel($player->getWorld())) {
-                return;
-            }
-            if ($ability instanceof OffensiveAbility && $ability->canActivate($damager)) {
-                $ability->activate($event);
-            }
-        }
     }
 
     public function onItemUse(PlayerItemUseEvent $event): void
@@ -167,13 +169,12 @@ class EventListener implements Listener
         $inventory = $player->getArmorInventory();
 
         $sourceItem = $event->getItem();
-        $index = match ($sourceItem->getId()) {
-            ItemIds::LEATHER_BOOTS, ItemIds::GOLD_BOOTS, ItemIds::IRON_BOOTS, ItemIds::CHAIN_BOOTS, ItemIds::DIAMOND_BOOTS => ArmorInventory::SLOT_FEET,
-            ItemIds::LEATHER_LEGGINGS, ItemIds::GOLD_LEGGINGS, ItemIds::IRON_LEGGINGS, ItemIds::CHAIN_LEGGINGS, ItemIds::DIAMOND_LEGGINGS => ArmorInventory::SLOT_LEGS,
-            ItemIds::LEATHER_CHESTPLATE, ItemIds::GOLD_CHESTPLATE, ItemIds::IRON_CHESTPLATE, ItemIds::CHAIN_CHESTPLATE, ItemIds::DIAMOND_CHESTPLATE => ArmorInventory::SLOT_CHEST,
-            ItemIds::LEATHER_HELMET, ItemIds::GOLD_HELMET, ItemIds::IRON_HELMET, ItemIds::CHAIN_HELMET, ItemIds::DIAMOND_HELMET => ArmorInventory::SLOT_HEAD,
-            default => -1
-        };
+        if ($sourceItem instanceof Armor) {
+            $index = $sourceItem->getArmorSlot();
+        } else {
+            $index = -1;
+        }
+
         $targetItem = match ($index) {
             ArmorInventory::SLOT_FEET => $inventory->getBoots(),
             ArmorInventory::SLOT_LEGS => $inventory->getLeggings(),
@@ -185,12 +186,14 @@ class EventListener implements Listener
         if ($index === -1 || $targetItem === -1) {
             return;
         }
-
         EquipmentUtils::updateSetUsage($player);
 
         $nbt = $sourceItem->getNamedTag()->getTag("burgercustomarmor");
         $oldNbt = $targetItem->getNamedTag()->getTag("burgercustomarmor");
-        if ($nbt === null || ($oldNbt !== null && $nbt->getValue() === $oldNbt->getValue())) {
+        if (
+            $nbt === null ||
+            ($oldNbt !== null && $nbt->getValue() === $oldNbt->getValue())
+        ) {
             return;
         }
 
@@ -199,15 +202,19 @@ class EventListener implements Listener
             if (!isset($this->plugin->using[$setName]) || !is_string($setName)) {
                 return;
             }
+
             $fullSetWorn = false;
             if (EquipmentUtils::canUseSet($player, $setName)) {
                 $fullSetWorn = true;
             }
+
             EquipmentUtils::removeUsingSet($player, $targetItem, $setName);
+
             $armorSet = $this->plugin->customSets[$setName];
             if (!$armorSet instanceof CustomArmorSet) {
                 return;
             }
+
             if ($fullSetWorn) {
                 ($event = new CustomSetUnequippedEvent($player, $armorSet))->call();
                 foreach ($armorSet->getAbilities() as $ability) {
@@ -236,7 +243,10 @@ class EventListener implements Listener
 
                     $nbt = $sourceItem->getNamedTag()->getTag("burgercustomarmor");
                     $oldNbt = $targetItem->getNamedTag()->getTag("burgercustomarmor");
-                    if ($nbt === null || ($oldNbt !== null && $nbt->getValue() === $oldNbt->getValue())) {
+                    if (
+                        $nbt === null ||
+                        ($oldNbt !== null && $nbt->getValue() === $oldNbt->getValue())
+                    ) {
                         return;
                     }
 
@@ -245,15 +255,19 @@ class EventListener implements Listener
                         if (!isset($this->plugin->using[$setName]) || !is_string($setName)) {
                             return;
                         }
+
                         $fullSetWorn = false;
                         if (EquipmentUtils::canUseSet($player, $setName)) {
                             $fullSetWorn = true;
                         }
+
                         EquipmentUtils::removeUsingSet($player, $targetItem, $setName);
+                        
                         $armorSet = $this->plugin->customSets[$setName];
                         if (!$armorSet instanceof CustomArmorSet) {
                             return;
                         }
+
                         if ($fullSetWorn) {
                             ($event = new CustomSetUnequippedEvent($player, $armorSet))->call();
                             foreach ($armorSet->getAbilities() as $ability) {
@@ -278,11 +292,12 @@ class EventListener implements Listener
         $outputs = $event->getOutputs();
         $craftingSet = null;
         foreach ($outputs as $output) {
-            if (($nbt = $output->getNamedTag()->getTag("burgercustomarmor")) === null) continue;
-            $craftingSet = $output;
-            break;
+            if ($output->getNamedTag()->getTag("burgercustomarmor") !== null) {
+                $craftingSet = $output;
+                break;
+            }
         }
-        $player = $event->getPlayer();
+        
         if ($craftingSet === null) {
             return;
         }
@@ -298,18 +313,22 @@ class EventListener implements Listener
             return;
         }
 
+        $player = $event->getPlayer();
+
         $this->plugin->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($player, $craftingSet, $armorSet): void {
-            if ($player->getInventory()->contains($craftingSet)) $player->getInventory()->removeItem($craftingSet);
-            else $player->getCursorInventory()->removeItem($craftingSet);
-            if (Utils::isHelmet($craftingSet)) {
-                $player->getInventory()->addItem($armorSet->getHelmet());
-            } elseif (Utils::isChestplate($craftingSet)) {
-                $player->getInventory()->addItem($armorSet->getChestplate());
-            } elseif (Utils::isLeggings($craftingSet)) {
-                $player->getInventory()->addItem($armorSet->getLeggings());
-            } elseif (Utils::isBoots($craftingSet)) {
-                $player->getInventory()->addItem($armorSet->getBoots());
+            if ($player->getInventory()->contains($craftingSet)) {
+                $player->getInventory()->removeItem($craftingSet);
+            } else {
+                $player->getCursorInventory()->removeItem($craftingSet);
             }
+
+            $player->getInventory()->addItem(match (true) {
+                Utils::isHelmet($craftingSet) => $armorSet->getHelmet(),
+                Utils::isChestplate($craftingSet) => $armorSet->getChestplate(),
+                Utils::isLeggings($craftingSet) => $armorSet->getLeggings(),
+                Utils::isBoots($craftingSet) => $armorSet->getBoots(),
+                default => VanillaBlocks::AIR()->asItem()
+            });
         }), 1);
     }
 }

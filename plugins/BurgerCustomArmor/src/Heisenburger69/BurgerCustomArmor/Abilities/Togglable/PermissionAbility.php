@@ -7,11 +7,9 @@ use pocketmine\player\Player;
 
 class PermissionAbility extends TogglableAbility
 {
-    private string$permission;
-
-    public function __construct(string $permission)
-    {
-        $this->permission = $permission;
+    public function __construct(
+        private string $permission
+    ) {
     }
 
     public function on(Player $player): void

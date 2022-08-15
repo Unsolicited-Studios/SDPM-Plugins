@@ -2,20 +2,14 @@
 
 namespace Heisenburger69\BurgerCustomArmor\Abilities\Reactive\Defensive;
 
-use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\player\Player;
+use pocketmine\event\entity\EntityDamageByEntityEvent;
 
 class DamageNegationAbility extends DefensiveAbility
 {
-
-    /**
-     * @var float
-     */
-    private $negation;
-
-    public function __construct(float $negation)
-    {
-        $this->negation = $negation;
+    public function __construct(
+        private float $negation
+    ) {
     }
 
     public function canActivate(Player $damager): bool

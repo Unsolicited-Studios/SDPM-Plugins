@@ -2,20 +2,14 @@
 
 namespace Heisenburger69\BurgerCustomArmor\Abilities\Reactive\Offensive;
 
-use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\player\Player;
+use pocketmine\event\entity\EntityDamageByEntityEvent;
 
 class DamageAmplificationAbility extends OffensiveAbility
 {
-
-    /**
-     * @var float
-     */
-    private $negation;
-
-    public function __construct(float $negation)
-    {
-        $this->negation = $negation;
+    public function __construct(
+        private float $negation
+    ) {
     }
 
     public function canActivate(Player $damager): bool
@@ -29,5 +23,4 @@ class DamageAmplificationAbility extends OffensiveAbility
         if ($baseDmg < 0) $baseDmg = 0;
         $event->setBaseDamage($baseDmg);
     }
-
 }

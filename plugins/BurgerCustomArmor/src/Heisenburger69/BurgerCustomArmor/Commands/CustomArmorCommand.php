@@ -9,33 +9,23 @@ use Heisenburger69\BurgerCustomArmor\Main;
 
 class CustomArmorCommand extends Command
 {
-    /**
-     * @var Main
-     */
-    private $plugin;
-
-    public function __construct(Main $plugin)
-    {
+    public function __construct(
+        private Main $plugin
+    ) {
         parent::__construct("customarmor", "BurgerCustomArmor Base Command", "/customarmor <SetName> <piece> <player>", ["burgercustomarmor", "bca"]);
         $this->setPermission("burgercustomarmor.command");
-        $this->plugin = $plugin;
     }
 
-    /**
-     * @param CommandSender $sender
-     * @param string $commandLabel
-     * @param array $args
-     * @return void
-     */
     public function execute(CommandSender $sender, string $commandLabel, array $args): void
     {
         if (!$sender->hasPermission("burgercustomarmor.command")) {
             $sender->sendMessage(Main::PREFIX . C::DARK_RED . "Insufficient Permission.");
             return;
         }
-
+        
         /** @var string $usage */
         $usage = $this->getUsage();
+
         if (count($args) !== 3) {
             $sender->sendMessage(Main::PREFIX . C::RED . $usage);
             return;
@@ -44,12 +34,14 @@ class CustomArmorCommand extends Command
             $sender->sendMessage(Main::PREFIX . C::RED . "The given Armor Set does not exist.");
             return;
         }
+
         $armorSet = $this->plugin->customSets[$args[0]];
         $playerName = $args[2];
         if (($player = $this->plugin->getServer()->getPlayerByPrefix($playerName)) === null) {
             $sender->sendMessage(Main::PREFIX . C::RED . "The given player is offline!");
             return;
         }
+
         switch ($args[1]) {
             case "full":
                 $items = $armorSet->getSetPieces();

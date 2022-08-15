@@ -97,15 +97,10 @@ class CustomArmorSet
         $item = ArmorSetUtils::getHelmetFromTier($this->tier);
         $item->setCustomName(C::RESET . C::colorize($this->names["helmet"]));
 
-        if ($this->glint) $item->addEnchantment($this->fakeEnchant);
-        $item->getNamedTag()->setTag("burgercustomarmor", new StringTag($this->name));
+        $item = $this->setNecessities($item);
 
         $lore = ArmorSetUtils::getHelmetLore($this->lores, $this->setBonusLore);
         $item->setLore($lore);
-
-        if ($item instanceof LeatherCap) {
-            $item->setCustomColor($this->color);
-        }
 
         return $item;
     }
@@ -115,15 +110,10 @@ class CustomArmorSet
         $item = ArmorSetUtils::getChestplateFromTier($this->tier);
         $item->setCustomName(C::RESET . C::colorize($this->names["chestplate"]));
 
-        if ($this->glint) $item->addEnchantment($this->fakeEnchant);
-        $item->getNamedTag()->setTag("burgercustomarmor", new StringTag($this->name));
+        $item = $this->setNecessities($item);
 
         $lore = ArmorSetUtils::getChestplateLore($this->lores, $this->setBonusLore);
         $item->setLore($lore);
-
-        if ($item instanceof LeatherTunic) {
-            $item->setCustomColor($this->color);
-        }
 
         return $item;
     }
@@ -133,15 +123,10 @@ class CustomArmorSet
         $item = ArmorSetUtils::getLeggingsFromTier($this->tier);
         $item->setCustomName(C::RESET . C::colorize($this->names["leggings"]));
 
-        if ($this->glint) $item->addEnchantment($this->fakeEnchant);
-        $item->getNamedTag()->setTag("burgercustomarmor", new StringTag($this->name));
+        $item = $this->setNecessities($item);
 
         $lore = ArmorSetUtils::getLeggingsLore($this->lores, $this->setBonusLore);
         $item->setLore($lore);
-
-        if ($item instanceof LeatherPants) {
-            $item->setCustomColor($this->color);
-        }
 
         return $item;
     }
@@ -151,34 +136,40 @@ class CustomArmorSet
         $item = ArmorSetUtils::getBootsFromTier($this->tier);
         $item->setCustomName(C::RESET . C::colorize($this->names["boots"]));
 
-        if ($this->glint) $item->addEnchantment($this->fakeEnchant);
-        $item->getNamedTag()->setTag("burgercustomarmor", new StringTag($this->name));
+        $item = $this->setNecessities($item);
 
         $lore = ArmorSetUtils::getBootsLore($this->lores, $this->setBonusLore);
         $item->setLore($lore);
 
-        if ($item instanceof LeatherBoots) {
-            $item->setCustomColor($this->color);
-        }
-
         return $item;
     }
 
-    /**
-     * @return float
-     */
+    private function setNecessities(Item $item): Item
+    {
+        if ($this->glint) {
+            $item->addEnchantment($this->fakeEnchant);
+        }
+        if (
+            $item instanceof LeatherCap ||
+            $item instanceof LeatherTunic ||
+            $item instanceof LeatherPants ||
+            $item instanceof LeatherBoots
+        ) {
+            $item->setCustomColor($this->color);
+        }
+        
+        $item->getNamedTag()->setTag("burgercustomarmor", new StringTag($this->name));
+        return $item;
+    }
+
     public function getArmorDefensePoints(): float
     {
-        return
-            $this->getHelmetDefensePoints() +
+        return $this->getHelmetDefensePoints() +
             $this->getChestplateDefensePoints() +
             $this->getLeggingsDefensePoints() +
             $this->getBootsDefensePoints();
     }
 
-    /**
-     * @return float
-     */
     public function getHelmetDefensePoints(): float
     {
         $itemPoints = ArmorSetUtils::getHelmetFromTier($this->tier)->getDefensePoints();
@@ -188,9 +179,6 @@ class CustomArmorSet
         return $itemPoints;
     }
 
-    /**
-     * @return float
-     */
     public function getChestplateDefensePoints(): float
     {
         $itemPoints = ArmorSetUtils::getChestplateFromTier($this->tier)->getDefensePoints();
@@ -201,9 +189,6 @@ class CustomArmorSet
         return $itemPoints;
     }
 
-    /**
-     * @return float
-     */
     public function getLeggingsDefensePoints(): float
     {
         $itemPoints = ArmorSetUtils::getLeggingsFromTier($this->tier)->getDefensePoints();
@@ -214,9 +199,6 @@ class CustomArmorSet
         return $itemPoints;
     }
 
-    /**
-     * @return float
-     */
     public function getBootsDefensePoints(): float
     {
         $itemPoints = ArmorSetUtils::getBootsFromTier($this->tier)->getDefensePoints();
@@ -227,25 +209,16 @@ class CustomArmorSet
         return $itemPoints;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return int
-     */
     public function getTier(): int
     {
         return $this->tier;
     }
 
-    /**
-     * @return bool
-     */
     public function isGlint(): bool
     {
         return $this->glint;
@@ -259,73 +232,46 @@ class CustomArmorSet
         return $this->abilities;
     }
 
-    /**
-     * @return Color
-     */
     public function getColor(): Color
     {
         return $this->color;
     }
 
-    /**
-     * @return array
-     */
     public function getStrength(): array
     {
         return $this->strength;
     }
 
-    /**
-     * @return array
-     */
     public function getNames(): array
     {
         return $this->names;
     }
 
-    /**
-     * @return array
-     */
     public function getLores(): array
     {
         return $this->lores;
     }
 
-    /**
-     * @return array
-     */
     public function getSetBonusLore(): array
     {
         return $this->setBonusLore;
     }
 
-    /**
-     * @return array
-     */
     public function getEquippedCommands(): array
     {
         return $this->equippedCommands;
     }
 
-    /**
-     * @return array
-     */
     public function getUnequippedCommands(): array
     {
         return $this->unequippedCommands;
     }
 
-    /**
-     * @return array
-     */
     public function getEquippedMessages(): array
     {
         return $this->equippedMessages;
     }
 
-    /**
-     * @return array
-     */
     public function getUnequippedMessages(): array
     {
         return $this->unequippedMessages;

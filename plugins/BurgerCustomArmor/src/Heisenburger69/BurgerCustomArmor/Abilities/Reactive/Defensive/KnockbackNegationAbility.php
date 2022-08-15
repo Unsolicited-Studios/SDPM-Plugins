@@ -2,19 +2,14 @@
 
 namespace Heisenburger69\BurgerCustomArmor\Abilities\Reactive\Defensive;
 
-use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\player\Player;
+use pocketmine\event\entity\EntityDamageByEntityEvent;
 
 class KnockbackNegationAbility extends DefensiveAbility
 {
-    /**
-     * @var float
-     */
-    private $multiplier;
-
-    public function __construct(float $multiplier)
-    {
-        $this->multiplier = $multiplier;
+    public function __construct(
+        private float $multiplier
+    ) {
     }
 
     public function canActivate(Player $damager): bool

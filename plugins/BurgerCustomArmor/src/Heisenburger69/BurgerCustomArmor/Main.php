@@ -62,6 +62,7 @@ class Main extends PluginBase
         $this->saveResource("armorsets.yml");
         $this->saveResource("recipes.yml");
         $this->saveResource("FireCape.png");
+
         $this->armorSets = new Config($this->getDataFolder() . "armorsets.yml");
         $this->craftingRecipes = new Config($this->getDataFolder() . "recipes.yml");
 
@@ -106,9 +107,7 @@ class Main extends PluginBase
             foreach ($properties["abilities"] as $ability => $value) {
                 if ($ability === "Effect") {
                     $abilities = array_merge($abilities, AbilityUtils::getEffectAbilities($ability, $value));
-                    continue;
-                }
-                if (($armorAbility = AbilityUtils::getAbility($ability, $value)) !== null) {
+                } elseif (($armorAbility = AbilityUtils::getAbility($ability, $value)) !== null) {
                     $abilities[] = $armorAbility;
                 }
             }

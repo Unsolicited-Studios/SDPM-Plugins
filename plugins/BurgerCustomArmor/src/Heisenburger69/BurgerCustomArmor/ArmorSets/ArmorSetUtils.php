@@ -28,11 +28,6 @@ use Heisenburger69\BurgerCustomArmor\Pocketmine\Diamond\DiamondChestplate;
 
 class ArmorSetUtils
 {
-
-    /**
-     * @param string $name
-     * @return int|null
-     */
     public static function getTierFromName(string $name): ?int
     {
         switch ($name) {
@@ -51,10 +46,6 @@ class ArmorSetUtils
         }
     }
 
-    /**
-     * @param int $tier
-     * @return Item
-     */
     public static function getHelmetFromTier(int $tier): Item
     {
         switch ($tier) {
@@ -73,10 +64,6 @@ class ArmorSetUtils
         }
     }
 
-    /**
-     * @param int $tier
-     * @return Item
-     */
     public static function getChestplateFromTier(int $tier): Item
     {
         switch ($tier) {
@@ -95,10 +82,6 @@ class ArmorSetUtils
         }
     }
 
-    /**
-     * @param int $tier
-     * @return Item
-     */
     public static function getLeggingsFromTier(int $tier): Item
     {
         switch ($tier) {
@@ -117,10 +100,6 @@ class ArmorSetUtils
         }
     }
 
-    /**
-     * @param int $tier
-     * @return Item
-     */
     public static function getBootsFromTier(int $tier): Item
     {
         switch ($tier) {
@@ -141,65 +120,58 @@ class ArmorSetUtils
 
     public static function getHelmetLore(array $lores, array $setBonusLore): array
     {
-        $lore = [];
         $itemLore = [];
         $setBonus = implode("\n", $setBonusLore);
-
         if (isset($lores["helmet"])) {
             $itemLore = $lores["helmet"];
         }
-        foreach ($itemLore as $line) {
-            $lore[] = C::RESET . C::colorize(str_replace("{FULLSETBONUS}", $setBonus, $line));
-        }
 
+        $lore = self::setNecessities($itemLore, $setBonus);
         return $lore;
     }
 
     public static function getChestplateLore(array $lores, array $setBonusLore): array
     {
-        $lore = [];
         $itemLore = [];
         $setBonus = implode("\n", $setBonusLore);
-
         if (isset($lores["chestplate"])) {
             $itemLore = $lores["chestplate"];
         }
-        foreach ($itemLore as $line) {
-            $lore[] = C::RESET . C::colorize(str_replace("{FULLSETBONUS}", $setBonus, $line));
-        }
 
+        $lore = self::setNecessities($itemLore, $setBonus);
         return $lore;
     }
 
     public static function getLeggingsLore(array $lores, array $setBonusLore): array
     {
-        $lore = [];
         $itemLore = [];
         $setBonus = implode("\n", $setBonusLore);
-
         if (isset($lores["leggings"])) {
             $itemLore = $lores["leggings"];
         }
-        foreach ($itemLore as $line) {
-            $lore[] = C::RESET . C::colorize(str_replace("{FULLSETBONUS}", $setBonus, $line));
-        }
 
+        $lore = self::setNecessities($itemLore, $setBonus);
         return $lore;
     }
 
     public static function getBootsLore(array $lores, array $setBonusLore): array
     {
-        $lore = [];
         $itemLore = [];
         $setBonus = implode("\n", $setBonusLore);
-
         if (isset($lores["boots"])) {
             $itemLore = $lores["boots"];
         }
+
+        $lore = self::setNecessities($itemLore, $setBonus);
+        return $lore;
+    }
+
+    private static function setNecessities(array $itemLore, string $setBonus): array
+    {
+        $lore = [];
         foreach ($itemLore as $line) {
             $lore[] = C::RESET . C::colorize(str_replace("{FULLSETBONUS}", $setBonus, $line));
         }
-
         return $lore;
     }
 }

@@ -23,12 +23,7 @@ use Heisenburger69\BurgerCustomArmor\Abilities\Reactive\Offensive\DamageAmplific
 
 class AbilityUtils
 {
-    /**
-     * @param string $ability
-     * @param mixed $value
-     * @return ArmorAbility|null
-     */
-    public static function getAbility(string $ability, $value): ?ArmorAbility
+    public static function getAbility(string $ability, mixed $value): ?ArmorAbility
     {
         switch ($ability) {
             case "Scale":
@@ -64,17 +59,13 @@ class AbilityUtils
         }
     }
 
-    /**
-     * @param string $ability
-     * @param array $value
-     * @return array
-     */
     public static function getEffectAbilities(string $ability, array $value): array
     {
         $abilities = [];
         if ($ability !== "Effect") {
             return $abilities;
         }
+        
         foreach ($value as $effect) {
             foreach ($effect as $effectName => $level) {
                 $effectType = StringToEffectParser::getInstance()->parse($effectName);

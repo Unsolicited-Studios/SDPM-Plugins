@@ -7,11 +7,9 @@ use pocketmine\entity\effect\EffectInstance;
 
 class EffectAbility extends TogglableAbility
 {
-    private EffectInstance $effect;
-
-    public function __construct(EffectInstance $effectInstance)
-    {
-        $this->effect = $effectInstance;
+    public function __construct(
+        private EffectInstance $effect
+    ) {
     }
 
     public function on(Player $player): void

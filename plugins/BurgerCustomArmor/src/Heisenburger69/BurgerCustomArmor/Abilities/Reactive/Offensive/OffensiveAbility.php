@@ -2,9 +2,9 @@
 
 namespace Heisenburger69\BurgerCustomArmor\Abilities\Reactive\Offensive;
 
-use Heisenburger69\BurgerCustomArmor\Abilities\Reactive\ReactiveAbility;
-use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\player\Player;
+use pocketmine\event\entity\EntityDamageByEntityEvent;
+use Heisenburger69\BurgerCustomArmor\Abilities\Reactive\ReactiveAbility;
 
 class OffensiveAbility extends ReactiveAbility
 {
@@ -15,6 +15,5 @@ class OffensiveAbility extends ReactiveAbility
 
     public function activate(EntityDamageByEntityEvent $event): void
     {
-
     }
 }

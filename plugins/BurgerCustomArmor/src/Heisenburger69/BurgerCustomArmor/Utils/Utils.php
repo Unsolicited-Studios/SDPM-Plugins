@@ -41,22 +41,22 @@ class Utils
         $whitelist = Main::$instance->getConfig()->get("enable-world-whitelist");
         $levelName = $level->getFolderName();
 
-        if ($blacklist === $whitelist) return true;
-
-        if ($blacklist) {
-            $disallowedWorlds = Main::$instance->getConfig()->get("blacklisted-worlds");
-            if (!is_array($disallowedWorlds)) return false;
-            if (in_array($levelName, $disallowedWorlds)) return false;
+        if ($blacklist === $whitelist) {
             return true;
         }
 
-        if ($whitelist) {
-            $allowedWorlds = Main::$instance->getConfig()->get("whitelisted-worlds");
-            if (!is_array($allowedWorlds)) return false;
-            if (in_array($levelName, $allowedWorlds)) return true;
-            return false;
+        switch (true) {
+            case $blacklist:
+                $disallowedWorlds = Main::$instance->getConfig()->get("blacklisted-worlds");
+                if (!is_array($disallowedWorlds)) return false;
+                if (in_array($levelName, $disallowedWorlds)) return false;
+                return true;
+            case $whitelist:
+                $allowedWorlds = Main::$instance->getConfig()->get("whitelisted-worlds");
+                if (!is_array($allowedWorlds)) return false;
+                if (in_array($levelName, $allowedWorlds)) return true;
+                return false;
         }
-
         return false;
     }
 
@@ -102,6 +102,7 @@ class Utils
         $oldSkin = $player->getSkin();
         $capeData = self::createCape($fileName);
         $skin = new Skin($oldSkin->getSkinId(), $oldSkin->getSkinData(), $capeData, $oldSkin->getGeometryName(), $oldSkin->getGeometryData());
+        
         $player->setSkin($skin);
         $player->sendSkin();
     }
@@ -114,6 +115,7 @@ class Utils
         $oldSkin = $player->getSkin();
         $capeData = "";
         $skin = new Skin($oldSkin->getSkinId(), $oldSkin->getSkinData(), $capeData, $oldSkin->getGeometryName(), $oldSkin->getGeometryData());
+        
         $player->setSkin($skin);
         $player->sendSkin();
     }
