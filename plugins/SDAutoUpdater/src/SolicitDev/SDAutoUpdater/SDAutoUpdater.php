@@ -143,11 +143,12 @@ class SDAutoUpdater extends PluginBase
                 foreach (new RecursiveIteratorIterator(
                     new RecursiveDirectoryIterator($extractFolder, RecursiveDirectoryIterator::SKIP_DOTS),
                     RecursiveIteratorIterator::CHILD_FIRST
-                ) as $file) {
-                    if ($file->isDir()) {
-                        rmdir($file->getRealPath());
+                ) as $item) {
+                    if ($item->isDir()) {
+                        rmdir($item->getRealPath());
+                        return;
                     }
-                    unlink($file->getRealPath());
+                    unlink($item->getRealPath());
                 }
                 rmdir($extractFolder);
 
