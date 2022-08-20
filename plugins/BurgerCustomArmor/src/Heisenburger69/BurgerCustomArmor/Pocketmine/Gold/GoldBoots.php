@@ -2,7 +2,7 @@
 
 namespace Heisenburger69\BurgerCustomArmor\Pocketmine\Gold;
 
-use pocketmine\item\ItemIds;
+use pocketmine\item\ItemTypeIds;
 use pocketmine\item\ArmorTypeInfo;
 use pocketmine\item\ItemIdentifier;
 use pocketmine\inventory\ArmorInventory;
@@ -15,9 +15,9 @@ class GoldBoots extends BurgerArmor
     /** @var float */
     protected $metaFloat = 0.0;
 
-    public function __construct(int $meta = 0)
+    public function __construct()
     {
-        parent::__construct(new ItemIdentifier(ItemIds::GOLDEN_BOOTS, $meta), "Golden Boots", new ArmorTypeInfo(1, 92, ArmorInventory::SLOT_FEET));
+        parent::__construct(new ItemIdentifier(ItemTypeIds::GOLDEN_BOOTS), "Golden Boots", new ArmorTypeInfo(1, 92, ArmorInventory::SLOT_FEET));
     }
 
     public function getMaxDurability(): int

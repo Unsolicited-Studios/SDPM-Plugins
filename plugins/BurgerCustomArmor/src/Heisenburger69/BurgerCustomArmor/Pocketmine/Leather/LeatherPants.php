@@ -2,7 +2,7 @@
 
 namespace Heisenburger69\BurgerCustomArmor\Pocketmine\Leather;
 
-use pocketmine\item\ItemIds;
+use pocketmine\item\ItemTypeIds;
 use pocketmine\item\ArmorTypeInfo;
 use pocketmine\item\ItemIdentifier;
 use pocketmine\inventory\ArmorInventory;
@@ -15,9 +15,9 @@ class LeatherPants extends BurgerArmor
     /** @var float */
     protected $metaFloat = 0.0;
 
-    public function __construct(int $meta = 0)
+    public function __construct()
     {
-        parent::__construct(new ItemIdentifier(ItemIds::LEATHER_LEGGINGS, $meta), "Leather Pants", new ArmorTypeInfo(2, 76, ArmorInventory::SLOT_LEGS));
+        parent::__construct(new ItemIdentifier(ItemTypeIds::LEATHER_PANTS), "Leather Pants", new ArmorTypeInfo(2, 76, ArmorInventory::SLOT_LEGS));
     }
 
     public function getMaxDurability(): int

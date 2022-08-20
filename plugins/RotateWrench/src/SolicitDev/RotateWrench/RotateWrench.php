@@ -101,7 +101,7 @@ class RotateWrench extends PluginBase
     public static function rotateBlockAndAlert(Player $player, Block $block): bool
     {
         if (self::rotateBlock($player, $block)) {
-            $player->sendMessage('Block rotated! Block: ' . $block->getName() . ' (' . $block->getId() . ':' . $block->getMeta() . ')');
+            $player->sendMessage('Block rotated! Block: ' . $block->getName() . ' (' . $block->getTypeId() . ':' . $block->getStateId() . ')');
             return true;
         }
         $player->sendMessage('Failed to rotate block! May be possible that this block has no facing trait.');

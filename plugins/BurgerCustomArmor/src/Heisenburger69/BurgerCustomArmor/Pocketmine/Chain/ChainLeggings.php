@@ -2,7 +2,7 @@
 
 namespace Heisenburger69\BurgerCustomArmor\Pocketmine\Chain;
 
-use pocketmine\item\ItemIds;
+use pocketmine\item\ItemTypeIds;
 use pocketmine\item\ArmorTypeInfo;
 use pocketmine\item\ItemIdentifier;
 use pocketmine\inventory\ArmorInventory;
@@ -15,9 +15,9 @@ class ChainLeggings extends BurgerArmor
     /** @var float */
     protected $metaFloat = 0.0;
 
-    public function __construct(int $meta = 0)
+    public function __construct()
     {
-        parent::__construct(new ItemIdentifier(ItemIds::CHAIN_LEGGINGS, $meta), "Chainmail Leggings", new ArmorTypeInfo(4, 226, ArmorInventory::SLOT_LEGS));
+        parent::__construct(new ItemIdentifier(ItemTypeIds::CHAINMAIL_LEGGINGS), "Chainmail Leggings", new ArmorTypeInfo(4, 226, ArmorInventory::SLOT_LEGS));
     }
 
     public function getMaxDurability(): int

@@ -15,6 +15,9 @@ use pocketmine\item\enchantment\ItemFlags;
 use pocketmine\item\enchantment\Enchantment;
 use pocketmine\data\bedrock\EnchantmentIdMap;
 use pocketmine\item\LegacyStringToItemParser;
+use pocketmine\crafting\ExactRecipeIngredient;
+use alvin0319\libItemRegistrar\libItemRegistrar;
+use pocketmine\world\format\io\GlobalItemDataHandlers;
 use Heisenburger69\BurgerCustomArmor\Abilities\AbilityUtils;
 use Heisenburger69\BurgerCustomArmor\ArmorSets\ArmorSetUtils;
 use Heisenburger69\BurgerCustomArmor\ArmorSets\CustomArmorSet;
@@ -162,7 +165,7 @@ class Main extends PluginBase
             new DiamondBoots(),
         ];
         foreach ($items as $item) {
-            ItemFactory::getInstance()->register($item, true);
+            libItemRegistrar::getInstance()->registerItem($item, libItemRegistrar::getInstance()->getRuntimeIdByName($item->getName()) ?? libItemRegistrar::getInstance()->getNextItemId());
         }
     }
 
@@ -187,7 +190,7 @@ class Main extends PluginBase
              * @var array $materialData
              */
             foreach ($recipeData["materials"] as $materialSymbol => $materialData) {
-                $requiredItems[$materialSymbol] = ItemFactory::getInstance()->get((int)$materialData["id"], (int)$materialData["meta"], (int)$materialData["count"]);
+                $requiredItems[$materialSymbol] = new ExactRecipeIngredient(libItemRegistrar::getInstance()->getItemByLegacy((int)$materialData["id"], (int)$materialData["meta"], (int)$materialData["count"]));
             }
             $this->getServer()->getCraftingManager()->registerShapedRecipe(new ShapedRecipe($recipeData["shape"], $requiredItems, [$item]));
         }

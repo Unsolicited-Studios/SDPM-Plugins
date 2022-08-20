@@ -2,7 +2,7 @@
 
 namespace Heisenburger69\BurgerCustomArmor\Pocketmine\Iron;
 
-use pocketmine\item\ItemIds;
+use pocketmine\item\ItemTypeIds;
 use pocketmine\item\ArmorTypeInfo;
 use pocketmine\item\ItemIdentifier;
 use pocketmine\inventory\ArmorInventory;
@@ -15,9 +15,9 @@ class IronBoots extends BurgerArmor
     /** @var float */
     protected $metaFloat = 0.0;
 
-    public function __construct(int $meta = 0)
+    public function __construct()
     {
-        parent::__construct(new ItemIdentifier(ItemIds::IRON_BOOTS, $meta), "Iron Boots", new ArmorTypeInfo(2, 196, ArmorInventory::SLOT_FEET));
+        parent::__construct(new ItemIdentifier(ItemTypeIds::IRON_BOOTS), "Iron Boots", new ArmorTypeInfo(2, 196, ArmorInventory::SLOT_FEET));
     }
 
     public function getMaxDurability(): int

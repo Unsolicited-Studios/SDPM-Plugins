@@ -30,10 +30,10 @@ namespace SolicitDev\SDAutoUpdater;
 use Mcbeany\libAsync\libAsync;
 use pocketmine\utils\Internet;
 use RecursiveIteratorIterator;
+use SOFe\AwaitGenerator\Await;
 use RecursiveDirectoryIterator;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\InternetRequestResult;
-use Mcbeany\libAsync\_160d56ad\SOFe\AwaitGenerator\Await;
 
 class SDAutoUpdater extends PluginBase
 {

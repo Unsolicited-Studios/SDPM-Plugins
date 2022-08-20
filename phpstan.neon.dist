@@ -12,4 +12,6 @@ parameters:
         - plugins/PlayerTrade/src/alvin0319/PlayerTrade
         - plugins/BurgerCustomArmor/src/Heisenburger69/BurgerCustomArmor
         - plugins/EC-TableUI/src/SchdowNVIDIA/ECTUI
-        - libraries/libVPN/src/SolicitDev/libVPN
+
+    scanDirectories:
+        - vendor/solicit-development/sdpm-resources/libraries

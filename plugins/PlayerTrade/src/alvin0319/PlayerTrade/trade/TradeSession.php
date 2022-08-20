@@ -7,9 +7,11 @@ namespace alvin0319\PlayerTrade\trade;
 use Closure;
 use pocketmine\Server;
 use muqsit\invmenu\InvMenu;
-use pocketmine\item\ItemIds;
+use pocketmine\item\ItemTypeIds;
 use pocketmine\player\Player;
 use pocketmine\item\ItemFactory;
+use pocketmine\block\VanillaBlocks;
+use pocketmine\block\utils\DyeColor;
 use pocketmine\scheduler\TaskHandler;
 use alvin0319\PlayerTrade\PlayerTrade;
 use alvin0319\PlayerTrade\event\TradeEndEvent;
@@ -58,9 +60,13 @@ final class TradeSession
 			->setListener(Closure::fromCallable([$this, "handleInventoryTransaction"]))
 			->setInventoryCloseListener(Closure::fromCallable([$this, "onInventoryClose"]));
 
-		$borderItem = ItemFactory::getInstance()->get(20, 0, 1)
+		$borderItem = VanillaBlocks::STAINED_GLASS()
+			->setColor(DyeColor::BLACK())
+			->asItem()
 			->setCustomName("§l ");
-		$redItem = ItemFactory::getInstance()->get(ItemIds::TERRACOTTA, 14)
+		$redItem = VanillaBlocks::GLAZED_TERRACOTTA()
+			->setColor(DyeColor::RED())
+			->asItem()
 			->setCustomName("§r§c§lWAIT!");
 
 		foreach (self::BORDER_SLOTS as $slot) {
@@ -304,10 +310,14 @@ final class TradeSession
 
 	public function syncSlots(): void
 	{
-		$yellowItem = ItemFactory::getInstance()->get(ItemIds::TERRACOTTA, 4)
-			->setCustomName("§r§l§aREADY!");
-		$greenItem = ItemFactory::getInstance()->get(ItemIds::TERRACOTTA, 13)
-			->setCustomName("§r§l§aCONFIRMED!");
+		$yellowItem = VanillaBlocks::GLAZED_TERRACOTTA()
+			->setColor(DyeColor::YELLOW())
+			->asItem()
+			->setCustomName("§r§c§lWAIT!");
+		$greenItem = VanillaBlocks::GLAZED_TERRACOTTA()
+			->setColor(DyeColor::GREEN())
+			->asItem()
+			->setCustomName("§r§c§lWAIT!");
 
 		foreach (self::SENDER_SLOTS as $slot) {
 			$senderItem = $this->senderMenu->getInventory()->getItem($slot);

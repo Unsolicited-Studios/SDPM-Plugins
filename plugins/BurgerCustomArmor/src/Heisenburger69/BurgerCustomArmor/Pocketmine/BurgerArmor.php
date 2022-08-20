@@ -10,7 +10,7 @@ use Heisenburger69\BurgerCustomArmor\Utils\EquipmentUtils;
 
 class BurgerArmor extends Armor
 {
-    public function onClickAir(Player $player, Vector3 $directionVector): ItemUseResult
+    public function onClickAir(Player $player, Vector3 $directionVector, array &$returnedItems): ItemUseResult
     {
         $existing = $player->getArmorInventory()->getItem($this->getArmorSlot());
         $thisCopy = clone $this;

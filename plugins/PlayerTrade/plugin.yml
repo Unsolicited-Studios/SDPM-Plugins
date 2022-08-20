@@ -2,7 +2,7 @@ name: PlayerTrade
 authors: [alvin0319, AGTHARN, cosmicnebula200]
 main: alvin0319\PlayerTrade\PlayerTrade
 version: 2.1.0
-api: 4.0.0
+api: 5.0.0
 
 permissions:
   playertrade.command:

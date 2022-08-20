@@ -3,6 +3,6 @@ description: An Enchantmenttable made with FormAPI
 main: SchdowNVIDIA\ECTUI\Main
 authors: ["SchdowNVIDIA", "AGTHARN"]
 version: 2.0.0
-api: 4.0.0
+api: 5.0.0
 
 virions: ["FormAPI"]

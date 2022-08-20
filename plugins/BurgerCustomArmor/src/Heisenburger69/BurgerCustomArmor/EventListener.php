@@ -4,7 +4,7 @@ namespace Heisenburger69\BurgerCustomArmor;
 
 use pocketmine\item\Armor;
 use pocketmine\nbt\tag\Tag;
-use pocketmine\item\ItemIds;
+use pocketmine\item\ItemTypeIds;
 use pocketmine\player\Player;
 use pocketmine\event\Listener;
 use pocketmine\block\VanillaBlocks;

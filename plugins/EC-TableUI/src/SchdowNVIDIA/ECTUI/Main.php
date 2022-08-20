@@ -175,7 +175,7 @@ class Main extends PluginBase
                 return;
             }
 
-            if ($toEnchant->getId() !== $player->getInventory()->getItemInHand()->getId()) {
+            if ($toEnchant->getTypeId() !== $player->getInventory()->getItemInHand()->getTypeId()) {
                 $player->sendMessage("§8(§b!§8) §7Are you trying to swindle me?");
                 return;
             }
