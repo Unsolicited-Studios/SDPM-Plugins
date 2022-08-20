@@ -3,10 +3,10 @@
 # 
 # █▀▄ █▀▀ █░█ █▀▀ █░░ █▀█ █▀█ █▀▄▀█ █▀▀ █▄░█ ▀█▀
 # █▄▀ ██▄ ▀▄▀ ██▄ █▄▄ █▄█ █▀▀ █░▀░█ ██▄ █░▀█ ░█░
-#    https://github.com/Solicit-Development
+#    https://github.com/Unsolicited-Studios
 
 name: AverageTPS
-main: SolicitDev\AverageTPS\AverageTPS
+main: UnsolicitedDev\AverageTPS\AverageTPS
 author: AGTHARN
 version: 1.0.0
 api: 5.0.0

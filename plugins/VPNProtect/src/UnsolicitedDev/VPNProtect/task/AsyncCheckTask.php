@@ -6,9 +6,9 @@
  *                                                                          *
  *            █▀▄ █▀▀ █░█ █▀▀ █░░ █▀█ █▀█ █▀▄▀█ █▀▀ █▄░█ ▀█▀                *
  *            █▄▀ ██▄ ▀▄▀ ██▄ █▄▄ █▄█ █▀▀ █░▀░█ ██▄ █░▀█ ░█░                *
- *                https://github.com/Solicit-Development                    *
+ *                https://github.com/Unsolicited-Studios                    *
  *                                                                          *
- *                  Copyright 2022 Solicit-Development                      *
+ *                  Copyright 2022 Unsolicited-Studios                      *
  *    Licensed under the Apache License, Version 2.0 (the 'License');       *
  *   you may not use this file except in compliance with the License.       *
  *                                                                          *
@@ -25,15 +25,15 @@
 
 declare(strict_types=1);
 
-namespace SolicitDev\VPNProtect\task;
+namespace UnsolicitedDev\VPNProtect\task;
 
 use Logger;
 use pocketmine\Server;
-use SolicitDev\libVPN\API;
+use UnsolicitedDev\libVPN\API;
 use pocketmine\player\Player;
-use SolicitDev\VPNProtect\Main;
+use UnsolicitedDev\VPNProtect\Main;
 use pocketmine\utils\TextFormat;
-use SolicitDev\libVPN\util\Cache;
+use UnsolicitedDev\libVPN\util\Cache;
 use pocketmine\scheduler\AsyncTask;
 
 class AsyncCheckTask extends AsyncTask

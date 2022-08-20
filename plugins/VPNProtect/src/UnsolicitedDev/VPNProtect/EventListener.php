@@ -6,9 +6,9 @@
  *                                                                          *
  *            █▀▄ █▀▀ █░█ █▀▀ █░░ █▀█ █▀█ █▀▄▀█ █▀▀ █▄░█ ▀█▀                *
  *            █▄▀ ██▄ ▀▄▀ ██▄ █▄▄ █▄█ █▀▀ █░▀░█ ██▄ █░▀█ ░█░                *
- *                https://github.com/Solicit-Development                    *
+ *                https://github.com/Unsolicited-Studios                    *
  *                                                                          *
- *                  Copyright 2022 Solicit-Development                      *
+ *                  Copyright 2022 Unsolicited-Studios                      *
  *    Licensed under the Apache License, Version 2.0 (the 'License');       *
  *   you may not use this file except in compliance with the License.       *
  *                                                                          *
@@ -25,12 +25,12 @@
 
 declare(strict_types=1);
 
-namespace SolicitDev\VPNProtect;
+namespace UnsolicitedDev\VPNProtect;
 
-use SolicitDev\VPNProtect\Main;
-use SolicitDev\libVPN\util\Cache;
+use UnsolicitedDev\VPNProtect\Main;
+use UnsolicitedDev\libVPN\util\Cache;
 use pocketmine\event\Listener;
-use SolicitDev\VPNProtect\task\AsyncCheckTask;
+use UnsolicitedDev\VPNProtect\task\AsyncCheckTask;
 use pocketmine\event\player\PlayerLoginEvent;
 
 class EventListener implements Listener

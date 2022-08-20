@@ -1,5 +1,5 @@
 {
-  "name": "solicit-development/sdpm-plugins",
+  "name": "unsolicited-studios/sdpm-plugins",
   "type": "library",
   "description": "",
   "require-dev": {
@@ -7,7 +7,7 @@
     "pocketmine/bedrock-block-upgrade-schema": "dev-master",
     "pocketmine/bedrock-data": "dev-modern-world-support",
     "pocketmine/bedrock-item-upgrade-schema": "dev-master",
-    "solicit-development/sdpm-resources": "dev-main",
+    "unsolicited-studios/sdpm-resources": "dev-main",
     "phpstan/phpstan": "^1.8.2"
   }
 }

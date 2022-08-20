@@ -6,9 +6,9 @@
  *                                                                          *
  *            █▀▄ █▀▀ █░█ █▀▀ █░░ █▀█ █▀█ █▀▄▀█ █▀▀ █▄░█ ▀█▀                *
  *            █▄▀ ██▄ ▀▄▀ ██▄ █▄▄ █▄█ █▀▀ █░▀░█ ██▄ █░▀█ ░█░                *
- *                https://github.com/Solicit-Development                    *
+ *                https://github.com/Unsolicited-Studios                    *
  *                                                                          *
- *                  Copyright 2022 Solicit-Development                      *
+ *                  Copyright 2022 Unsolicited-Studios                      *
  *    Licensed under the Apache License, Version 2.0 (the 'License');       *
  *   you may not use this file except in compliance with the License.       *
  *                                                                          *
@@ -25,63 +25,51 @@
 
 declare(strict_types=1);
 
-namespace SolicitDev\AverageTPS;
+namespace UnsolicitedDev\VPNProtect;
 
-use pocketmine\Server;
 use pocketmine\plugin\PluginBase;
-use SolicitDev\AverageTPS\task\TPSTask;
-use SolicitDev\AverageTPS\command\TPSCommand;
+use UnsolicitedDev\VPNProtect\EventListener;
 
-class AverageTPS extends PluginBase
+class Main extends PluginBase
 {
-    public static array $types = [];
+    private static Main $instance;
 
-    public static array $averageTPS = [];
-    public static array $lastTPS = [];
+    public static function getInstance(): Main
+    {
+        return self::$instance;
+    }
 
     public function onEnable(): void
     {
-        $this->saveResource('config.yml');
-        self::$types = $this->getConfig()->get('tps-check-timings', [
-            'full', '5s', '15s', '30s', '60s', '10m', '30m', '1h', '3h', '6h', '12h'
-        ]);
+        self::$instance = $this;
 
-        $this->getScheduler()->scheduleRepeatingTask(new TPSTask(), 20);
-        $this->getServer()->getCommandMap()->register('tps', new TPSCommand($this, 'tps', 'Check the server\'s average TPS.'));
-    }
-
-    public static function isTPSAccurate(string $type): bool
-    {
-        if ((Server::getInstance()->getTick() / 20) >= self::convertToSeconds($type)) {
-            return true;
+        $this->saveDefaultConfig();
+        if (!$this->runChecks()) {
+            return;
         }
-        return false;
+
+        $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
     }
 
-    public static function convertToSeconds(string $type): int
+    public function getEnabledAPIs(): array
     {
-        $unit = self::getTypeUnit($type);
-        $time = self::removeTypeUnit($type);
-        return match ($unit) {
-            's' => $time,
-            'm' => $time * 60,
-            'h' => $time * 3600,
-            default => 0
-        };
+        $enabled = [];
+        foreach ($this->getConfig()->get('checks', []) as $api => $data) {
+            if ($data['enabled']) {
+                $enabled[] = $api;
+            }
+        }
+        return $enabled;
     }
 
-    public static function getTypeUnit(string $type): string
+    private function runChecks(): bool
     {
-        return preg_replace('/[0-9]+/', '', $type) ?? '';
-    }
-
-    public static function removeTypeUnit(string $type): int
-    {
-        return (int) str_replace(['s', 'm', 'h'], '', $type);
-    }
-
-    public static function addValueToAverage(float $oldValue, float $toAdd, int $newSize): float
-    {
-        return $oldValue + ($toAdd - $oldValue) / $newSize;
+        $minimumAPIs = $this->getConfig()->get('minimum-checks', 2) + 2;
+        if (count($this->getEnabledAPIs()) <= $minimumAPIs) {
+            $this->getLogger()->warning('Not enough APIs enabled to run checks! Please enable more than ' . $minimumAPIs . ' APIs.');
+            $this->getServer()->getPluginManager()->disablePlugin($this);
+            return false;
+        }
+        return true;
     }
 }

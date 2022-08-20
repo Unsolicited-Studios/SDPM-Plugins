@@ -3,10 +3,10 @@
 # 
 # █▀▄ █▀▀ █░█ █▀▀ █░░ █▀█ █▀█ █▀▄▀█ █▀▀ █▄░█ ▀█▀
 # █▄▀ ██▄ ▀▄▀ ██▄ █▄▄ █▄█ █▀▀ █░▀░█ ██▄ █░▀█ ░█░
-#    https://github.com/Solicit-Development
+#    https://github.com/Unsolicited-Studios
 
 name: VPNProtect
-main: SolicitDev\VPNProtect\Main
+main: UnsolicitedDev\VPNProtect\Main
 author: AGTHARN
 version: 2.1.0
 api: 5.0.0

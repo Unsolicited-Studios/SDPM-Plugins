@@ -6,9 +6,9 @@
  *                                                                          *
  *            █▀▄ █▀▀ █░█ █▀▀ █░░ █▀█ █▀█ █▀▄▀█ █▀▀ █▄░█ ▀█▀                *
  *            █▄▀ ██▄ ▀▄▀ ██▄ █▄▄ █▄█ █▀▀ █░▀░█ ██▄ █░▀█ ░█░                *
- *                https://github.com/Solicit-Development                    *
+ *                https://github.com/Unsolicited-Studios                    *
  *                                                                          *
- *                  Copyright 2022 Solicit-Development                      *
+ *                  Copyright 2022 Unsolicited-Studios                      *
  *    Licensed under the Apache License, Version 2.0 (the 'License');       *
  *   you may not use this file except in compliance with the License.       *
  *                                                                          *
@@ -25,51 +25,38 @@
 
 declare(strict_types=1);
 
-namespace SolicitDev\VPNProtect;
+namespace UnsolicitedDev\RotateWrench\command;
 
-use pocketmine\plugin\PluginBase;
-use SolicitDev\VPNProtect\EventListener;
+use pocketmine\block\Block;
+use pocketmine\player\Player;
+use CortexPE\Commando\BaseCommand;
+use pocketmine\command\CommandSender;
+use UnsolicitedDev\RotateWrench\RotateWrench;
 
-class Main extends PluginBase
+class RotateCommand extends BaseCommand
 {
-    private static Main $instance;
-
-    public static function getInstance(): Main
+    public function prepare(): void
     {
-        return self::$instance;
+        $this->setPermission('rotatewrench.cmd.rotate');
     }
 
-    public function onEnable(): void
+    public function onRun(CommandSender $sender, string $aliasUsed, array $args): void
     {
-        self::$instance = $this;
-
-        $this->saveDefaultConfig();
-        if (!$this->runChecks()) {
+        if (!$sender instanceof Player) {
+            $sender->sendMessage('You must be in-game to run this command!');
+            return;
+        }
+        if (!$this->testPermissionSilent($sender)) {
+            $sender->sendMessage('You do not have permission to run this command!');
             return;
         }
 
-        $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
-    }
-
-    public function getEnabledAPIs(): array
-    {
-        $enabled = [];
-        foreach ($this->getConfig()->get('checks', []) as $api => $data) {
-            if ($data['enabled']) {
-                $enabled[] = $api;
-            }
+        $block = $sender->getTargetBlock(10);
+        if (!$block instanceof Block) {
+            $sender->sendMessage('No block found! Please make sure that you are looking at a block and that you are not too far from the block.');
+            return;
         }
-        return $enabled;
-    }
 
-    private function runChecks(): bool
-    {
-        $minimumAPIs = $this->getConfig()->get('minimum-checks', 2) + 2;
-        if (count($this->getEnabledAPIs()) <= $minimumAPIs) {
-            $this->getLogger()->warning('Not enough APIs enabled to run checks! Please enable more than ' . $minimumAPIs . ' APIs.');
-            $this->getServer()->getPluginManager()->disablePlugin($this);
-            return false;
-        }
-        return true;
+        RotateWrench::rotateBlockAndAlert($sender, $block);
     }
 }

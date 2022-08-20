@@ -6,9 +6,9 @@
  *                                                                          *
  *            █▀▄ █▀▀ █░█ █▀▀ █░░ █▀█ █▀█ █▀▄▀█ █▀▀ █▄░█ ▀█▀                *
  *            █▄▀ ██▄ ▀▄▀ ██▄ █▄▄ █▄█ █▀▀ █░▀░█ ██▄ █░▀█ ░█░                *
- *                https://github.com/Solicit-Development                    *
+ *                https://github.com/Unsolicited-Studios                    *
  *                                                                          *
- *                  Copyright 2022 Solicit-Development                      *
+ *                  Copyright 2022 Unsolicited-Studios                      *
  *    Licensed under the Apache License, Version 2.0 (the 'License');       *
  *   you may not use this file except in compliance with the License.       *
  *                                                                          *
@@ -25,29 +25,34 @@
 
 declare(strict_types=1);
 
-namespace SolicitDev\SDAutoUpdater;
+namespace UnsolicitedDev\AverageTPS\task;
 
-class SDUpdateInfo
+use pocketmine\Server;
+use pocketmine\scheduler\Task;
+use UnsolicitedDev\AverageTPS\AverageTPS;
+
+class TPSTask extends Task
 {
-    public static array $latestRelease;
-    public static int $currentVersion;
-
-    public static function getPluginNames(string $folder): array
+    public function onRun(): void
     {
-        $pluginNames = [];
-        foreach (new \DirectoryIterator($folder) as $file) {
-            if (
-                $file->isDot() || !$file->isFile() || $file->getExtension() !== 'phar' ||
-                !file_exists($pluginYaml = 'phar://' . $file->getPathname() . '/plugin.yml') ||
-                !($yamlContents = file_get_contents($pluginYaml)) ||
-                !is_array($data = yaml_parse($yamlContents)) ||
-                !isset($data['name'])
-            ) {
-                continue;
-            }
+        foreach (AverageTPS::$types as $type) {
+            AverageTPS::$averageTPS[$type] = [
+                'count' => $count = (AverageTPS::$averageTPS[$type]['count'] ?? 0) + 1,
+                'value' => AverageTPS::addValueToAverage(AverageTPS::$averageTPS[$type]['value'] ?? 20, Server::getInstance()->getTicksPerSecond(), $count)
+            ];
 
-            $pluginNames[$data['name']] = $file->getPathname();
+            if (
+                !preg_match('~[0-9]+~', $type) ||
+                (Server::getInstance()->getTick() / 20) % AverageTPS::convertToSeconds($type) === 1
+            ) {
+                $this->updateLastTPS($type);
+            }
         }
-        return $pluginNames;
+    }
+
+    private function updateLastTPS(string $type): void
+    {
+        AverageTPS::$lastTPS[$type] = AverageTPS::$averageTPS[$type]['value'];
+        unset(AverageTPS::$averageTPS[$type]);
     }
 }

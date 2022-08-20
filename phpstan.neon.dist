@@ -4,14 +4,14 @@ parameters:
     reportUnmatchedIgnoredErrors: false
     
     paths:
-        - plugins/SDAutoUpdater/src/SolicitDev/SDAutoUpdater
-        - plugins/VPNProtect/src/SolicitDev/VPNProtect
-        - plugins/RotateWrench/src/SolicitDev/RotateWrench
-        - plugins/AverageTPS/src/SolicitDev/AverageTPS
-        - plugins/BlankFix/src/SolicitDev/BlankFix
+        - plugins/SDAutoUpdater/src/UnsolicitedDev/SDAutoUpdater
+        - plugins/VPNProtect/src/UnsolicitedDev/VPNProtect
+        - plugins/RotateWrench/src/UnsolicitedDev/RotateWrench
+        - plugins/AverageTPS/src/UnsolicitedDev/AverageTPS
+        - plugins/BlankFix/src/UnsolicitedDev/BlankFix
         - plugins/PlayerTrade/src/alvin0319/PlayerTrade
         - plugins/BurgerCustomArmor/src/Heisenburger69/BurgerCustomArmor
         - plugins/EC-TableUI/src/SchdowNVIDIA/ECTUI
 
     scanDirectories:
-        - vendor/solicit-development/sdpm-resources/libraries
+        - vendor/Unsolicited-Studios/sdpm-resources/libraries

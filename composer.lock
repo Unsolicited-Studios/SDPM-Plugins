@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9cada3c03bc36d53b9420ac8c9ff0933",
+    "content-hash": "48d0f2bbf38d573ccc153d1443b0fb43",
     "packages": [],
     "packages-dev": [
         {
@@ -1233,35 +1233,6 @@
             "time": "2022-08-05T17:58:37+00:00"
         },
         {
-            "name": "solicit-development/sdpm-resources",
-            "version": "dev-main",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Solicit-Development/SDPM-Resources.git",
-                "reference": "75c9f1c4957c417b5e9de8670034797bc9dd652b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Solicit-Development/SDPM-Resources/zipball/75c9f1c4957c417b5e9de8670034797bc9dd652b",
-                "reference": "75c9f1c4957c417b5e9de8670034797bc9dd652b",
-                "shasum": ""
-            },
-            "require-dev": {
-                "phpstan/phpstan": "^1.8.2",
-                "pocketmine/bedrock-block-upgrade-schema": "dev-master",
-                "pocketmine/bedrock-data": "dev-modern-world-support",
-                "pocketmine/bedrock-item-upgrade-schema": "dev-master",
-                "pocketmine/pocketmine-mp": "dev-next-major"
-            },
-            "default-branch": true,
-            "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
-            "support": {
-                "source": "https://github.com/Solicit-Development/SDPM-Resources/tree/main"
-            },
-            "time": "2022-08-20T02:05:05+00:00"
-        },
-        {
             "name": "symfony/polyfill-php81",
             "version": "v1.26.0",
             "source": {
@@ -1339,6 +1310,35 @@
                 }
             ],
             "time": "2022-05-24T11:49:31+00:00"
+        },
+        {
+            "name": "unsolicited-studios/sdpm-resources",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Unsolicited-Studios/SDPM-Resources.git",
+                "reference": "3695c02370eed70a20c4f3f74456e28bd0b10d9f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Unsolicited-Studios/SDPM-Resources/zipball/3695c02370eed70a20c4f3f74456e28bd0b10d9f",
+                "reference": "3695c02370eed70a20c4f3f74456e28bd0b10d9f",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^1.8.2",
+                "pocketmine/bedrock-block-upgrade-schema": "dev-master",
+                "pocketmine/bedrock-data": "dev-modern-world-support",
+                "pocketmine/bedrock-item-upgrade-schema": "dev-master",
+                "pocketmine/pocketmine-mp": "dev-next-major"
+            },
+            "default-branch": true,
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "support": {
+                "source": "https://github.com/Unsolicited-Studios/SDPM-Resources/tree/main"
+            },
+            "time": "2022-08-20T09:15:48+00:00"
         },
         {
             "name": "webmozart/assert",
@@ -1457,7 +1457,7 @@
         "pocketmine/bedrock-block-upgrade-schema": 20,
         "pocketmine/bedrock-data": 20,
         "pocketmine/bedrock-item-upgrade-schema": 20,
-        "solicit-development/sdpm-resources": 20
+        "unsolicited-studios/sdpm-resources": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

@@ -6,9 +6,9 @@
  *                                                                          *
  *            █▀▄ █▀▀ █░█ █▀▀ █░░ █▀█ █▀█ █▀▄▀█ █▀▀ █▄░█ ▀█▀                *
  *            █▄▀ ██▄ ▀▄▀ ██▄ █▄▄ █▄█ █▀▀ █░▀░█ ██▄ █░▀█ ░█░                *
- *                https://github.com/Solicit-Development                    *
+ *                https://github.com/Unsolicited-Studios                    *
  *                                                                          *
- *                  Copyright 2022 Solicit-Development                      *
+ *                  Copyright 2022 Unsolicited-Studios                      *
  *    Licensed under the Apache License, Version 2.0 (the 'License');       *
  *   you may not use this file except in compliance with the License.       *
  *                                                                          *
@@ -25,34 +25,31 @@
 
 declare(strict_types=1);
 
-namespace SolicitDev\AverageTPS\task;
+namespace UnsolicitedDev\AverageTPS\command;
 
-use pocketmine\Server;
-use pocketmine\scheduler\Task;
-use SolicitDev\AverageTPS\AverageTPS;
+use CortexPE\Commando\BaseCommand;
+use pocketmine\command\CommandSender;
+use UnsolicitedDev\AverageTPS\AverageTPS;
 
-class TPSTask extends Task
+class TPSCommand extends BaseCommand
 {
-    public function onRun(): void
+    public function prepare(): void
     {
-        foreach (AverageTPS::$types as $type) {
-            AverageTPS::$averageTPS[$type] = [
-                'count' => $count = (AverageTPS::$averageTPS[$type]['count'] ?? 0) + 1,
-                'value' => AverageTPS::addValueToAverage(AverageTPS::$averageTPS[$type]['value'] ?? 20, Server::getInstance()->getTicksPerSecond(), $count)
-            ];
-
-            if (
-                !preg_match('~[0-9]+~', $type) ||
-                (Server::getInstance()->getTick() / 20) % AverageTPS::convertToSeconds($type) === 1
-            ) {
-                $this->updateLastTPS($type);
-            }
-        }
+        $this->setPermission('averagetps.cmd');
     }
 
-    private function updateLastTPS(string $type): void
+    public function onRun(CommandSender $sender, string $aliasUsed, array $args): void
     {
-        AverageTPS::$lastTPS[$type] = AverageTPS::$averageTPS[$type]['value'];
-        unset(AverageTPS::$averageTPS[$type]);
+        if (!$this->testPermissionSilent($sender)) {
+            $sender->sendMessage('You do not have permission to run this command!');
+            return;
+        }
+
+        $sender->sendMessage("Average TPS results:");
+        foreach (AverageTPS::$lastTPS as $type => $tps) {
+            if (AverageTPS::isTPSAccurate($type)) {
+                $sender->sendMessage("§7$type: §a$tps");
+            }
+        }
     }
 }

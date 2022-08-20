@@ -6,9 +6,9 @@
  *                                                                          *
  *            █▀▄ █▀▀ █░█ █▀▀ █░░ █▀█ █▀█ █▀▄▀█ █▀▀ █▄░█ ▀█▀                *
  *            █▄▀ ██▄ ▀▄▀ ██▄ █▄▄ █▄█ █▀▀ █░▀░█ ██▄ █░▀█ ░█░                *
- *                https://github.com/Solicit-Development                    *
+ *                https://github.com/Unsolicited-Studios                    *
  *                                                                          *
- *                  Copyright 2022 Solicit-Development                      *
+ *                  Copyright 2022 Unsolicited-Studios                      *
  *    Licensed under the Apache License, Version 2.0 (the 'License');       *
  *   you may not use this file except in compliance with the License.       *
  *                                                                          *
@@ -25,31 +25,63 @@
 
 declare(strict_types=1);
 
-namespace SolicitDev\AverageTPS\command;
+namespace UnsolicitedDev\AverageTPS;
 
-use CortexPE\Commando\BaseCommand;
-use pocketmine\command\CommandSender;
-use SolicitDev\AverageTPS\AverageTPS;
+use pocketmine\Server;
+use pocketmine\plugin\PluginBase;
+use UnsolicitedDev\AverageTPS\task\TPSTask;
+use UnsolicitedDev\AverageTPS\command\TPSCommand;
 
-class TPSCommand extends BaseCommand
+class AverageTPS extends PluginBase
 {
-    public function prepare(): void
+    public static array $types = [];
+
+    public static array $averageTPS = [];
+    public static array $lastTPS = [];
+
+    public function onEnable(): void
     {
-        $this->setPermission('averagetps.cmd');
+        $this->saveResource('config.yml');
+        self::$types = $this->getConfig()->get('tps-check-timings', [
+            'full', '5s', '15s', '30s', '60s', '10m', '30m', '1h', '3h', '6h', '12h'
+        ]);
+
+        $this->getScheduler()->scheduleRepeatingTask(new TPSTask(), 20);
+        $this->getServer()->getCommandMap()->register('tps', new TPSCommand($this, 'tps', 'Check the server\'s average TPS.'));
     }
 
-    public function onRun(CommandSender $sender, string $aliasUsed, array $args): void
+    public static function isTPSAccurate(string $type): bool
     {
-        if (!$this->testPermissionSilent($sender)) {
-            $sender->sendMessage('You do not have permission to run this command!');
-            return;
+        if ((Server::getInstance()->getTick() / 20) >= self::convertToSeconds($type)) {
+            return true;
         }
+        return false;
+    }
 
-        $sender->sendMessage("Average TPS results:");
-        foreach (AverageTPS::$lastTPS as $type => $tps) {
-            if (AverageTPS::isTPSAccurate($type)) {
-                $sender->sendMessage("§7$type: §a$tps");
-            }
-        }
+    public static function convertToSeconds(string $type): int
+    {
+        $unit = self::getTypeUnit($type);
+        $time = self::removeTypeUnit($type);
+        return match ($unit) {
+            's' => $time,
+            'm' => $time * 60,
+            'h' => $time * 3600,
+            default => 0
+        };
+    }
+
+    public static function getTypeUnit(string $type): string
+    {
+        return preg_replace('/[0-9]+/', '', $type) ?? '';
+    }
+
+    public static function removeTypeUnit(string $type): int
+    {
+        return (int) str_replace(['s', 'm', 'h'], '', $type);
+    }
+
+    public static function addValueToAverage(float $oldValue, float $toAdd, int $newSize): float
+    {
+        return $oldValue + ($toAdd - $oldValue) / $newSize;
     }
 }

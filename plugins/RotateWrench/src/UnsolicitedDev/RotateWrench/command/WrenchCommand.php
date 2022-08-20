@@ -6,9 +6,9 @@
  *                                                                          *
  *            █▀▄ █▀▀ █░█ █▀▀ █░░ █▀█ █▀█ █▀▄▀█ █▀▀ █▄░█ ▀█▀                *
  *            █▄▀ ██▄ ▀▄▀ ██▄ █▄▄ █▄█ █▀▀ █░▀░█ ██▄ █░▀█ ░█░                *
- *                https://github.com/Solicit-Development                    *
+ *                https://github.com/Unsolicited-Studios                    *
  *                                                                          *
- *                  Copyright 2022 Solicit-Development                      *
+ *                  Copyright 2022 Unsolicited-Studios                      *
  *    Licensed under the Apache License, Version 2.0 (the 'License');       *
  *   you may not use this file except in compliance with the License.       *
  *                                                                          *
@@ -25,19 +25,18 @@
 
 declare(strict_types=1);
 
-namespace SolicitDev\RotateWrench\command;
+namespace UnsolicitedDev\RotateWrench\command;
 
-use pocketmine\block\Block;
 use pocketmine\player\Player;
 use CortexPE\Commando\BaseCommand;
 use pocketmine\command\CommandSender;
-use SolicitDev\RotateWrench\RotateWrench;
+use UnsolicitedDev\RotateWrench\RotateWrench;
 
-class RotateCommand extends BaseCommand
+class WrenchCommand extends BaseCommand
 {
     public function prepare(): void
     {
-        $this->setPermission('rotatewrench.cmd.rotate');
+        $this->setPermission('rotatewrench.cmd.wrench');
     }
 
     public function onRun(CommandSender $sender, string $aliasUsed, array $args): void
@@ -51,12 +50,6 @@ class RotateCommand extends BaseCommand
             return;
         }
 
-        $block = $sender->getTargetBlock(10);
-        if (!$block instanceof Block) {
-            $sender->sendMessage('No block found! Please make sure that you are looking at a block and that you are not too far from the block.');
-            return;
-        }
-
-        RotateWrench::rotateBlockAndAlert($sender, $block);
+        $sender->getInventory()->addItem(RotateWrench::getWrench());
     }
 }

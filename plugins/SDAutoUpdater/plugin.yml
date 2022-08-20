@@ -3,10 +3,10 @@
 # 
 # █▀▄ █▀▀ █░█ █▀▀ █░░ █▀█ █▀█ █▀▄▀█ █▀▀ █▄░█ ▀█▀
 # █▄▀ ██▄ ▀▄▀ ██▄ █▄▄ █▄█ █▀▀ █░▀░█ ██▄ █░▀█ ░█░
-#    https://github.com/Solicit-Development
+#    https://github.com/Unsolicited-Studios
 
 name: SDAutoUpdater
-main: SolicitDev\SDAutoUpdater\SDAutoUpdater
+main: UnsolicitedDev\SDAutoUpdater\SDAutoUpdater
 author: AGTHARN
 version: 1.0.0
 api: 5.0.0

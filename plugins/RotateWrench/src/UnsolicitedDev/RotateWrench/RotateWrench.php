@@ -6,9 +6,9 @@
  *                                                                          *
  *            █▀▄ █▀▀ █░█ █▀▀ █░░ █▀█ █▀█ █▀▄▀█ █▀▀ █▄░█ ▀█▀                *
  *            █▄▀ ██▄ ▀▄▀ ██▄ █▄▄ █▄█ █▀▀ █░▀░█ ██▄ █░▀█ ░█░                *
- *                https://github.com/Solicit-Development                    *
+ *                https://github.com/Unsolicited-Studios                    *
  *                                                                          *
- *                  Copyright 2022 Solicit-Development                      *
+ *                  Copyright 2022 Unsolicited-Studios                      *
  *    Licensed under the Apache License, Version 2.0 (the 'License');       *
  *   you may not use this file except in compliance with the License.       *
  *                                                                          *
@@ -25,7 +25,7 @@
 
 declare(strict_types=1);
 
-namespace SolicitDev\RotateWrench;
+namespace UnsolicitedDev\RotateWrench;
 
 use pocketmine\Server;
 use pocketmine\block\Block;
@@ -37,8 +37,8 @@ use pocketmine\item\VanillaItems;
 use pocketmine\plugin\PluginBase;
 use pocketmine\world\format\Chunk;
 use pocketmine\block\tile\Chest as ChestTile;
-use SolicitDev\RotateWrench\command\RotateCommand;
-use SolicitDev\RotateWrench\command\WrenchCommand;
+use UnsolicitedDev\RotateWrench\command\RotateCommand;
+use UnsolicitedDev\RotateWrench\command\WrenchCommand;
 
 class RotateWrench extends PluginBase
 {
