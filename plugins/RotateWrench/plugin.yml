@@ -19,4 +19,4 @@ permissions:
   rotatewrench.use.wrench:
     default: true
 
-virions: ["Commando"]
+virions: [Commando]

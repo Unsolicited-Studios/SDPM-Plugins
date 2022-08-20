@@ -9,4 +9,4 @@ permissions:
     description: Allows player to use /trade command
     default: true
 
-virions: ["InvMenu"]
+virions: [InvMenu]

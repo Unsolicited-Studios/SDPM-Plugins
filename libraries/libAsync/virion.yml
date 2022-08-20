@@ -4,4 +4,4 @@ antigen: Mcbeany\libAsync
 api: 5.0.0
 author: Mcbeany
 
-virions: ["await-generator"]
+virions: [await-generator]

@@ -5,4 +5,4 @@ authors: ["SchdowNVIDIA", "AGTHARN"]
 version: 2.0.0
 api: 5.0.0
 
-virions: ["FormAPI"]
+virions: [FormAPI]

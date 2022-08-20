@@ -10,3 +10,5 @@ main: UnsolicitedDev\SDAutoUpdater\SDAutoUpdater
 author: AGTHARN
 version: 1.0.0
 api: 5.0.0
+
+virions: [await-generator]

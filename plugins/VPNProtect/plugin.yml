@@ -16,4 +16,4 @@ permissions:
     description: VPN Checks would not be run on players with this permission
     default: false
 
-virions: ["libVPN"]
+virions: [libVPN]
