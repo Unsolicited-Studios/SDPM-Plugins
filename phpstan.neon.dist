@@ -1,17 +1,20 @@
 parameters:
-    level: 8
+    level: 6
+
+    checkAlwaysTrueInstanceof: true
+    checkFunctionNameCase: true
+    checkInternalClassCaseSensitivity: true
+    reportMaybesInMethodSignatures: true
+    reportMaybesInPropertyPhpDocTypes: true
+    reportStaticMethodSignatures: true
+    checkDynamicProperties: true
     checkMissingIterableValueType: false
     reportUnmatchedIgnoredErrors: false
-    
-    paths:
-        - plugins/SDAutoUpdater/src/UnsolicitedDev/SDAutoUpdater
-        - plugins/VPNProtect/src/UnsolicitedDev/VPNProtect
-        - plugins/RotateWrench/src/UnsolicitedDev/RotateWrench
-        - plugins/AverageTPS/src/UnsolicitedDev/AverageTPS
-        - plugins/BlankFix/src/UnsolicitedDev/BlankFix
-        - plugins/PlayerTrade/src/alvin0319/PlayerTrade
-        - plugins/BurgerCustomArmor/src/Heisenburger69/BurgerCustomArmor
-        - plugins/EC-TableUI/src/SchdowNVIDIA/ECTUI
 
-    scanDirectories:
-        - vendor/Unsolicited-Studios/sdpm-resources/libraries
+    excludePaths:
+        analyse:
+            - libraries/await-generator
+
+    paths:
+        - plugins
+        - libraries

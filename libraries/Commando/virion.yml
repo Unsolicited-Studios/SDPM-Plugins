@@ -1,0 +1,7 @@
+name: Commando
+antigen: CortexPE\Commando
+api: 5.0.0
+version: 3.1.0
+author: CortexPE
+
+virions: ["SimplePacketHandler"]

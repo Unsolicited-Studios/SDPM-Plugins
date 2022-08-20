@@ -7,7 +7,6 @@
     "pocketmine/bedrock-block-upgrade-schema": "dev-master",
     "pocketmine/bedrock-data": "dev-modern-world-support",
     "pocketmine/bedrock-item-upgrade-schema": "dev-master",
-    "unsolicited-studios/sdpm-resources": "dev-main",
     "phpstan/phpstan": "^1.8.2"
   }
 }
