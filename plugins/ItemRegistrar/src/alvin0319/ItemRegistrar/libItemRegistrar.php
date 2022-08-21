@@ -19,8 +19,13 @@ use const pocketmine\BEDROCK_DATA_PATH;
 use pocketmine\item\StringToItemParser;
 use pocketmine\utils\AssumptionFailedError;
 use pocketmine\data\bedrock\item\SavedItemData;
+use pocketmine\data\bedrock\block\BlockStateData;
 use pocketmine\world\format\io\GlobalItemDataHandlers;
+use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
+use pocketmine\world\format\io\GlobalBlockStateHandlers;
 use pocketmine\network\mcpe\convert\GlobalItemTypeDictionary;
+use pocketmine\data\bedrock\block\CachingBlockStateSerializer;
+use pocketmine\data\bedrock\block\CachingBlockStateDeserializer;
 
 final class libItemRegistrar extends PluginBase
 {
@@ -65,27 +70,25 @@ final class libItemRegistrar extends PluginBase
 		}
 		$this->registeredItems[$item->getTypeId()] = $item;
 
-		StringToItemParser::getInstance()->override($item->getName(), static fn () => clone $item);
+		StringToItemParser::getInstance()->override($item->getName(), static fn () => $item);
 		$serializer = GlobalItemDataHandlers::getSerializer();
 		$deserializer = GlobalItemDataHandlers::getDeserializer();
 
+		// TODO: Is there a better way than this?
 		$namespace = $namespace === "" ? "minecraft:" . strtolower(str_replace(" ", "_", $item->getName())) : $namespace;
 
-		// TODO: Closure hack to access ItemSerializer
-		// ItemSerializer throws an Exception when we try to register a pre-existing item
 		(function () use ($item, $serializeCallback, $namespace): void {
 			if (isset($this->itemSerializers[$item->getTypeId()])) {
 				unset($this->itemSerializers[$item->getTypeId()]);
 			}
 			$this->map($item, $serializeCallback !== null ? $serializeCallback : static fn () => new SavedItemData($namespace));
 		})->call($serializer);
-		// TODO: Closure hack to access ItemDeserializer
-		// ItemDeserializer throws an Exception when we try to register a pre-existing item
+
 		(function () use ($item, $deserializeCallback): void {
 			if (isset($this->deserializers[$item->getName()])) {
 				unset($this->deserializers[$item->getName()]);
 			}
-			$this->map($item->getName(), $deserializeCallback !== null ? $deserializeCallback : static fn (SavedItemData $_) => clone $item);
+			$this->map($item->getName(), $deserializeCallback !== null ? $deserializeCallback : static fn (SavedItemData $_) => $item);
 		})->call($deserializer);
 
 		$dictionary = GlobalItemTypeDictionary::getInstance()->getDictionary();
@@ -95,45 +98,35 @@ final class libItemRegistrar extends PluginBase
 		})->call($dictionary);
 	}
 
-	//	public function registerBlock(Block $block, bool $force = false, string $namespace = "", ?\Closure $serializeCallback = null, ?\Closure $deserializeCallback = null) : void{
-	//		if($serializeCallback !== null){
-	//			Utils::validateCallableSignature(static function(Block $block) : BlockStateWriter{ }, $serializeCallback);
-	//		}
-	//		if($deserializeCallback !== null){
-	//			Utils::validateCallableSignature(static function(BlockStateReader $reader) : Block{ }, $deserializeCallback);
-	//		}
-	//		BlockFactory::getInstance()->register($block, $force);
-	//
-	//		$namespace = $namespace === "" ? "minecraft:" . strtolower(str_replace(" ", "_", $block->getName())) : $namespace;
-	//
-	//		$serializer = GlobalBlockStateHandlers::getSerializer();
-	//		$deserializer = GlobalBlockStateHandlers::getDeserializer();
-	//
-	//		assert($serializer instanceof DelegatingBlockStateSerializer);
-	//		assert($deserializer instanceof DelegatingBlockStateDeserializer);
-	//
-	//		(function() use ($block, $serializeCallback, $namespace) : void{
-	//			if(isset($this->serializers[$block->getTypeId()])){
-	//				unset($this->serializers[$block->getTypeId()]);
-	//			}
-	//			$this->map($block, $serializeCallback !== null ? $serializeCallback : static fn() => new BlockStateWriter($namespace));
-	//		})->call($serializer->getRealSerializer());
-	//
-	//		(function() use ($block, $deserializeCallback, $namespace) : void{
-	//			if(array_key_exists($namespace, $this->deserializeFuncs)){
-	//				unset($this->deserializeFuncs[$namespace]);
-	//			}
-	//			$this->map($namespace, $deserializeCallback !== null ? $deserializeCallback : static fn(BlockStateReader $reader) : Block => clone $block);
-	//		})->call($deserializer->getRealDeserializer());
-	//
-	//		$blockStateDictionary = RuntimeBlockMapping::getInstance()->getBlockStateDictionary();
-	//		(function() use ($block, $namespace) : void{
-	//			$cache = $this->stateDataToStateIdLookupCache;
-	//			(function() use ($block, $namespace) : void{
-	//				$this->nameToNetworkIdsLookup[$namespace] = new BlockStateData($namespace, CompoundTag::create(), $block->getStateId());
-	//			})->call($cache);
-	//		})->call($blockStateDictionary);
-	//	}
+	// TODO: BLOCK ITEMS (ItemSerializer->mapBlock)
+	public function registerBlock(Block $block, bool $force = false, string $namespace = "", ?CompoundTag $compoundTag = null): void
+	{
+		BlockFactory::getInstance()->register($block, $force);
+
+		$namespace = $namespace === "" ? "minecraft:" . strtolower(str_replace(" ", "_", $block->getName())) : $namespace;
+
+		$serializer = GlobalBlockStateHandlers::getSerializer();
+		$deserializer = GlobalBlockStateHandlers::getDeserializer();
+
+		assert($serializer instanceof CachingBlockStateSerializer);
+		assert($deserializer instanceof CachingBlockStateDeserializer);
+
+		$blockStateData = (function () use ($block): BlockStateData {
+			return $this->serialize($block->getStateId());
+		})->call($serializer);
+
+		(function () use ($blockStateData): void {
+			$this->deserialize($blockStateData);
+		})->call($deserializer);
+
+		$blockStateDictionary = RuntimeBlockMapping::getInstance()->getBlockStateDictionary();
+		(function () use ($block, $namespace, $compoundTag): void {
+			$cache = $this->stateDataToStateIdLookupCache;
+			(function () use ($block, $namespace, $compoundTag): void {
+				$this->nameToNetworkIdsLookup[$namespace] = new BlockStateData($namespace, GlobalBlockStateHandlers::getUpgrader()->upgradeBlockStateNbt($compoundTag ?? CompoundTag::create())->getStates(), $block->getStateId());
+			})->call($cache);
+		})->call($blockStateDictionary);
+	}
 
 	/**
 	 * Returns a next item id and increases it.
