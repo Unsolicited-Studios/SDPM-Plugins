@@ -37,8 +37,10 @@ use pocketmine\item\VanillaItems;
 use pocketmine\plugin\PluginBase;
 use pocketmine\world\format\Chunk;
 use pocketmine\block\tile\Chest as ChestTile;
+use pocketmine\world\format\io\GlobalItemDataHandlers;
 use UnsolicitedDev\RotateWrench\command\RotateCommand;
 use UnsolicitedDev\RotateWrench\command\WrenchCommand;
+use pocketmine\data\bedrock\item\upgrade\LegacyItemIdToStringIdMap;
 
 class RotateWrench extends PluginBase
 {
@@ -101,7 +103,11 @@ class RotateWrench extends PluginBase
     public static function rotateBlockAndAlert(Player $player, Block $block): bool
     {
         if (self::rotateBlock($player, $block)) {
-            $player->sendMessage('Block rotated! Block: ' . $block->getName() . ' (' . $block->getTypeId() . ':' . $block->getStateId() . ')');
+            // TODO: Is there a better way than this? This causes identification issues with blocks like Logs.
+            $namespace = "minecraft:" . strtolower(str_replace(" ", "_", $block->getName()));
+            $legacyId = (int) array_search($namespace, LegacyItemIdToStringIdMap::getInstance()->getLegacyToStringMap());
+
+            $player->sendMessage('Block rotated! Block: ' . $block->getName() . ' (' . $legacyId . ')');
             return true;
         }
         $player->sendMessage('Failed to rotate block! May be possible that this block has no facing trait.');
