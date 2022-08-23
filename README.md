@@ -9,6 +9,8 @@ There is no need for any extra installation when installing our plugins from [Re
 
 ## Plugins
 ### ➡️ Unsolicited - Developed
+Plugins which are fully developed by Unsolicited Studios. 
+
 | Plugin      | Description |
 | ----------- | ----------- |
 | [SDAutoUpdater](https://github.com/Unsolicited-Studios/SDPM-Plugins/tree/dev/plugins/SDAutoUpdater) | Automatically updates all existing SDPM plugins on start |
@@ -18,11 +20,18 @@ There is no need for any extra installation when installing our plugins from [Re
 | [BlankFix](https://github.com/Unsolicited-Studios/SDPM-Plugins/tree/dev/plugins/BlankFix) | Workaround for an issue involving players being in limbo when Yaw and Pitch is incorrect | 
 
 ### ➡️ Unsolicited - Revived
-| Plugin      | Description |
-| ----------- | ----------- |
+Plugins which are revived from their original PM3 state.
+
+| Plugin | Description |
+| ------ | ----------- |
 | [PlayerTrade](https://github.com/Unsolicited-Studios/SDPM-Plugins/tree/dev/plugins/PlayerTrade) | Modern and minimalist trade system | 
 | [BurgerCustomArmor](https://github.com/Unsolicited-Studios/SDPM-Plugins/tree/dev/plugins/BurgerCustomArmor) | Create custom armor sets with several abilities | 
-| [EC-TableUI](https://github.com/Unsolicited-Studios/SDPM-Plugins/tree/dev/plugins/EC-TableUI) | Enchantment Table Implementation | 
+| [EC-TableUI](https://github.com/Unsolicited-Studios/SDPM-Plugins/tree/dev/plugins/EC-TableUI) | Enchantment Table Implementation |
+
+### ➡️ Unsolicited - Updated
+Plugins which are updated from their original PM4 state.
+| Plugin | Description |
+| ------ | ----------- |
 
 ## Libraries
 ### ➡️ Unsolicited - Developed

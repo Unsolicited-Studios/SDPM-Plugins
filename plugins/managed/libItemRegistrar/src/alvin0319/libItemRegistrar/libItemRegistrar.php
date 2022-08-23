@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace alvin0319\ItemRegistrar;
+namespace alvin0319\libItemRegistrar;
 
 use pocketmine\item\Item;
 use pocketmine\block\Block;
