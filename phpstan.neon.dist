@@ -13,7 +13,7 @@ parameters:
 
     excludePaths:
         analyse:
-            - libraries/await-generator
+            - libraries/managed/await-generator
 
     paths:
         - plugins
