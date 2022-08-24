@@ -25,13 +25,13 @@
 
 declare(strict_types=1);
 
-namespace UnsolicitedDev\libVPN;
+namespace UnsolicitedDev\GeolocationAPI;
 
 use CurlHandle;
 use pocketmine\utils\Internet;
-use UnsolicitedDev\libVPN\util\Parser;
-use UnsolicitedDev\libVPN\util\Algorithm;
 use pocketmine\utils\InternetException;
+use UnsolicitedDev\GeolocationAPI\util\Parser;
+use UnsolicitedDev\GeolocationAPI\util\Algorithm;
 
 class API
 {

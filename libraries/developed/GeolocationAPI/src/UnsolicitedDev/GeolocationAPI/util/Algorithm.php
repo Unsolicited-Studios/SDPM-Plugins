@@ -25,9 +25,9 @@
 
 declare(strict_types=1);
 
-namespace UnsolicitedDev\libVPN\util;
+namespace UnsolicitedDev\GeolocationAPI\util;
 
-use UnsolicitedDev\libVPN\API;
+use UnsolicitedDev\GeolocationAPI\API;
 
 class Algorithm
 {

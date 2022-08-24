@@ -5,8 +5,8 @@
 # █▄▀ ██▄ ▀▄▀ ██▄ █▄▄ █▄█ █▀▀ █░▀░█ ██▄ █░▀█ ░█░
 #    https://github.com/Unsolicited-Studios
 
-name: libVPN
-antigen: UnsolicitedDev\libVPN
+name: GeolocationAPI
+antigen: UnsolicitedDev\GeolocationAPI
 author: AGTHARN
 version: 1.0.0
 api: 4.0.0

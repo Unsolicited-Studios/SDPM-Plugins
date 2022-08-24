@@ -25,7 +25,7 @@
 
 declare(strict_types=1);
 
-namespace UnsolicitedDev\libVPN\util;
+namespace UnsolicitedDev\GeolocationAPI\util;
 
 class Parser
 {
