@@ -28,20 +28,16 @@ declare(strict_types=1);
 namespace UnsolicitedDev\VPNProtect;
 
 use pocketmine\plugin\PluginBase;
+use pocketmine\utils\SingletonTrait;
 use UnsolicitedDev\VPNProtect\EventListener;
 
 class Main extends PluginBase
 {
-    private static Main $instance;
-
-    public static function getInstance(): Main
-    {
-        return self::$instance;
-    }
+    use SingletonTrait;
 
     public function onEnable(): void
     {
-        self::$instance = $this;
+        self::setInstance($this);
 
         $this->saveDefaultConfig();
         if (!$this->runChecks()) {

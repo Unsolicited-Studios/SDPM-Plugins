@@ -27,11 +27,11 @@ declare(strict_types=1);
 
 namespace UnsolicitedDev\VPNProtect;
 
-use UnsolicitedDev\VPNProtect\Main;
-use UnsolicitedDev\libVPN\util\Cache;
 use pocketmine\event\Listener;
-use UnsolicitedDev\VPNProtect\task\AsyncCheckTask;
+use UnsolicitedDev\VPNProtect\Main;
+use UnsolicitedDev\LocationAPI\util\Cache;
 use pocketmine\event\player\PlayerLoginEvent;
+use UnsolicitedDev\VPNProtect\task\AsyncCheckTask;
 
 class EventListener implements Listener
 {

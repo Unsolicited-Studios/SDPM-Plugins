@@ -29,12 +29,12 @@ namespace UnsolicitedDev\VPNProtect\task;
 
 use Logger;
 use pocketmine\Server;
-use UnsolicitedDev\libVPN\API;
 use pocketmine\player\Player;
-use UnsolicitedDev\VPNProtect\Main;
 use pocketmine\utils\TextFormat;
-use UnsolicitedDev\libVPN\util\Cache;
 use pocketmine\scheduler\AsyncTask;
+use UnsolicitedDev\VPNProtect\Main;
+use UnsolicitedDev\LocationAPI\VPNAPI;
+use UnsolicitedDev\LocationAPI\util\Cache;
 
 class AsyncCheckTask extends AsyncTask
 {
@@ -53,10 +53,10 @@ class AsyncCheckTask extends AsyncTask
     {
         $options = unserialize($this->options);
         if ($options['smart-queries'] ?? true) {
-            $this->setResult(API::getSmartResults($this->playerIP, $options));
+            $this->setResult(VPNAPI::getSmartResults($this->playerIP, $options));
             return;
         }
-        $this->setResult(API::getVPNResults($this->playerIP, $options));
+        $this->setResult(VPNAPI::getNormalResults($this->playerIP, $options));
     }
 
     public function onCompletion(): void
@@ -100,7 +100,7 @@ class AsyncCheckTask extends AsyncTask
     private function addCache(bool $passed): void
     {
         if (Main::getInstance()->getConfig()->get('enable-cache', true)) {
-            Cache::add($this->playerIP, $passed, Main::getInstance()->getConfig()->get('cache-limit', 50));
+            Cache::set($this->playerIP, $passed, Main::getInstance()->getConfig()->get('cache-limit', 50));
         }
     }
 }
