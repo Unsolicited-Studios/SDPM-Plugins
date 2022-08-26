@@ -1,0 +1,16 @@
+#          █▀ █▀█ █░░ █ █▀▀ █ ▀█▀
+#          ▄█ █▄█ █▄▄ █ █▄▄ █ ░█░
+# 
+# █▀▄ █▀▀ █░█ █▀▀ █░░ █▀█ █▀█ █▀▄▀█ █▀▀ █▄░█ ▀█▀
+# █▄▀ ██▄ ▀▄▀ ██▄ █▄▄ █▄█ █▀▀ █░▀░█ ██▄ █░▀█ ░█░
+#    https://github.com/Unsolicited-Studios
+
+name: BuilderWand
+main: UnsolicitedDev\BuilderWand\Main
+author: AGTHARN
+version: 1.0.0
+api: 5.0.0
+
+permissions:
+  builderwand.cmd:
+    default: op
