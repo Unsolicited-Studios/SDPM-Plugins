@@ -27,11 +27,10 @@ declare(strict_types=1);
 
 namespace UnsolicitedDev\SDAutoUpdater;
 
-class SDUpdateInfo
-{
-    public static array $latestRelease;
-    public static int $currentVersion;
+use pocketmine\Server;
 
+class SDUpdateUtil
+{
     public static function getPluginNames(string $folder): array
     {
         $pluginNames = [];
@@ -47,6 +46,24 @@ class SDUpdateInfo
             }
 
             $pluginNames[$data['name']] = $file->getPathname();
+        }
+        return $pluginNames;
+    }
+
+    public static function getCrashCausers(): array
+    {
+        // There shouldn't even be more than 1 plugin causing a crash.
+        // However, I should still consider it if that happens for whatever reason.
+        $pluginNames = [];
+        foreach (glob(Server::getInstance()->getDataPath() . 'crashdumps/*.log') as $filePath) {
+            if (filemtime($filePath) > (int) Server::getInstance()->getStartTime()) {
+                foreach (file($filePath) as $line) {
+                    $words = explode(' ', $line);
+                    if (count($words) === 2 && $words[0] === 'BAD PLUGIN:') {
+                        $pluginNames[] = $words[1];
+                    }
+                }
+            }
         }
         return $pluginNames;
     }
