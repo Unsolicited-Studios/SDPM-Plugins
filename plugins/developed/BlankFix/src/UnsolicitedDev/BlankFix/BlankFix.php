@@ -34,7 +34,7 @@ use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\player\PlayerLoginEvent;
 
-class Main extends PluginBase implements Listener
+class BlankFix extends PluginBase implements Listener
 {
     private array $toAlert = [];
 

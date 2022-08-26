@@ -6,7 +6,7 @@
 #    https://github.com/Unsolicited-Studios
 
 name: BlankFix
-main: UnsolicitedDev\BlankFix\Main
+main: UnsolicitedDev\BlankFix\BlankFix
 author: AGTHARN
 version: 1.0.0
 api: 5.0.0

@@ -31,7 +31,7 @@ use pocketmine\plugin\PluginBase;
 use pocketmine\utils\SingletonTrait;
 use UnsolicitedDev\VPNProtect\EventListener;
 
-class Main extends PluginBase
+class VPNProtect extends PluginBase
 {
     use SingletonTrait;
 

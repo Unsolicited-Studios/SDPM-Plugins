@@ -5,12 +5,12 @@ namespace Heisenburger69\BurgerCustomArmor\Commands;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\utils\TextFormat as C;
-use Heisenburger69\BurgerCustomArmor\Main;
+use Heisenburger69\BurgerCustomArmor\BurgerCustomArmor;
 
 class CustomArmorCommand extends Command
 {
     public function __construct(
-        private Main $plugin
+        private BurgerCustomArmor $plugin
     ) {
         parent::__construct("customarmor", "BurgerCustomArmor Base Command", "/customarmor <SetName> <piece> <player>", ["burgercustomarmor", "bca"]);
         $this->setPermission("burgercustomarmor.command");
@@ -19,7 +19,7 @@ class CustomArmorCommand extends Command
     public function execute(CommandSender $sender, string $commandLabel, array $args): void
     {
         if (!$sender->hasPermission("burgercustomarmor.command")) {
-            $sender->sendMessage(Main::PREFIX . C::DARK_RED . "Insufficient Permission.");
+            $sender->sendMessage(BurgerCustomArmor::PREFIX . C::DARK_RED . "Insufficient Permission.");
             return;
         }
         
@@ -27,18 +27,18 @@ class CustomArmorCommand extends Command
         $usage = $this->getUsage();
 
         if (count($args) !== 3) {
-            $sender->sendMessage(Main::PREFIX . C::RED . $usage);
+            $sender->sendMessage(BurgerCustomArmor::PREFIX . C::RED . $usage);
             return;
         }
         if (!isset($this->plugin->customSets[$args[0]])) {
-            $sender->sendMessage(Main::PREFIX . C::RED . "The given Armor Set does not exist.");
+            $sender->sendMessage(BurgerCustomArmor::PREFIX . C::RED . "The given Armor Set does not exist.");
             return;
         }
 
         $armorSet = $this->plugin->customSets[$args[0]];
         $playerName = $args[2];
         if (($player = $this->plugin->getServer()->getPlayerByPrefix($playerName)) === null) {
-            $sender->sendMessage(Main::PREFIX . C::RED . "The given player is offline!");
+            $sender->sendMessage(BurgerCustomArmor::PREFIX . C::RED . "The given player is offline!");
             return;
         }
 
@@ -48,7 +48,7 @@ class CustomArmorCommand extends Command
                 foreach ($items as $item) {
                     $player->getInventory()->addItem($item);
                 }
-                $sender->sendMessage(Main::PREFIX . C::GREEN . "Successfully gave all pieces of Custom Armor Set " . C::AQUA . $armorSet->getName() . C::GREEN . " to player " . C::AQUA . $playerName);
+                $sender->sendMessage(BurgerCustomArmor::PREFIX . C::GREEN . "Successfully gave all pieces of Custom Armor Set " . C::AQUA . $armorSet->getName() . C::GREEN . " to player " . C::AQUA . $playerName);
                 return;
             case "helmet":
                 $item = $armorSet->getHelmet();
@@ -67,6 +67,6 @@ class CustomArmorCommand extends Command
                 return;
         }
         $player->getInventory()->addItem($item);
-        $sender->sendMessage(Main::PREFIX . C::GREEN . "Successfully gave " . C::AQUA . $args[1] . C::GREEN . " of Custom Armor Set " . C::AQUA . $armorSet->getName() . C::GREEN . " to player " . C::AQUA . $playerName);
+        $sender->sendMessage(BurgerCustomArmor::PREFIX . C::GREEN . "Successfully gave " . C::AQUA . $args[1] . C::GREEN . " of Custom Armor Set " . C::AQUA . $armorSet->getName() . C::GREEN . " to player " . C::AQUA . $playerName);
     }
 }

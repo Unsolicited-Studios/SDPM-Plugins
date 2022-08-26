@@ -14,7 +14,7 @@ class EventListener implements Listener
             $item->getNamedTag()->getTag('builder_wand') !== null &&
             $event->getAction() === PlayerInteractEvent::RIGHT_CLICK_BLOCK
         ) {
-            Main::placeBlocksCompatible($event->getBlock());
+            BuilderWand::placeBlocksCompatible($event->getBlock());
         }
     }
 }

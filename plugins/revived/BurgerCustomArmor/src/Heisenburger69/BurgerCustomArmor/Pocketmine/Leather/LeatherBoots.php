@@ -6,7 +6,7 @@ use pocketmine\item\ItemTypeIds;
 use pocketmine\item\ArmorTypeInfo;
 use pocketmine\item\ItemIdentifier;
 use pocketmine\inventory\ArmorInventory;
-use Heisenburger69\BurgerCustomArmor\Main;
+use Heisenburger69\BurgerCustomArmor\BurgerCustomArmor;
 use Heisenburger69\BurgerCustomArmor\Pocketmine\BurgerArmor;
 use Heisenburger69\BurgerCustomArmor\ArmorSets\CustomArmorSet;
 
@@ -24,7 +24,7 @@ class LeatherBoots extends BurgerArmor
     {
         if (($nbt = $this->getNamedTag()->getTag("burgercustomarmor")) !== null) {
             $setName = $nbt->getValue();
-            $armorSet = Main::$instance->customSets[$setName];
+            $armorSet = BurgerCustomArmor::$instance->customSets[$setName];
             if ($armorSet instanceof CustomArmorSet) {
                 return isset($armorSet->durabilities["boots"]) ? $armorSet->durabilities["boots"] : parent::getMaxDurability();
             }

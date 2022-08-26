@@ -6,12 +6,9 @@ use pocketmine\item\Item;
 use pocketmine\color\Color;
 use pocketmine\nbt\tag\StringTag;
 use pocketmine\utils\TextFormat as C;
-use Pushkar\MagicCore\Main as MagicCore;
-use Heisenburger69\BurgerCustomArmor\Main;
-use pocketmine\item\enchantment\ItemFlags;
-use pocketmine\item\enchantment\Enchantment;
 use pocketmine\data\bedrock\EnchantmentIdMap;
 use pocketmine\item\enchantment\EnchantmentInstance;
+use Heisenburger69\BurgerCustomArmor\BurgerCustomArmor;
 use Heisenburger69\BurgerCustomArmor\Abilities\ArmorAbility;
 use Heisenburger69\BurgerCustomArmor\Pocketmine\Leather\LeatherCap;
 use Heisenburger69\BurgerCustomArmor\Pocketmine\Leather\LeatherBoots;
@@ -75,7 +72,7 @@ class CustomArmorSet
         $this->unequippedMessages = $unequippedMessages;
 
         /** @phpstan-ignore-next-line */
-        $this->fakeEnchant = new EnchantmentInstance(EnchantmentIdMap::getInstance()->fromId(Main::FAKE_ENCH_ID));
+        $this->fakeEnchant = new EnchantmentInstance(EnchantmentIdMap::getInstance()->fromId(BurgerCustomArmor::FAKE_ENCH_ID));
     }
 
     /**

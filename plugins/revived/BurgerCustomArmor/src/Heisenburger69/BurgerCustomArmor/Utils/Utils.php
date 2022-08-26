@@ -7,7 +7,7 @@ use pocketmine\item\Item;
 use pocketmine\entity\Skin;
 use pocketmine\world\World;
 use pocketmine\player\Player;
-use Heisenburger69\BurgerCustomArmor\Main;
+use Heisenburger69\BurgerCustomArmor\BurgerCustomArmor;
 use Heisenburger69\BurgerCustomArmor\Pocketmine\Gold\GoldBoots;
 use Heisenburger69\BurgerCustomArmor\Pocketmine\Iron\IronBoots;
 use Heisenburger69\BurgerCustomArmor\Pocketmine\Gold\GoldHelmet;
@@ -37,8 +37,8 @@ class Utils
      */
     public static function checkProtectionLevel(World $level): bool
     {
-        $blacklist = Main::$instance->getConfig()->get("enable-world-blacklist");
-        $whitelist = Main::$instance->getConfig()->get("enable-world-whitelist");
+        $blacklist = BurgerCustomArmor::$instance->getConfig()->get("enable-world-blacklist");
+        $whitelist = BurgerCustomArmor::$instance->getConfig()->get("enable-world-whitelist");
         $levelName = $level->getFolderName();
 
         if ($blacklist === $whitelist) {
@@ -47,12 +47,12 @@ class Utils
 
         switch (true) {
             case $blacklist:
-                $disallowedWorlds = Main::$instance->getConfig()->get("blacklisted-worlds");
+                $disallowedWorlds = BurgerCustomArmor::$instance->getConfig()->get("blacklisted-worlds");
                 if (!is_array($disallowedWorlds)) return false;
                 if (in_array($levelName, $disallowedWorlds)) return false;
                 return true;
             case $whitelist:
-                $allowedWorlds = Main::$instance->getConfig()->get("whitelisted-worlds");
+                $allowedWorlds = BurgerCustomArmor::$instance->getConfig()->get("whitelisted-worlds");
                 if (!is_array($allowedWorlds)) return false;
                 if (in_array($levelName, $allowedWorlds)) return true;
                 return false;
@@ -67,13 +67,13 @@ class Utils
      */
     public static function createCape(string $fileName)
     {
-        $img = @imagecreatefrompng(Main::$instance->getDataFolder() . $fileName);
+        $img = @imagecreatefrompng(BurgerCustomArmor::$instance->getDataFolder() . $fileName);
         if (!$img instanceof GdImage) {
             return '';
         }
 
         $bytes = '';
-        $lc = @getimagesize(Main::$instance->getDataFolder() . $fileName);
+        $lc = @getimagesize(BurgerCustomArmor::$instance->getDataFolder() . $fileName);
         if (!is_array($lc)) {
             return '';
         }

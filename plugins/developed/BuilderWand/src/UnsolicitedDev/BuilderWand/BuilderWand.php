@@ -2,13 +2,14 @@
 
 namespace UnsolicitedDev\BuilderWand;
 
+use pocketmine\block\Air;
 use pocketmine\block\Block;
 use pocketmine\math\Facing;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\SingletonTrait;
 use UnsolicitedDev\BuilderWand\command\WandCommand;
 
-class Main extends PluginBase
+class BuilderWand extends PluginBase
 {
     use SingletonTrait;
 

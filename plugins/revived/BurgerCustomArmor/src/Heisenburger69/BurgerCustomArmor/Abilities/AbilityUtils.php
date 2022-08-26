@@ -4,7 +4,7 @@ namespace Heisenburger69\BurgerCustomArmor\Abilities;
 
 use pocketmine\Server;
 use pocketmine\entity\effect\Effect;
-use Heisenburger69\BurgerCustomArmor\Main;
+use Heisenburger69\BurgerCustomArmor\BurgerCustomArmor;
 use pocketmine\entity\effect\EffectInstance;
 use pocketmine\entity\effect\StringToEffectParser;
 use Heisenburger69\BurgerCustomArmor\Abilities\Togglable\CapeAbility;
@@ -50,7 +50,7 @@ class AbilityUtils
                 return new BowAmplificationAbility((float)$value);
             case "Cape":
                 if (!extension_loaded("gd")) {
-                    Server::getInstance()->getLogger()->info(Main::PREFIX . ": gd extension missing! Cape Ability Disabled.");
+                    Server::getInstance()->getLogger()->info(BurgerCustomArmor::PREFIX . ": gd extension missing! Cape Ability Disabled.");
                     return null;
                 }
                 return new CapeAbility((string)$value);
@@ -70,7 +70,7 @@ class AbilityUtils
             foreach ($effect as $effectName => $level) {
                 $effectType = StringToEffectParser::getInstance()->parse($effectName);
                 if ($effectType instanceof Effect) {
-                    $effectInstance = new EffectInstance($effectType, 999999, $level - 1, Main::$instance->getConfig()->get("show-effect-particles"));
+                    $effectInstance = new EffectInstance($effectType, 999999, $level - 1, BurgerCustomArmor::$instance->getConfig()->get("show-effect-particles"));
                     $abilities[] = new EffectAbility($effectInstance);
                 }
             }

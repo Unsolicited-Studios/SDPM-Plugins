@@ -6,7 +6,7 @@
 #    https://github.com/Unsolicited-Studios
 
 name: BuilderWand
-main: UnsolicitedDev\BuilderWand\Main
+main: UnsolicitedDev\BuilderWand\BuilderWand
 author: AGTHARN
 version: 1.0.0
 api: 5.0.0

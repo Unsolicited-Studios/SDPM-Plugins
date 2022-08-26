@@ -33,7 +33,7 @@ use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\enchantment\VanillaEnchantments;
 use pocketmine\item\enchantment\StringToEnchantmentParser;
 
-class Main extends PluginBase
+class ECTUI extends PluginBase
 {
     public function onEnable(): void
     {
@@ -146,7 +146,7 @@ class Main extends PluginBase
             default => 0.20
         };
 
-        return Main::formEnchants($toEnchant, $levelSub);
+        return ECTUI::formEnchants($toEnchant, $levelSub);
     }
 
     public static function getBookshelves(Block $enchantmentTable): int

@@ -4,9 +4,9 @@ namespace Heisenburger69\BurgerCustomArmor;
 
 use pocketmine\item\Armor;
 use pocketmine\nbt\tag\Tag;
-use pocketmine\item\ItemTypeIds;
 use pocketmine\player\Player;
 use pocketmine\event\Listener;
+use pocketmine\item\ItemTypeIds;
 use pocketmine\block\VanillaBlocks;
 use pocketmine\scheduler\ClosureTask;
 use pocketmine\inventory\ArmorInventory;
@@ -29,7 +29,7 @@ use Heisenburger69\BurgerCustomArmor\Abilities\Reactive\Offensive\OffensiveAbili
 class EventListener implements Listener
 {
     public function __construct(
-        private Main $plugin
+        private BurgerCustomArmor $plugin
     ) {
     }
 
@@ -50,13 +50,13 @@ class EventListener implements Listener
      */
     public function onQuit(PlayerQuitEvent $event): void
     {
-        foreach (Main::$instance->using as $setName => $players) {
+        foreach (BurgerCustomArmor::$instance->using as $setName => $players) {
             if (!is_array($players)) {
                 continue;
             }
             foreach ($players as $playerName => $using) {
                 if ($playerName === $event->getPlayer()->getName()) {
-                    unset(Main::$instance->using[$setName][$playerName]);
+                    unset(BurgerCustomArmor::$instance->using[$setName][$playerName]);
                 }
             }
         }

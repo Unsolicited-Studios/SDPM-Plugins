@@ -28,7 +28,6 @@ declare(strict_types=1);
 namespace UnsolicitedDev\VPNProtect;
 
 use pocketmine\event\Listener;
-use UnsolicitedDev\VPNProtect\Main;
 use UnsolicitedDev\LocationAPI\util\Cache;
 use pocketmine\event\player\PlayerLoginEvent;
 use UnsolicitedDev\VPNProtect\task\AsyncCheckTask;
@@ -36,7 +35,7 @@ use UnsolicitedDev\VPNProtect\task\AsyncCheckTask;
 class EventListener implements Listener
 {
     public function __construct(
-        private Main $plugin
+        private VPNProtect $plugin
     ) {
     }
 
@@ -44,7 +43,7 @@ class EventListener implements Listener
     {
         $player = $event->getPlayer();
         if (!$player->hasPermission('vpnprotect.bypass')) {
-            if (Main::getInstance()->getConfig()->get('enable-cache', true)) {
+            if (VPNProtect::getInstance()->getConfig()->get('enable-cache', true)) {
                 $result = Cache::get($player->getNetworkSession()->getIp());
                 if ($result !== null) {
                     if ($result) {

@@ -41,11 +41,11 @@ use Heisenburger69\BurgerCustomArmor\Pocketmine\Diamond\DiamondHelmet;
 use Heisenburger69\BurgerCustomArmor\Pocketmine\Diamond\DiamondLeggings;
 use Heisenburger69\BurgerCustomArmor\Pocketmine\Diamond\DiamondChestplate;
 
-class Main extends PluginBase
+class BurgerCustomArmor extends PluginBase
 {
     public const PREFIX = C::BOLD . C::AQUA . "Burger" . C::LIGHT_PURPLE . "CustomArmor" . "> " . C::RESET;
 
-    public static Main $instance;
+    public static BurgerCustomArmor $instance;
 
     private Config $craftingRecipes;
     private Config $armorSets;

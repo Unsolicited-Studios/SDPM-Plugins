@@ -32,8 +32,8 @@ use pocketmine\Server;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 use pocketmine\scheduler\AsyncTask;
-use UnsolicitedDev\VPNProtect\Main;
 use UnsolicitedDev\LocationAPI\VPNAPI;
+use UnsolicitedDev\VPNProtect\VPNProtect;
 use UnsolicitedDev\LocationAPI\util\Cache;
 
 class AsyncCheckTask extends AsyncTask
@@ -85,8 +85,8 @@ class AsyncCheckTask extends AsyncTask
         }
 
         if ($failedChecks > 0) {
-            if (Main::getInstance()->getConfig()->get('enable-kick', true) && $failedChecks >= Main::getInstance()->getConfig()->get('minimum-checks', 2)) {
-                $player->kick(TextFormat::colorize(Main::getInstance()->getConfig()->get('kick-message')));
+            if (VPNProtect::getInstance()->getConfig()->get('enable-kick', true) && $failedChecks >= VPNProtect::getInstance()->getConfig()->get('minimum-checks', 2)) {
+                $player->kick(TextFormat::colorize(VPNProtect::getInstance()->getConfig()->get('kick-message')));
                 $this->addCache(false);
             }
             $this->logger->debug($this->playerName . ' VPN Checks have been completed and player has failed! (' . $failedChecks . ')');
@@ -99,8 +99,8 @@ class AsyncCheckTask extends AsyncTask
 
     private function addCache(bool $passed): void
     {
-        if (Main::getInstance()->getConfig()->get('enable-cache', true)) {
-            Cache::set($this->playerIP, $passed, Main::getInstance()->getConfig()->get('cache-limit', 50));
+        if (VPNProtect::getInstance()->getConfig()->get('enable-cache', true)) {
+            Cache::set($this->playerIP, $passed, VPNProtect::getInstance()->getConfig()->get('cache-limit', 50));
         }
     }
 }

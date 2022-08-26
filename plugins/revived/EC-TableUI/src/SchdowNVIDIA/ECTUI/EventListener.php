@@ -14,7 +14,7 @@ class EventListener implements Listener
         if ($block instanceof EnchantingTable) {
             $event->cancel();
             if (!$event->getPlayer()->isSneaking()) {
-                Main::openEnchantUI($event->getPlayer(), $event->getItem(), $block);
+                ECTUI::openEnchantUI($event->getPlayer(), $event->getItem(), $block);
             }
         }
     }

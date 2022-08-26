@@ -6,7 +6,7 @@
 #    https://github.com/Unsolicited-Studios
 
 name: VPNProtect
-main: UnsolicitedDev\VPNProtect\Main
+main: UnsolicitedDev\VPNProtect\VPNProtect
 author: AGTHARN
 version: 2.1.0
 api: 5.0.0
