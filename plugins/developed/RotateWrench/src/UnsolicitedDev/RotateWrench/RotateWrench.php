@@ -36,30 +36,25 @@ use pocketmine\player\Player;
 use pocketmine\item\VanillaItems;
 use pocketmine\plugin\PluginBase;
 use pocketmine\world\format\Chunk;
+use pocketmine\utils\SingletonTrait;
 use pocketmine\block\tile\Chest as ChestTile;
-use pocketmine\world\format\io\GlobalItemDataHandlers;
 use UnsolicitedDev\RotateWrench\command\RotateCommand;
 use UnsolicitedDev\RotateWrench\command\WrenchCommand;
 use pocketmine\data\bedrock\item\upgrade\LegacyItemIdToStringIdMap;
 
 class RotateWrench extends PluginBase
 {
+    use SingletonTrait;
+    
     public const DOUBLE_CHEST = -1;
 
     public const FACING = 1;
     public const AXIS = 2;
     public const ROTATION = 3;
 
-    private static RotateWrench $instance;
-
-    public static function getInstance(): RotateWrench
-    {
-        return self::$instance;
-    }
-
     public function onEnable(): void
     {
-        self::$instance = $this;
+        self::setInstance($this);
 
         $this->getServer()->getCommandMap()->register('rotatewrench', new RotateCommand($this, 'rotate', 'Rotate any blocks you are looking at that has a facing'));
         $this->getServer()->getCommandMap()->register('rotatewrench', new WrenchCommand($this, 'wrench', 'Receive a wrench that can rotate the block you are looking at'));

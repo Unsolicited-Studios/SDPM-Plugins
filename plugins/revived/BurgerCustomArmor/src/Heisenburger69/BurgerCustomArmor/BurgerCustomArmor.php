@@ -8,6 +8,7 @@ use pocketmine\color\Color;
 use pocketmine\utils\Config;
 use pocketmine\nbt\tag\StringTag;
 use pocketmine\plugin\PluginBase;
+use pocketmine\utils\SingletonTrait;
 use pocketmine\crafting\ShapedRecipe;
 use pocketmine\utils\TextFormat as C;
 use pocketmine\item\enchantment\ItemFlags;
@@ -43,9 +44,9 @@ use Heisenburger69\BurgerCustomArmor\Pocketmine\Diamond\DiamondChestplate;
 
 class BurgerCustomArmor extends PluginBase
 {
+    use SingletonTrait;
+    
     public const PREFIX = C::BOLD . C::AQUA . "Burger" . C::LIGHT_PURPLE . "CustomArmor" . "> " . C::RESET;
-
-    public static BurgerCustomArmor $instance;
 
     private Config $craftingRecipes;
     private Config $armorSets;
@@ -57,7 +58,7 @@ class BurgerCustomArmor extends PluginBase
 
     public function onEnable(): void
     {
-        self::$instance = $this;
+        self::setInstance($this);
 
         $this->saveDefaultConfig();
         $this->saveResource("armorsets.yml");

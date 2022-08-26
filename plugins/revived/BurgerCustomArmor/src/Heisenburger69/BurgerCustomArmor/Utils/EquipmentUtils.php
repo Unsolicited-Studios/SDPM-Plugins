@@ -20,22 +20,22 @@ class EquipmentUtils
     public static function removeUsingSet(Player $player, Item $item, string $setName): void
     {
         $playerName = $player->getName();
-        if (!isset(BurgerCustomArmor::$instance->using[$setName][$playerName])) {
+        if (!isset(BurgerCustomArmor::getInstance()->using[$setName][$playerName])) {
             self::initPlayer($playerName, $setName);
         }
 
         switch (true) {
             case Utils::isHelmet($item):
-                BurgerCustomArmor::$instance->using[$setName][$playerName]["helmet"] = false;
+                BurgerCustomArmor::getInstance()->using[$setName][$playerName]["helmet"] = false;
                 break;
             case Utils::isChestplate($item):
-                BurgerCustomArmor::$instance->using[$setName][$playerName]["chestplate"] = false;
+                BurgerCustomArmor::getInstance()->using[$setName][$playerName]["chestplate"] = false;
                 break;
             case Utils::isLeggings($item):
-                BurgerCustomArmor::$instance->using[$setName][$playerName]["leggings"] = false;
+                BurgerCustomArmor::getInstance()->using[$setName][$playerName]["leggings"] = false;
                 break;
             case Utils::isBoots($item):
-                BurgerCustomArmor::$instance->using[$setName][$playerName]["boots"] = false;
+                BurgerCustomArmor::getInstance()->using[$setName][$playerName]["boots"] = false;
                 break;
         }
     }
@@ -48,22 +48,22 @@ class EquipmentUtils
     public static function addUsingSet(Player $player, Item $item, string $setName): void
     {
         $playerName = $player->getName();
-        if (!isset(BurgerCustomArmor::$instance->using[$setName][$playerName])) {
+        if (!isset(BurgerCustomArmor::getInstance()->using[$setName][$playerName])) {
             self::initPlayer($playerName, $setName);
         }
 
         switch (true) {
             case Utils::isHelmet($item):
-                BurgerCustomArmor::$instance->using[$setName][$playerName]["helmet"] = true;
+                BurgerCustomArmor::getInstance()->using[$setName][$playerName]["helmet"] = true;
                 break;
             case Utils::isChestplate($item):
-                BurgerCustomArmor::$instance->using[$setName][$playerName]["chestplate"] = true;
+                BurgerCustomArmor::getInstance()->using[$setName][$playerName]["chestplate"] = true;
                 break;
             case Utils::isLeggings($item):
-                BurgerCustomArmor::$instance->using[$setName][$playerName]["leggings"] = true;
+                BurgerCustomArmor::getInstance()->using[$setName][$playerName]["leggings"] = true;
                 break;
             case Utils::isBoots($item):
-                BurgerCustomArmor::$instance->using[$setName][$playerName]["boots"] = true;
+                BurgerCustomArmor::getInstance()->using[$setName][$playerName]["boots"] = true;
                 break;
         }
     }
@@ -74,7 +74,7 @@ class EquipmentUtils
      */
     public static function initPlayer(string $playerName, string $setName): void
     {
-        BurgerCustomArmor::$instance->using[$setName][$playerName] = [
+        BurgerCustomArmor::getInstance()->using[$setName][$playerName] = [
             "helmet" => false,
             "chestplate" => false,
             "leggings" => false,
@@ -91,11 +91,11 @@ class EquipmentUtils
     {
         $playerName = $player->getName();
         if (
-            isset(BurgerCustomArmor::$instance->using[$setName][$playerName]) &&
-            BurgerCustomArmor::$instance->using[$setName][$playerName]["helmet"] === true &&
-            BurgerCustomArmor::$instance->using[$setName][$playerName]["chestplate"] === true &&
-            BurgerCustomArmor::$instance->using[$setName][$playerName]["leggings"] === true &&
-            BurgerCustomArmor::$instance->using[$setName][$playerName]["boots"] === true
+            isset(BurgerCustomArmor::getInstance()->using[$setName][$playerName]) &&
+            BurgerCustomArmor::getInstance()->using[$setName][$playerName]["helmet"] === true &&
+            BurgerCustomArmor::getInstance()->using[$setName][$playerName]["chestplate"] === true &&
+            BurgerCustomArmor::getInstance()->using[$setName][$playerName]["leggings"] === true &&
+            BurgerCustomArmor::getInstance()->using[$setName][$playerName]["boots"] === true
         ) {
             return true;
         }
@@ -117,11 +117,11 @@ class EquipmentUtils
             }
 
             $setName = $nbt->getValue();
-            if (!is_string($setName) || !isset(BurgerCustomArmor::$instance->customSets[$setName])) {
+            if (!is_string($setName) || !isset(BurgerCustomArmor::getInstance()->customSets[$setName])) {
                 continue;
             }
 
-            $armorSet = BurgerCustomArmor::$instance->customSets[$setName];
+            $armorSet = BurgerCustomArmor::getInstance()->customSets[$setName];
             self::addUsingSet($player, $item, $setName);
         }
 

@@ -14,11 +14,11 @@ class PermissionAbility extends TogglableAbility
 
     public function on(Player $player): void
     {
-        $player->addAttachment(BurgerCustomArmor::$instance, $this->permission, true);
+        $player->addAttachment(BurgerCustomArmor::getInstance(), $this->permission, true);
     }
 
     public function off(Player $player): void
     {
-        $player->addAttachment(BurgerCustomArmor::$instance, $this->permission, false);
+        $player->addAttachment(BurgerCustomArmor::getInstance(), $this->permission, false);
     }
 }

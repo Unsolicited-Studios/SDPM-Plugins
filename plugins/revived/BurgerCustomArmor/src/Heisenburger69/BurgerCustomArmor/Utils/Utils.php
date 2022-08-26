@@ -37,8 +37,8 @@ class Utils
      */
     public static function checkProtectionLevel(World $level): bool
     {
-        $blacklist = BurgerCustomArmor::$instance->getConfig()->get("enable-world-blacklist");
-        $whitelist = BurgerCustomArmor::$instance->getConfig()->get("enable-world-whitelist");
+        $blacklist = BurgerCustomArmor::getInstance()->getConfig()->get("enable-world-blacklist");
+        $whitelist = BurgerCustomArmor::getInstance()->getConfig()->get("enable-world-whitelist");
         $levelName = $level->getFolderName();
 
         if ($blacklist === $whitelist) {
@@ -47,12 +47,12 @@ class Utils
 
         switch (true) {
             case $blacklist:
-                $disallowedWorlds = BurgerCustomArmor::$instance->getConfig()->get("blacklisted-worlds");
+                $disallowedWorlds = BurgerCustomArmor::getInstance()->getConfig()->get("blacklisted-worlds");
                 if (!is_array($disallowedWorlds)) return false;
                 if (in_array($levelName, $disallowedWorlds)) return false;
                 return true;
             case $whitelist:
-                $allowedWorlds = BurgerCustomArmor::$instance->getConfig()->get("whitelisted-worlds");
+                $allowedWorlds = BurgerCustomArmor::getInstance()->getConfig()->get("whitelisted-worlds");
                 if (!is_array($allowedWorlds)) return false;
                 if (in_array($levelName, $allowedWorlds)) return true;
                 return false;
@@ -67,13 +67,13 @@ class Utils
      */
     public static function createCape(string $fileName)
     {
-        $img = @imagecreatefrompng(BurgerCustomArmor::$instance->getDataFolder() . $fileName);
+        $img = @imagecreatefrompng(BurgerCustomArmor::getInstance()->getDataFolder() . $fileName);
         if (!$img instanceof GdImage) {
             return '';
         }
 
         $bytes = '';
-        $lc = @getimagesize(BurgerCustomArmor::$instance->getDataFolder() . $fileName);
+        $lc = @getimagesize(BurgerCustomArmor::getInstance()->getDataFolder() . $fileName);
         if (!is_array($lc)) {
             return '';
         }

@@ -50,13 +50,13 @@ class EventListener implements Listener
      */
     public function onQuit(PlayerQuitEvent $event): void
     {
-        foreach (BurgerCustomArmor::$instance->using as $setName => $players) {
+        foreach (BurgerCustomArmor::getInstance()->using as $setName => $players) {
             if (!is_array($players)) {
                 continue;
             }
             foreach ($players as $playerName => $using) {
                 if ($playerName === $event->getPlayer()->getName()) {
-                    unset(BurgerCustomArmor::$instance->using[$setName][$playerName]);
+                    unset(BurgerCustomArmor::getInstance()->using[$setName][$playerName]);
                 }
             }
         }

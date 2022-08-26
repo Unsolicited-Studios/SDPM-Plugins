@@ -24,7 +24,7 @@ class GoldHelmet extends BurgerArmor
     {
         if (($nbt = $this->getNamedTag()->getTag("burgercustomarmor")) !== null) {
             $setName = $nbt->getValue();
-            $armorSet = BurgerCustomArmor::$instance->customSets[$setName];
+            $armorSet = BurgerCustomArmor::getInstance()->customSets[$setName];
             if ($armorSet instanceof CustomArmorSet) {
                 return isset($armorSet->durabilities["helmet"]) ? $armorSet->durabilities["helmet"] : parent::getMaxDurability();
             }

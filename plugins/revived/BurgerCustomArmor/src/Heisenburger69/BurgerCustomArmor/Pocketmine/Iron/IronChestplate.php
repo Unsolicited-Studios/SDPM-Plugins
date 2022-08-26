@@ -24,7 +24,7 @@ class IronChestplate extends BurgerArmor
     {
         if (($nbt = $this->getNamedTag()->getTag("burgercustomarmor")) !== null) {
             $setName = $nbt->getValue();
-            $armorSet = BurgerCustomArmor::$instance->customSets[$setName];
+            $armorSet = BurgerCustomArmor::getInstance()->customSets[$setName];
             if ($armorSet instanceof CustomArmorSet) {
                 return isset($armorSet->durabilities["chestplate"]) ? $armorSet->durabilities["chestplate"] : parent::getMaxDurability();
             }
