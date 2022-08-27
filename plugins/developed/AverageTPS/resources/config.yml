@@ -1,3 +1,5 @@
 # The timings that will be averaged and shown for the TPS command.
+# Anything without the appropriate unit will not work.
+#
 # Accepted units: s, m, h
 tps-check-timings: [full, 5s, 15s, 30s, 60s, 10m, 30m, 1h, 3h, 6h, 12h]
