@@ -6,6 +6,7 @@ namespace Heisenburger69\BurgerCustomArmor;
 
 use pocketmine\color\Color;
 use pocketmine\utils\Config;
+use pocketmine\item\ItemTypeIds;
 use pocketmine\nbt\tag\StringTag;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\SingletonTrait;
@@ -13,10 +14,10 @@ use pocketmine\crafting\ShapedRecipe;
 use pocketmine\utils\TextFormat as C;
 use pocketmine\item\enchantment\ItemFlags;
 use pocketmine\item\enchantment\Enchantment;
+use UnsolicitedDev\EssentialsSD\api\ItemAPI;
 use pocketmine\data\bedrock\EnchantmentIdMap;
 use pocketmine\item\LegacyStringToItemParser;
 use pocketmine\crafting\ExactRecipeIngredient;
-use alvin0319\libItemRegistrar\libItemRegistrar;
 use Heisenburger69\BurgerCustomArmor\Abilities\AbilityUtils;
 use Heisenburger69\BurgerCustomArmor\ArmorSets\ArmorSetUtils;
 use Heisenburger69\BurgerCustomArmor\ArmorSets\CustomArmorSet;
@@ -164,7 +165,7 @@ class BurgerCustomArmor extends PluginBase
             new DiamondBoots(),
         ];
         foreach ($items as $item) {
-            libItemRegistrar::getInstance()->registerItem($item, libItemRegistrar::getInstance()->getRuntimeIdByName($item->getName()) ?? libItemRegistrar::getInstance()->getNextItemId());
+            ItemAPI::getInstance()->registerItem($item, ItemTypeIds::newId());
         }
     }
 
@@ -189,7 +190,7 @@ class BurgerCustomArmor extends PluginBase
              * @var array $materialData
              */
             foreach ($recipeData["materials"] as $materialSymbol => $materialData) {
-                $requiredItems[$materialSymbol] = new ExactRecipeIngredient(libItemRegistrar::getInstance()->getItemByLegacyId((int)$materialData["id"], (int)$materialData["meta"], (int)$materialData["count"]));
+                $requiredItems[$materialSymbol] = new ExactRecipeIngredient(ItemAPI::getInstance()->getItemByLegacyId((int)$materialData["id"], (int)$materialData["meta"], (int)$materialData["count"]));
             }
             $this->getServer()->getCraftingManager()->registerShapedRecipe(new ShapedRecipe($recipeData["shape"], $requiredItems, [$item]));
         }

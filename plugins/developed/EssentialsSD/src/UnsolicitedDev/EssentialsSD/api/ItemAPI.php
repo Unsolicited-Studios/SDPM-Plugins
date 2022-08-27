@@ -1,40 +1,56 @@
 <?php
 
+/**                                                                        **\
+ *               █░█ █▄░█ █▀ █▀█ █░░ █ █▀▀ █ ▀█▀ █▀▀ █▀▄                    *
+ *               █▄█ █░▀█ ▄█ █▄█ █▄▄ █ █▄▄ █ ░█░ ██▄ █▄▀                    *
+ *                                                                          *
+ *                       █▀ ▀█▀ █░█ █▀▄ █ █▀█ █▀                            *
+ *                       ▄█ ░█░ █▄█ █▄▀ █ █▄█ ▄█                            *
+ *                https://github.com/Unsolicited-Studios                    *
+ *                                                                          *
+ *                  Copyright 2022 Unsolicited-Studios                      *
+ *    Licensed under the Apache License, Version 2.0 (the 'License');       *
+ *   you may not use this file except in compliance with the License.       *
+ *                                                                          *
+ *                You may obtain a copy of the License at                   *
+ *              http://www.apache.org/licenses/LICENSE-2.0                  *
+ *                                                                          *
+ *  Unless required by applicable law or agreed to in writing, software     *
+ *   distributed under the License is distributed on an 'AS IS' BASIS,      *
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. *
+ *  See the License for the specific language governing permissions and     *
+ *                    limitations under the License.                        *
+ *                                                                          *
+ */                                                                        //
+
 declare(strict_types=1);
 
-namespace alvin0319\libItemRegistrar;
+namespace UnsolicitedDev\EssentialsSD\api;
 
 use pocketmine\item\Item;
-use pocketmine\block\Block;
 use pocketmine\utils\Utils;
 use Webmozart\PathUtil\Path;
 use function file_get_contents;
-use pocketmine\item\ItemTypeIds;
-use pocketmine\plugin\PluginBase;
-use pocketmine\block\BlockFactory;
-use pocketmine\block\BlockTypeIds;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\utils\SingletonTrait;
 use const pocketmine\BEDROCK_DATA_PATH;
 use pocketmine\item\StringToItemParser;
 use pocketmine\utils\AssumptionFailedError;
 use pocketmine\data\bedrock\item\SavedItemData;
-use pocketmine\data\bedrock\block\BlockStateData;
 use pocketmine\world\format\io\GlobalItemDataHandlers;
-use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
-use pocketmine\world\format\io\GlobalBlockStateHandlers;
+use pocketmine\network\mcpe\protocol\types\ItemTypeEntry;
 use pocketmine\network\mcpe\convert\GlobalItemTypeDictionary;
-use pocketmine\data\bedrock\block\CachingBlockStateSerializer;
-use pocketmine\data\bedrock\block\CachingBlockStateDeserializer;
 
-final class libItemRegistrar extends PluginBase
+/**
+ * Most of the parts in this class has been taken from:
+ * https://github.com/alvin0319/libItemRegistrar
+ */
+class ItemAPI
 {
-	use SingletonTrait;
+    use SingletonTrait;
 
 	/** @var Item[] */
 	private array $registeredItems = [];
-	/** @var Block[] */
-	private array $registeredBlocks = [];
 
 	protected function onLoad(): void
 	{
@@ -70,7 +86,7 @@ final class libItemRegistrar extends PluginBase
 		}
 		$this->registeredItems[$item->getTypeId()] = $item;
 
-		StringToItemParser::getInstance()->override($item->getName(), static fn () => $item);
+		StringToItemParser::getInstance()->override($item->getName(), static fn () => clone $item);
 		$serializer = GlobalItemDataHandlers::getSerializer();
 		$deserializer = GlobalItemDataHandlers::getDeserializer();
 
@@ -78,69 +94,22 @@ final class libItemRegistrar extends PluginBase
 		$namespace = $namespace === "" ? "minecraft:" . strtolower(str_replace(" ", "_", $item->getName())) : $namespace;
 
 		(function () use ($item, $serializeCallback, $namespace): void {
-			if (isset($this->itemSerializers[$item->getTypeId()])) {
-				unset($this->itemSerializers[$item->getTypeId()]);
-			}
-			$this->map($item, $serializeCallback !== null ? $serializeCallback : static fn () => new SavedItemData($namespace));
+			$this->itemSerializers[$item->getTypeId()][get_class($item)] = $serializeCallback !== null ? $serializeCallback : static fn() => new SavedItemData($namespace);
 		})->call($serializer);
 
-		(function () use ($item, $deserializeCallback): void {
+		(function () use ($item, $deserializeCallback, $namespace): void {
 			if (isset($this->deserializers[$item->getName()])) {
 				unset($this->deserializers[$item->getName()]);
 			}
-			$this->map($item->getName(), $deserializeCallback !== null ? $deserializeCallback : static fn (SavedItemData $_) => $item);
+			$this->map($namespace, $deserializeCallback !== null ? $deserializeCallback : static fn(SavedItemData $_) => clone $item);
 		})->call($deserializer);
 
 		$dictionary = GlobalItemTypeDictionary::getInstance()->getDictionary();
-		(function () use ($item, $runtimeId): void {
-			$this->stringToIntMap[$item->getName()] = $runtimeId;
-			$this->intToStringIdMap[$runtimeId] = $item;
+		(function() use ($runtimeId, $namespace) : void{
+			$this->stringToIntMap[$namespace] = $runtimeId;
+			$this->intToStringIdMap[$runtimeId] = $namespace;
+            $this->itemTypes[] = new ItemTypeEntry($namespace, $runtimeId, true);
 		})->call($dictionary);
-	}
-
-	// TODO: BLOCK ITEMS (ItemSerializer->mapBlock)
-	public function registerBlock(Block $block, bool $force = false, string $namespace = "", ?CompoundTag $compoundTag = null): void
-	{
-		BlockFactory::getInstance()->register($block, $force);
-
-		$namespace = $namespace === "" ? "minecraft:" . strtolower(str_replace(" ", "_", $block->getName())) : $namespace;
-
-		$serializer = GlobalBlockStateHandlers::getSerializer();
-		$deserializer = GlobalBlockStateHandlers::getDeserializer();
-
-		assert($serializer instanceof CachingBlockStateSerializer);
-		assert($deserializer instanceof CachingBlockStateDeserializer);
-
-		$blockStateData = (function () use ($block): BlockStateData {
-			return $this->serialize($block->getStateId());
-		})->call($serializer);
-
-		(function () use ($blockStateData): void {
-			$this->deserialize($blockStateData);
-		})->call($deserializer);
-
-		$blockStateDictionary = RuntimeBlockMapping::getInstance()->getBlockStateDictionary();
-		(function () use ($block, $namespace, $compoundTag): void {
-			$cache = $this->stateDataToStateIdLookupCache;
-			(function () use ($block, $namespace, $compoundTag): void {
-				$this->nameToNetworkIdsLookup[$namespace] = new BlockStateData($namespace, GlobalBlockStateHandlers::getUpgrader()->upgradeBlockStateNbt($compoundTag ?? CompoundTag::create())->getStates(), $block->getStateId());
-			})->call($cache);
-		})->call($blockStateDictionary);
-	}
-
-	/**
-	 * Returns a next item id and increases it.
-	 *
-	 * @return int
-	 */
-	public function getNextItemId(): int
-	{
-		return ItemTypeIds::newId();
-	}
-
-	public function getNextBlockId(): int
-	{
-		return BlockTypeIds::newId();
 	}
 
 	public function getItemByLegacyId(int $legacyNumericId, int $meta, int $count, ?CompoundTag $nbt = null): Item
@@ -151,15 +120,6 @@ final class libItemRegistrar extends PluginBase
 	public function getItemByTypeId(int $typeId): ?Item
 	{
 		return $this->registeredItems[$typeId] ?? null;
-	}
-
-	public function getBlockByTypeId(int $typeId): ?Block
-	{
-		try {
-			return BlockFactory::getInstance()->fromTypeId($typeId);
-		} catch (\Throwable $e) {
-			return $this->registeredBlocks[$typeId] ?? null;
-		}
 	}
 
 	/**
