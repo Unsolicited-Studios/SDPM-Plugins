@@ -16,5 +16,6 @@ parameters:
             - libraries/managed/await-generator
 
     paths:
+        - extras/tools
         - plugins
         - libraries
