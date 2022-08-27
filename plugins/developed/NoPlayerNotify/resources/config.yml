@@ -1,0 +1,5 @@
+# Number of times a player has to chat without any other player in the server before message is sent.
+chat-threshold: 3
+
+# The message that is sent to a player if nobody else is online and they chat more than the threshold.
+no-player-message: "Hmmm...\n§cIt seems like there are no other players or console viewers in the server receiving your chat message. Are you chatting to yourself?"
