@@ -58,7 +58,8 @@ class SDAutoUpdater extends PluginBase
     {
         $crashCausers = SDUpdateUtil::getCrashCausers();
         if (count($crashCausers) > 0) {
-            $this->getLogger()->error('The following plugins caused a crash during the update process: ' . implode(', ', $crashCausers) . '. An update will be forced.');
+            // TODO: Log these errors somewhere for us to see
+            $this->getLogger()->error('The following plugins caused a crash: ' . implode(', ', $crashCausers) . '. An update will be forced.');
             $this->doUpdate();
         }
     }

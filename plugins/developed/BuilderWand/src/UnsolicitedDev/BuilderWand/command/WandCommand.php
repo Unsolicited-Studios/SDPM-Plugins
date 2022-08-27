@@ -17,7 +17,7 @@ class WandCommand extends BaseCommand
     public function onRun(CommandSender $sender, string $aliasUsed, array $args): void
     {
         if (!$sender instanceof Player) {
-            $sender->sendMessage('You must be a player to use this command!');
+            $sender->sendMessage('You must be in-game to run this command!');
             return;
         }
         if (!$this->testPermissionSilent($sender)) {
