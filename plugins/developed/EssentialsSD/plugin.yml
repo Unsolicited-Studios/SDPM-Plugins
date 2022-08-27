@@ -1,0 +1,12 @@
+#    █░█ █▄░█ █▀ █▀█ █░░ █ █▀▀ █ ▀█▀ █▀▀ █▀▄
+#    █▄█ █░▀█ ▄█ █▄█ █▄▄ █ █▄▄ █ ░█░ ██▄ █▄▀
+#
+#           █▀ ▀█▀ █░█ █▀▄ █ █▀█ █▀
+#           ▄█ ░█░ █▄█ █▄▀ █ █▄█ ▄█
+#    https://github.com/Unsolicited-Studios
+
+name: EssentialsSD
+main: UnsolicitedDev\EssentialsSD\EssentialsSD
+author: AGTHARN
+version: 1.0.0
+api: 5.0.0

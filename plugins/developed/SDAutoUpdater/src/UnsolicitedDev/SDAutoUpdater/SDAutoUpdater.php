@@ -35,6 +35,7 @@ use RecursiveDirectoryIterator;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\SingletonTrait;
 use pocketmine\utils\InternetRequestResult;
+use UnsolicitedDev\EssentialsSD\api\PluginAPI;
 
 class SDAutoUpdater extends PluginBase
 {
@@ -56,10 +57,10 @@ class SDAutoUpdater extends PluginBase
 
     public function onDisable(): void
     {
-        $crashCausers = SDUpdateUtil::getCrashCausers();
-        if (count($crashCausers) > 0) {
+        $crashCauser = PluginAPI::getLatestCrashCauser(true);
+        if (is_string($crashCauser)) {
             // TODO: Log these errors somewhere for us to see
-            $this->getLogger()->error('The following plugins caused a crash: ' . implode(', ', $crashCausers) . '. An update will be forced.');
+            $this->getLogger()->error('The following plugin caused a crash: ' . $crashCauser . '. An update will be forced.');
             $this->doUpdate();
         }
     }
@@ -143,8 +144,8 @@ class SDAutoUpdater extends PluginBase
 
             $logger->debug('Extracted update. Updating only existing plugins.');
 
-            $serverPlugins = SDUpdateUtil::getPluginNames($pluginsFolder);
-            $updatePlugins = SDUpdateUtil::getPluginNames($extractFolder);
+            $serverPlugins = PluginAPI::getAllPluginNames($pluginsFolder);
+            $updatePlugins = PluginAPI::getAllPluginNames($extractFolder);
             foreach ($serverPlugins as $pluginName => $serverFile) {
                 if (!isset($updatePlugins[$pluginName])) {
                     continue;

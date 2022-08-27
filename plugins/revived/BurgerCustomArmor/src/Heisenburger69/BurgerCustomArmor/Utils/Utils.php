@@ -7,6 +7,7 @@ use pocketmine\item\Item;
 use pocketmine\entity\Skin;
 use pocketmine\world\World;
 use pocketmine\player\Player;
+use UnsolicitedDev\EssentialsSD\api\ImageAPI;
 use Heisenburger69\BurgerCustomArmor\BurgerCustomArmor;
 use Heisenburger69\BurgerCustomArmor\Pocketmine\Gold\GoldBoots;
 use Heisenburger69\BurgerCustomArmor\Pocketmine\Iron\IronBoots;
@@ -58,66 +59,6 @@ class Utils
                 return false;
         }
         return false;
-    }
-
-    /**
-     * "Borrowed" from UltraCapes
-     * @param string $fileName
-     * @return string
-     */
-    public static function createCape(string $fileName)
-    {
-        $img = @imagecreatefrompng(BurgerCustomArmor::getInstance()->getDataFolder() . $fileName);
-        if (!$img instanceof GdImage) {
-            return '';
-        }
-
-        $bytes = '';
-        $lc = @getimagesize(BurgerCustomArmor::getInstance()->getDataFolder() . $fileName);
-        if (!is_array($lc)) {
-            return '';
-        }
-
-        $l = (int)$lc[1];
-        for ($y = 0; $y < $l; $y++) {
-            for ($x = 0; $x < 64; $x++) {
-                $rgba = @imagecolorat($img, $x, $y);
-                $a = ((~($rgba >> 24)) << 1) & 0xff;
-                $r = ($rgba >> 16) & 0xff;
-                $g = ($rgba >> 8) & 0xff;
-                $b = $rgba & 0xff;
-                $bytes .= chr($r) . chr($g) . chr($b) . chr($a);
-            }
-        }
-        @imagedestroy($img);
-        return $bytes;
-    }
-
-    /**
-     * @param Player $player
-     * @param string $fileName
-     */
-    public static function addCape(Player $player, string $fileName): void
-    {
-        $oldSkin = $player->getSkin();
-        $capeData = self::createCape($fileName);
-        $skin = new Skin($oldSkin->getSkinId(), $oldSkin->getSkinData(), $capeData, $oldSkin->getGeometryName(), $oldSkin->getGeometryData());
-        
-        $player->setSkin($skin);
-        $player->sendSkin();
-    }
-
-    /**
-     * @param Player $player
-     */
-    public static function removeCape(Player $player): void
-    {
-        $oldSkin = $player->getSkin();
-        $capeData = "";
-        $skin = new Skin($oldSkin->getSkinId(), $oldSkin->getSkinData(), $capeData, $oldSkin->getGeometryName(), $oldSkin->getGeometryData());
-        
-        $player->setSkin($skin);
-        $player->sendSkin();
     }
 
     public static function isHelmet(Item $item): bool

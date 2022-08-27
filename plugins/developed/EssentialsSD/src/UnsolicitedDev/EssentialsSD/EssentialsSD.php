@@ -25,46 +25,17 @@
 
 declare(strict_types=1);
 
-namespace UnsolicitedDev\SDAutoUpdater;
+namespace UnsolicitedDev\EssentialsSD;
 
-use pocketmine\Server;
+use pocketmine\plugin\PluginBase;
+use pocketmine\utils\SingletonTrait;
 
-class SDUpdateUtil
+class EssentialsSD extends PluginBase
 {
-    public static function getPluginNames(string $folder): array
-    {
-        $pluginNames = [];
-        foreach (new \DirectoryIterator($folder) as $file) {
-            if (
-                $file->isDot() || !$file->isFile() || $file->getExtension() !== 'phar' ||
-                !file_exists($pluginYaml = 'phar://' . $file->getPathname() . '/plugin.yml') ||
-                !($yamlContents = file_get_contents($pluginYaml)) ||
-                !is_array($data = yaml_parse($yamlContents)) ||
-                !isset($data['name'])
-            ) {
-                continue;
-            }
+    use SingletonTrait;
 
-            $pluginNames[$data['name']] = $file->getPathname();
-        }
-        return $pluginNames;
-    }
-
-    public static function getCrashCausers(): array
+    public function onEnable(): void
     {
-        // There shouldn't even be more than 1 plugin causing a crash.
-        // However, I should still consider it if that happens for whatever reason.
-        $pluginNames = [];
-        foreach (glob(Server::getInstance()->getDataPath() . 'crashdumps/*.log') as $filePath) {
-            if (filemtime($filePath) > (int) Server::getInstance()->getStartTime()) {
-                foreach (file($filePath) as $line) {
-                    $words = explode(' ', $line);
-                    if (count($words) === 2 && $words[0] === 'BAD PLUGIN:') {
-                        $pluginNames[] = $words[1];
-                    }
-                }
-            }
-        }
-        return $pluginNames;
+        self::setInstance($this);
     }
 }

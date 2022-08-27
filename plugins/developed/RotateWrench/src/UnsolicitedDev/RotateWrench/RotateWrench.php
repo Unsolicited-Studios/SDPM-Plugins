@@ -27,7 +27,6 @@ declare(strict_types=1);
 
 namespace UnsolicitedDev\RotateWrench;
 
-use pocketmine\Server;
 use pocketmine\block\Block;
 use pocketmine\block\Chest;
 use pocketmine\item\Shovel;
@@ -35,9 +34,9 @@ use pocketmine\math\Facing;
 use pocketmine\player\Player;
 use pocketmine\item\VanillaItems;
 use pocketmine\plugin\PluginBase;
-use pocketmine\world\format\Chunk;
 use pocketmine\utils\SingletonTrait;
 use pocketmine\block\tile\Chest as ChestTile;
+use UnsolicitedDev\EssentialsSD\api\BlockAPI;
 use UnsolicitedDev\RotateWrench\command\RotateCommand;
 use UnsolicitedDev\RotateWrench\command\WrenchCommand;
 use pocketmine\data\bedrock\item\upgrade\LegacyItemIdToStringIdMap;
@@ -90,7 +89,7 @@ class RotateWrench extends PluginBase
             self::ROTATION => $block->setRotation(((int) floor((($player->getLocation()->getYaw() + 180) * 16 / 360) + 0.5)) & 0xf), /** @phpstan-ignore-line */
             default => false
         };
-        self::updateBlockChange($block);
+        BlockAPI::updateBlockChange($block);
 
         return !$match ? false : true;
     }
@@ -107,18 +106,6 @@ class RotateWrench extends PluginBase
         }
         $player->sendMessage('Failed to rotate block! May be possible that this block has no facing trait.');
         return false;
-    }
-
-    public static function updateBlockChange(Block $block): bool
-    {
-        $position = $block->getPosition();
-
-        $chunkX = $position->x >> Chunk::COORD_BIT_SIZE;
-        $chunkZ = $position->z >> Chunk::COORD_BIT_SIZE;
-
-        $block->writeStateToWorld();
-        $block->onNearbyBlockChange();
-        return Server::getInstance()->broadcastPackets($position->getWorld()->getChunkPlayers($chunkX, $chunkZ), $position->getWorld()->createBlockUpdatePackets([$position->asVector3()]));
     }
 
     public static function getWrench(): Shovel
